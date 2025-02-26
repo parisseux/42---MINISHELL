@@ -1,0 +1,16 @@
+Malloc :
+
+- getcwd (commands, which_command)
+
+----create_token----
+free: liste entiere dans execute setup_minishell
+ou
+free: msg_error(utils.c)
+
+----- var_env ----
+malloc: setup_minishell
+free: main
+
+------input-------
+malloc: main/readline
+free: main
