@@ -6,7 +6,7 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:56:07 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/26 16:16:04 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:57:12 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void    execute_minishell(t_shell *shell, char *input)
 		printf("Error: tokenisation failed\n");
 		return ;
 	}
+	if (!ft_strncmp(lst_token->value, "exit", 4))
+		exit_command(lst_token, shell, input);
 	printf("Token list:\n");
 	print_token_list(lst_token);
 	if (check_syntax_error(lst_token))

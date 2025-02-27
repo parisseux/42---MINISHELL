@@ -6,7 +6,7 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:58:03 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/26 16:11:21 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:42:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,8 @@ int	check_synthax_redirection(t_token *lst_token);
 //file
 char	*filename(t_token *lst_token);
 t_file     *open_file(t_token *lst_token, int type);
+
+//exit
+void    exit_command(t_token *lst_token, t_shell *shell, char *input);
 
 #endif

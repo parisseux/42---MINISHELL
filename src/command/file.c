@@ -6,7 +6,7 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:00:37 by ninisse           #+#    #+#             */
-/*   Updated: 2025/02/26 16:09:07 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:51:12 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,7 @@ char	*filename(t_token *lst_token)
 	while (tmp)
 	{	
 		if (tmp->type == APPEND || tmp->type == REDIR_OUT)
-		{
-			// if (tmp->next->type != WORD)
-			// {
-			// 	printf("minishell: syntax error near unexpected token `newline'");
-			// 	return (NULL);
-			// }
 			return (tmp->next->value);
-		}
 		tmp = tmp->next;
 	}
 	return (NULL);
@@ -64,7 +57,3 @@ t_file     *open_file(t_token *lst_token, int type)
     }
     return (file);
 }
-
-
-
-
