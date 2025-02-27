@@ -6,7 +6,7 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:58:31 by avarrett          #+#    #+#             */
-/*   Updated: 2025/02/27 11:58:38 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:29:48 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	easy_command(t_token *lst_token, t_shell *shell)
 		}
 		else
 		{
-			printf("%s: command not found", lst_token->value);
+			printf("%s: command not found\n", lst_token->value);
 			g_exit_status = 127;
 		}
 			

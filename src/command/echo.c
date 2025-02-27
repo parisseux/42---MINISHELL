@@ -6,7 +6,7 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:50:36 by parissachat       #+#    #+#             */
-/*   Updated: 2025/02/26 15:01:37 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:29:19 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ void	echo_double_quote(char **line, t_file *file)
 			}
 			line++;
 		}
-		else if (**line == '$')
-			echo_dolar_sign(line);
 		else
 		{
 			printf_or_fprintf(file, line);
@@ -93,9 +91,7 @@ void	echo_no_quote(char **line, t_file *file)
 		fprintf(file->file, "\n");
 	while (**line)
 	{
-		if (**line == '$')
-			echo_dolar_sign(line);
-		else if (**line == '\\')
+		if (**line == '\\')
 		{
 			(*line)++;
 			if (**line)

@@ -6,7 +6,7 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:58:03 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/27 13:42:08 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:27:50 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ void	echo_command(t_token *lst_token, int n_flag, t_file *file);
 void	echo_single_quote(char **line, t_file *file);
 void	echo_double_quote(char **line, t_file *file);
 void	echo_no_quote(char **line, t_file *file);
-void	echo_dolar_sign(char **line);
-void	dolar_expand_variable(char **line);
-void	dolar_special_cases(char **line);
+char	*dolar_sign(char **line);
+char    *dolar_special_cases(char **line);
 int		echo_check_n_flag(char **line);
 
 //command/utils
@@ -104,5 +103,8 @@ t_file     *open_file(t_token *lst_token, int type);
 
 //exit
 void    exit_command(t_token *lst_token, t_shell *shell, char *input);
+
+//expand_var
+void    look_for_dolls(t_token *lst_token);
 
 #endif
