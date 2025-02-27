@@ -6,13 +6,14 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:58:31 by avarrett          #+#    #+#             */
-/*   Updated: 2025/02/26 16:34:02 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:35:01 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 // which command a modifier pour faire un else (no command found)
+// test
 
 void	easy_command(t_token *lst_token, t_shell *shell)
 {
