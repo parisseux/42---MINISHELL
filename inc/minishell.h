@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:58:03 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/27 18:27:50 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:17:21 by ninisse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	skip_space(char **input);
 void    print_token_list(t_token *lst_token);
 void	msg_error(char *msg, t_token *lst_token);
 void	free_token_list(t_token *lst_token);
+int	ft_varcmp(const char *s1, const char *s2, size_t n);
 
 //parsing 
 t_token	*create_token(char *value, t_token_type type);
@@ -105,6 +106,7 @@ t_file     *open_file(t_token *lst_token, int type);
 void    exit_command(t_token *lst_token, t_shell *shell, char *input);
 
 //expand_var
-void    look_for_dolls(t_token *lst_token);
+void    look_for_dolls(t_token *lst_token, t_shell *shell);
+void    find_var(t_shell *shell, char *name, t_token *tmp);
 
 #endif

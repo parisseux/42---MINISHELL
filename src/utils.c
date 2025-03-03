@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:44:03 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/25 12:20:15 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:06:53 by ninisse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,23 @@ void	ft_free_char_tab(char **tab)
 		i++;
 	}
 	free(tab);
+}
+
+int	ft_varcmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (!s1 && !s2)
+		return (0);
+	while (i < n && (s2[i] || s1[i]))
+	{
+		if ((unsigned char) s1[i] == (unsigned char) s2[i])
+			i++;
+		else
+			return ((unsigned char) s1[i] - (unsigned char) s2[i]);
+	}
+	if (s1[i] != '=')
+		return (1);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:56:07 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/27 15:50:46 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/03/03 12:23:44 by ninisse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void    execute_minishell(t_shell *shell, char *input)
 		printf("Error: tokenisation failed\n");
 		return ;
 	}
-	look_for_dolls(lst_token);
+	look_for_dolls(lst_token, shell);
 	if (!ft_strncmp(lst_token->value, "exit", 4))
 		exit_command(lst_token, shell, input);
 	printf("Token list:\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:50:36 by parissachat       #+#    #+#             */
-/*   Updated: 2025/02/27 17:29:19 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:08:45 by ninisse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,35 @@ int 	print_or_file(t_token *lst_token)
 
 void	echo_command(t_token *lst_token, int n_flag, t_file *file)
 {
-	char	*line = lst_token->next->value; 
-	int		type = lst_token->next->type;
+	char	*line;
+	int		type;
+	char	*space;
+	char	*space2;
 
-	while (*line) 
+	space = " ";
+	space2 = "\n";
+	while (lst_token)
 	{
-		if (type == DQUOTE)
-			echo_double_quote(&line, file);
-		else if (type == SQUOTE)
-			echo_single_quote(&line, file);
+		line = lst_token->value;
+		type = lst_token->type;
+		while (*line)
+		{
+			if (type == SQUOTE)
+				echo_single_quote(&line, file);
+			else if (type == DQUOTE)
+				echo_double_quote(&line, file);
+			else
+				echo_no_quote(&line, file);
+		}
+		if (lst_token->type == END)
+		{
+			if (n_flag == 0)
+				printf_or_fprintf(file, &space2);
+			break;
+		}
 		else
-			echo_no_quote(&line, file);
-		if (!n_flag && !file)
-			printf("\n");
+			printf_or_fprintf(file, &space);
+		lst_token = lst_token->next;
 	}
 }
 

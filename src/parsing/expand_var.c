@@ -7,6 +7,7 @@ char	*dolar_sign(char **line)
 
 	i = 0;
 	(*line)++;
+	printf("len == %zu\n", ft_strlen(*line));
 	if (ft_strlen(*line) == 0)
 		return (NULL);
 	name = NULL;
@@ -19,7 +20,6 @@ char	*dolar_sign(char **line)
 	{
 		if ((!ft_isalnum(**line)))
 			return (name);
-
 		i++;
 	}
 	name = ft_strdup(*line);
@@ -31,7 +31,7 @@ char	*dolar_special_cases(char **line)
 	char	*name;
 
 	name = NULL;
-	printf("%ld", ft_strlen(*line));
+	printf("len special case == %ld\n", ft_strlen(*line));
 	if (ft_strlen(*line) == 0)
 		return (NULL);
 	if (**line == '?')
@@ -44,7 +44,31 @@ char	*dolar_special_cases(char **line)
 	return (name);
 }
 
-void	look_for_dolls(t_token *lst_token)
+void	find_var(t_shell *shell, char *name, t_token *tmp)
+{
+	int i;
+	int check;
+
+	i = 0;
+	check = 0;
+	while (shell->var_env[i])
+	{
+		if (!ft_varcmp(shell->var_env[i], name, ft_strlen(name)))
+		{
+			tmp->value = ft_strdup(shell->var_env[i] + ft_strlen(name) + 1);
+			check = 1;
+		}
+		i++;
+	}
+	if (!check)
+	{
+		tmp->value = ft_strdup("");
+		if (tmp->next->type == 8)
+			tmp->type = 8;
+	}
+}
+
+void	look_for_dolls(t_token *lst_token, t_shell *shell)
 {
 	t_token *tmp;
 	char	*name;
@@ -52,25 +76,23 @@ void	look_for_dolls(t_token *lst_token)
 
 	name = NULL;
 	tmp = lst_token;
-	while (tmp)
+	while (tmp != NULL)
 	{
 		value = ft_strdup(tmp->value);
 		while (*value)
 		{
 			if (*value == '$')
 			{
-				printf("variable\n");
+				if (ft_strlen(value) == 1)
+					break ;
 				name = dolar_sign(&value);
-				if (!name)
-					name = dolar_special_cases(&value);
-				printf("named variable\n");
+				if (name)
+					find_var(shell, name, tmp);
+				else
+					tmp->value = dolar_special_cases(&value);
 			}
-			(*value)++;
+			value++;
 		}
 		tmp = tmp->next;
 	}
-	if (name)
-		printf("%s\n", name);
-	else
-		printf("feinte\n");
 	free(name);}
