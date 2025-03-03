@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:56:07 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/26 16:16:04 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:27:41 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void    execute_minishell(t_shell *shell, char *input)
 	print_token_list(lst_token);
 	if (check_syntax_error(lst_token))
 		return ;
+	execution(lst_token, shell);
 	easy_command(lst_token, shell);
 	printf("end\n");
 	free_token_list(lst_token);
