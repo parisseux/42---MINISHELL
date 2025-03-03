@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:58:03 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/26 16:11:21 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:17:21 by ninisse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ void	echo_command(t_token *lst_token, int n_flag, t_file *file);
 void	echo_single_quote(char **line, t_file *file);
 void	echo_double_quote(char **line, t_file *file);
 void	echo_no_quote(char **line, t_file *file);
-void	echo_dolar_sign(char **line);
-void	dolar_expand_variable(char **line);
-void	dolar_special_cases(char **line);
+char	*dolar_sign(char **line);
+char    *dolar_special_cases(char **line);
 int		echo_check_n_flag(char **line);
 
 //command/utils
@@ -84,6 +83,7 @@ void	skip_space(char **input);
 void    print_token_list(t_token *lst_token);
 void	msg_error(char *msg, t_token *lst_token);
 void	free_token_list(t_token *lst_token);
+int	ft_varcmp(const char *s1, const char *s2, size_t n);
 
 //parsing 
 t_token	*create_token(char *value, t_token_type type);
@@ -101,5 +101,12 @@ int	check_synthax_redirection(t_token *lst_token);
 //file
 char	*filename(t_token *lst_token);
 t_file     *open_file(t_token *lst_token, int type);
+
+//exit
+void    exit_command(t_token *lst_token, t_shell *shell, char *input);
+
+//expand_var
+void    look_for_dolls(t_token *lst_token, t_shell *shell);
+void    find_var(t_shell *shell, char *name, t_token *tmp);
 
 #endif
