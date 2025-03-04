@@ -9,18 +9,18 @@ void	skip_space(char **input)
 
 void print_token_list(t_token *lst_token)
 {
-    t_token *current = lst_token;
+	t_token *current = lst_token;
 
-    while (current)
-    {
-        if (current->value != NULL)
-        {
-            printf("Token: [%s], Type: %d\n", current->value, current->type);
-        }
-        else
-        {
-            printf("Token: [NULL] ou Type: NULL \n");
-        }
-        current = current->next;
-    }
+	while (current)
+	{
+		if (current->value != NULL)
+		{
+			printf("Token: [%s], Type: %d\n", current->value, current->type);
+		}
+		else
+		{
+			printf("Token: [NULL] ou Type: NULL \n");
+		}
+		current = current->next;
+	}
 }

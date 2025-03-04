@@ -10,6 +10,9 @@
 # include <signal.h>
 # include <ctype.h>
 # include "../libft/libft.h"
+# include <sys/types.h>
+# include <sys/wait.h>
+
 
 extern int	g_exit_status;
 
@@ -46,9 +49,19 @@ typedef struct s_file
     char	*file_name;
 }	t_file;
 
+//execution 
+void    execution(t_token *lst_token, t_shell *shell);
+int is_pipe(t_token *lst_token);
+int is_builtin(t_token *lst_token);
+char *ft_strjoin_paths(char *dir, char *cmd);
+char *get_env_value(char **env, char *key);
+char    *find_cmd_path(char *cmd, char **env);
+void execve_non_builtin(t_token *lst_token, t_shell *shell);
+char **find_cmd_args(t_token *lst_token);
+
 //command
 void	cd_command(char *line);
-void	easy_command(t_token *lst_token, t_shell *shell);
+void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 void	env_command(t_shell *shell, t_token *lst_token, t_file *file);
 void	pwd_command(t_file *file);
 
