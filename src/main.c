@@ -17,8 +17,7 @@ void    start_minishell(t_shell *shell, char *input)
 	look_for_dolls(lst_token, shell);
 	if (!ft_strncmp(lst_token->value, "exit", 4))
 		exit_command(lst_token, shell, input);
-	printf("Token list:\n");
-	print_token_list(lst_token);
+
 	if (check_syntax_error(lst_token))
 		return ;
 	execution(lst_token, shell);

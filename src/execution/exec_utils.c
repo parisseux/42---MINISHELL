@@ -9,9 +9,7 @@ char	*get_env_value(char **env, char *key)
 	int	i;
 	int	len;
 
-	printf("key: %s\n", key);
 	len = ft_strlen(key);
-	printf("len:%d\n", len);
 	i = 0;
 	while (env[i])
 	{
@@ -21,6 +19,5 @@ char	*get_env_value(char **env, char *key)
 		}
 		i++;
 	}
-	printf("test\n");
 	return (NULL);
 }

@@ -40,7 +40,6 @@ t_token	*tokenisation(char *input)
 			new_token = extract_in(&input);
 		else
 			new_token = ext_word(&input);
-		printf("new_token %s\n", new_token->value);
 		add_token_to_lst(&lst_token, new_token);
 	}
 	new_token = create_token("", END);

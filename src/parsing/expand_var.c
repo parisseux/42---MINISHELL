@@ -7,7 +7,6 @@ char	*dolar_sign(char **line)
 
 	i = 0;
 	(*line)++;
-	printf("len == %zu\n", ft_strlen(*line));
 	if (ft_strlen(*line) == 0)
 		return (NULL);
 	name = NULL;

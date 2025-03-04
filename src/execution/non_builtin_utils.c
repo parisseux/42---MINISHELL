@@ -7,15 +7,12 @@ void	execve_non_builtin(t_token *lst_token, t_shell *shell)
 	char	*cmd;
 	char	**cmd_args;
 
-	printf("looking for path of %s\n", lst_token->value);
 	cmd = find_cmd_path(lst_token->value, shell->var_env);
 	if (!cmd)
 	{
 		printf("couldnt foudnt the executable path\n");
 		exit(EXIT_FAILURE);
 	}
-	printf("path: %s\n", cmd);
-	printf("look for args\n");
 	cmd_args = find_cmd_args(lst_token);
 	if (!cmd_args)
 		exit(EXIT_FAILURE);
@@ -44,7 +41,6 @@ char	*find_cmd_path(char *cmd, char **env)
 	i = 0;
 	while (paths[i])
 	{
-		printf("path[i]: %s\n", paths[i]);
 		final_path = ft_strjoin_paths(paths[i], cmd);
 		if (access(final_path, X_OK) == 0)
 		{

@@ -1,16 +1,18 @@
 #include "../inc/minishell.h"
 
-// void    exec_with_pipe(t_token *lst_token, t_shell *shell, int pipe)
-// {
-
-// }
+void    exec_with_pipe(t_token *lst_token, t_shell *shell, int pipe)
+{
+	printf("there is at least one pipe\n");
+	(void)lst_token;
+	(void)shell;
+	(void)pipe;
+}
 
 //simple redirection au fonctions correpondantes aux buitltin
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell)
 {
 	t_file	*file;
 
-	printf("execution of %s\n", lst_token->value);
 	file = NULL;
 	if (print_or_file(lst_token))
 		file = open_file(lst_token, print_or_file(lst_token));
@@ -52,14 +54,9 @@ void	exec_non_builtin_command(t_token *lst_token, t_shell *shell)
 		exit(EXIT_FAILURE);
 	}
 	if (pid == 0)
-	{
-		printf("child process\n");
 		execve_non_builtin(lst_token, shell);
-	}	
 	else
-	{
 		waitpid(pid, NULL, 0);
-	}
 }
 
 //3 cas d'executions
@@ -73,22 +70,13 @@ void	execution(t_token *lst_token, t_shell *shell)
 	pipe = is_pipe(lst_token);
 	if (pipe)
 	{
-		printf("there is at least one pipe\n");
-		// exec_with_pipe(lst_token, shell, pipe);
+		exec_with_pipe(lst_token, shell, pipe);
 	}
 	else
 	{
-		printf("no pipe yeaaah\n");
 		if (is_builtin(lst_token))
-		{
-			printf("buildin command\n");
 			exec_builtin_cmd(lst_token, shell);
-		}
 		else
-		{
-			printf("no buildin command\n");
 			exec_non_builtin_command(lst_token, shell);
-		}
 	}
-	(void)shell;
 }
