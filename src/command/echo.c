@@ -1,9 +1,10 @@
 #include "../inc/minishell.h"
 
-int 	print_or_file(t_token *lst_token)
+int	print_or_file(t_token *lst_token)
 {
-	t_token *tmp = lst_token;
+	t_token	*tmp;
 	
+	tmp = lst_token;
 	while (tmp)
 	{	
 		if (tmp->type == APPEND || tmp->type == REDIR_OUT)

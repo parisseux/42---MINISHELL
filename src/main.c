@@ -1,14 +1,13 @@
-
 #include "../inc/minishell.h"
 
 int	g_exit_status = 0;
 
-void    start_minishell(t_shell *shell, char *input)
+void	start_minishell(t_shell *shell, char *input)
 {
-    t_token *lst_token;
-	
+	t_token	*lst_token;
+
 	lst_token = NULL;
-    lst_token = tokenisation(input);
+	lst_token = tokenisation(input);
 	if (!lst_token)
 	{
 		printf("Error: tokenisation failed\n");
@@ -17,7 +16,6 @@ void    start_minishell(t_shell *shell, char *input)
 	look_for_dolls(lst_token, shell);
 	if (!ft_strncmp(lst_token->value, "exit", 4))
 		exit_command(lst_token, shell, input);
-
 	if (check_syntax_error(lst_token))
 		return ;
 	execution(lst_token, shell);

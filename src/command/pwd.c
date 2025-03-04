@@ -9,5 +9,5 @@ void	pwd_command(t_file *file)
 		fprintf(file->file, "%s\n", pwd);
 	else
 		printf("%s\n", pwd);
-	free(pwd);		
+	free(pwd);
 }

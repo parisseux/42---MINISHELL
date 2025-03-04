@@ -2,7 +2,7 @@
 
 char	*dolar_sign(char **line)
 {
-	char	*name;
+	char		*name;
 	size_t		i;
 
 	i = 0;
@@ -45,8 +45,8 @@ char	*dolar_special_cases(char **line)
 
 void	find_var(t_shell *shell, char *name, t_token *tmp)
 {
-	int i;
-	int check;
+	int	i;
+	int	check;
 
 	i = 0;
 	check = 0;
@@ -69,7 +69,7 @@ void	find_var(t_shell *shell, char *name, t_token *tmp)
 
 void	look_for_dolls(t_token *lst_token, t_shell *shell)
 {
-	t_token *tmp;
+	t_token	*tmp;
 	char	*name;
 	char	*value;
 
@@ -94,4 +94,5 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 		}
 		tmp = tmp->next;
 	}
-	free(name);}
+	free(name);
+}

@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-void    exec_with_pipe(t_token *lst_token, t_shell *shell, int pipe)
+void	exec_with_pipe(t_token *lst_token, t_shell *shell, int pipe)
 {
 	printf("there is at least one pipe\n");
 	(void)lst_token;

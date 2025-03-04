@@ -15,7 +15,7 @@ t_token	*create_token(char *value, t_token_type type)
 
 t_token	*extract_s_quote(char **input)
 {
-	t_token *new_token;
+	t_token	*new_token;
 	char	*value;
 	char	*start;
 	int		len;
@@ -43,7 +43,7 @@ t_token	*extract_s_quote(char **input)
 
 t_token	*extract_d_quote(char **input)
 {
-	t_token *new_token;
+	t_token	*new_token;
 	char	*value;
 	char	*start;
 	int		len;
@@ -69,16 +69,16 @@ t_token	*extract_d_quote(char **input)
 	return (new_token);
 }
 
-t_token *ext_word(char **input)
+t_token	*ext_word(char **input)
 {
-	t_token *new_token;
-	char *start;
-	char *value;
-	int len;
+	t_token	*new_token;
+	char	*start;
+	char	*value;
+	int		len;
 
 	start = *input;
 	while (**input && !ft_strchr("|<> \'\"", **input))
-        (*input)++;
+		(*input)++;
 	len = ft_strlen(*input) - ft_strlen(start);
 	len *= -1;
 	if (len == 0)
@@ -94,7 +94,7 @@ t_token *ext_word(char **input)
 
 t_token	*extract_out(char **input)
 {
-	t_token *new_token;
+	t_token	*new_token;
 
 	(*input)++;
 	if (**input == '>')
@@ -104,20 +104,5 @@ t_token	*extract_out(char **input)
 	}
 	else
 		new_token = create_token(">", REDIR_OUT);
-	return (new_token);
-}
-
-t_token	*extract_in(char **input)
-{
-	t_token *new_token;
-
-	(*input)++;
-	if (**input == '<')
-	{
-		new_token = create_token("<<", HEREDOC);
-		(*input)++;
-	}
-	else
-		new_token = create_token("<", REDIR_IN);
 	return (new_token);
 }
