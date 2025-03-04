@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 16:25:31 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/25 15:57:28 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:15:17 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ void	skip_space(char **input)
 
 void print_token_list(t_token *lst_token)
 {
-    t_token *current = lst_token;
+	t_token *current = lst_token;
 
-    while (current)
-    {
-        if (current->value != NULL)
-        {
-            printf("Token: [%s], Type: %d\n", current->value, current->type);
-        }
-        else
-        {
-            printf("Token: [NULL] ou Type: NULL \n");
-        }
-        current = current->next;
-    }
+	while (current)
+	{
+		if (current->value != NULL)
+		{
+			printf("Token: [%s], Type: %d\n", current->value, current->type);
+		}
+		else
+		{
+			printf("Token: [NULL] ou Type: NULL \n");
+		}
+		current = current->next;
+	}
 }

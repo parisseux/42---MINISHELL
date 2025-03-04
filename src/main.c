@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/03/03 14:29:29 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:43:29 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	g_exit_status = 0;
 
-void    execute_minishell(t_shell *shell, char *input)
+void    start_minishell(t_shell *shell, char *input)
 {
     t_token *lst_token;
 	
@@ -34,7 +34,6 @@ void    execute_minishell(t_shell *shell, char *input)
 	if (check_syntax_error(lst_token))
 		return ;
 	execution(lst_token, shell);
-	easy_command(lst_token, shell);
 	free_token_list(lst_token);
 }
 
@@ -77,7 +76,7 @@ int	main(int ac, char **av, char **env)
 		if (input)
 			add_history(input);
 		if (ft_strlen(input) > 0)
-			execute_minishell(&shell, input);
+			start_minishell(&shell, input);
 		free(input);
 	}
 	ft_free_char_tab(shell.var_env);

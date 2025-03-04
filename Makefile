@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+         #
+#    By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/04 15:30:30 by avarrett          #+#    #+#              #
-#    Updated: 2025/02/17 13:54:20 by ninisse          ###   ########.fr        #
+#    Updated: 2025/03/04 15:21:48 by pchatagn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ HEADERS = ./inc
 SRC_DIR = ./src
 PARSING_DIR = $(SRC_DIR)/parsing
 COMMAND_DIR = $(SRC_DIR)/command
+EXEC_DIR = $(SRC_DIR)/execution
 LIBFT_DIR = ./libft
 OBJ_DIR = ./obj
 
@@ -23,7 +24,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -Iinclude -I$(HEADERS)
 LDFLAGS = -lreadline
 
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(PARSING_DIR)/*.c) $(wildcard $(COMMAND_DIR)/*.c) 
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(EXEC_DIR)/*.c) $(wildcard $(PARSING_DIR)/*.c) $(wildcard $(COMMAND_DIR)/*.c) 
 
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
@@ -39,7 +40,7 @@ $(NAME): $(OBJ_FILES) $(LIBFT_LIB)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ_FILES) $(LIBFT_LIB) $(LDFLAGS)
 	@echo "💕 $(ROSE)minishell is ready for you$(RESET) 💕"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/command
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/command $(OBJ_DIR)/execution
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ_DIR)/parsing:
@@ -47,6 +48,9 @@ $(OBJ_DIR)/parsing:
 
 $(OBJ_DIR)/command:
 	@mkdir -p $(OBJ_DIR)/command
+
+$(OBJ_DIR)/execution:
+	@mkdir -p $(OBJ_DIR)/execution
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
