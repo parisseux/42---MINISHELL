@@ -1,31 +1,38 @@
 
 #include "../inc/minishell.h"
 
-int	g_exit_status = 0;
-
-void    execute_minishell(t_shell *shell, char *input)
+//permet de gerer CTR - C
+void	sigint_handler(int sig)
 {
-    t_token *lst_token;
-	
+	(void)sig;
+    write(1, "\n", 1);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();  
+}
+
+//parsing de l'input, separation en token, expansion variable, sytnhaxx error, et lancement de l'execution
+void	start_minishell(t_shell *shell, char *input)
+{
+	t_token	*lst_token;
+
 	lst_token = NULL;
-    lst_token = tokenisation(input);
+	lst_token = tokenisation(input);
 	if (!lst_token)
 	{
 		printf("Error: tokenisation failed\n");
-		return ;
+		clean_exit(EXIT_SUCCESS, NULL, shell->var_env);
 	}
 	look_for_dolls(lst_token, shell);
 	print_token_list(lst_token);
 	if (!ft_strncmp(lst_token->value, "exit", 4))
 		exit_command(lst_token, shell, input);
-	printf("Token list:\n");
-	print_token_list(lst_token);
 	if (check_syntax_error(lst_token))
 		return ;
-	easy_command(lst_token, shell);
-	free_token_list(lst_token);
+	execution(lst_token, shell);
 }
 
+//faire une copie de env dans une structure appeler shell
 char	**setup_minishell(char **env)
 {
 	char	**var_env;
@@ -54,20 +61,23 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	signal(SIGINT, sigint_handler);
+    signal(SIGQUIT, SIG_IGN);
 	shell.var_env = setup_minishell(env);
 	if (!shell.var_env)
 		return (1);
+	shell.exit = 0;
+	input = NULL;
 	while (1)
 	{
 		input = readline("\033[35mminishell$ \033[0m");
 		if (!input)
 			break ;
-		if (input)
+		else
 			add_history(input);
-		if (ft_strlen(input) > 0)
-			execute_minishell(&shell, input);
+		start_minishell(&shell, input);
 		free(input);
 	}
-	ft_free_char_tab(shell.var_env);
+	clean_exit(EXIT_SUCCESS, NULL, shell.var_env);
 	return (0);
 }

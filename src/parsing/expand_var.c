@@ -2,7 +2,7 @@
 
 char	*dolar_sign(char **line)
 {
-	char	*name;
+	char		*name;
 	size_t		i;
 
 	i = 0;
@@ -21,6 +21,7 @@ char	*dolar_sign(char **line)
 	name = ft_strdup(*line);
 	return (name);
 }
+
 
 char	*add_special_case(char *name, char *line)
 {
@@ -66,7 +67,7 @@ char	*dolar_special_cases(char **line, char *linee)
 	if (ft_strlen(*line) == 0)
 		return (NULL);
 	if (**line == '?')
-		name = ft_itoa(g_exit_status);
+		name = ft_itoa(shell->exit);
 	else if (**line == '$')
 		name = ft_itoa(getpid());
 	else if (**line == '0')
@@ -246,4 +247,3 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 		lst_token = lst_token->next;
 	}
 }
-

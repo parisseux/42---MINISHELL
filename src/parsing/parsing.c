@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/11 16:23:51 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/02/25 15:57:33 by avarrett         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../inc/minishell.h"
 
 t_token	*tokenisation(char *input)
@@ -52,7 +40,6 @@ t_token	*tokenisation(char *input)
 			new_token = extract_in(&input);
 		else
 			new_token = ext_word(&input);
-		printf("new_token %s\n", new_token->value);
 		add_token_to_lst(&lst_token, new_token);
 	}
 	new_token = create_token("", END);

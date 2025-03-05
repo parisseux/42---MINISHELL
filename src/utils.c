@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/11 13:44:03 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/03/03 13:06:53 by ninisse          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../inc/minishell.h"
 
 void	free_token_list(t_token *lst_token)
@@ -63,4 +51,14 @@ int	ft_varcmp(const char *s1, const char *s2, size_t n)
 	if (s1[i] != '=')
 		return (1);
 	return (0);
+}
+
+void clean_exit(int exit_status, t_token *lst_token, char **env)
+{
+	clear_history();
+	if (env)
+		ft_free_char_tab(env);
+	if (lst_token)
+		free_token_list(lst_token);
+	exit(exit_status);
 }
