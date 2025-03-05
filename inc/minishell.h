@@ -54,8 +54,12 @@ int		is_builtin(t_token *lst_token);
 char	*ft_strjoin_paths(char *dir, char *cmd);
 char	*get_env_value(char **env, char *key);
 char	*find_cmd_path(char *cmd, char **env);
-void	execve_non_builtin(t_token *lst_token, t_shell *shell);
+void	execve_non_builtin(t_token *lst_token, t_shell *shell, int fd_out, int fd_in);
 char	**find_cmd_args(t_token *lst_token);
+int is_redir(t_token *lst_token);
+void	handle_redir(t_token *lst_token, t_shell *shell);
+int	look_for_fd_output(t_token *lst_token);
+int	look_for_fd_input(t_token *lst_token);
 
 //command
 void	cd_command(char *line);

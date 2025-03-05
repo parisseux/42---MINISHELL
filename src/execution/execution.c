@@ -41,15 +41,19 @@ void	exec_builtin_cmd(t_token *lst_token, t_shell *shell, t_file *file)
 void	exec_non_builtin_command(t_token *lst_token, t_shell *shell)
 {
 	int	pid;
+	int redir;
 
 	pid = fork();
+	redir = is_redir(lst_token);
 	if (pid == -1)
 	{
 		perror("fork error");
 		exit(EXIT_FAILURE);
 	}
-	if (pid == 0)
-		execve_non_builtin(lst_token, shell);
+	if (pid == 0 && redir)
+		handle_redir(lst_token, shell);
+	else if (pid == 0)
+		execve_non_builtin(lst_token, shell, -1, -1);
 	else
 		waitpid(pid, NULL, 0);
 }
