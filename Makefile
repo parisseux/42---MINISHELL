@@ -28,7 +28,7 @@ $(NAME): $(OBJ_FILES) $(LIBFT_LIB)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ_FILES) $(LIBFT_LIB) $(LDFLAGS)
 	@echo "💕 $(ROSE)minishell is ready for you$(RESET) 💕"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/command $(OBJ_DIR)/execution
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/command $(OBJ_DIR)/execution 
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJ_DIR)/parsing:

@@ -1,5 +1,11 @@
 #include "../inc/minishell.h"
 
+void	sigint_handler(int sig)
+{
+	(void)sig;
+	printf("\n\033[35mminishell$ \033[0m");
+}
+
 void	start_minishell(t_shell *shell, char *input)
 {
 	t_token	*lst_token;
@@ -48,15 +54,21 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	signal(SIGINT, sigint_handler);
+    signal(SIGQUIT, SIG_IGN);
 	shell.var_env = setup_minishell(env);
-	shell.exit = 0;
 	if (!shell.var_env)
 		return (1);
+	shell.exit = 0;
 	while (1)
 	{
 		input = readline("\033[35mminishell$ \033[0m");
 		if (!input)
+		{
+			printf("exit\n");
 			break ;
+		}
+			
 		if (input)
 			add_history(input);
 		if (ft_strlen(input) > 0)
