@@ -6,7 +6,7 @@
 /*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:58:31 by avarrett          #+#    #+#             */
-/*   Updated: 2025/03/03 13:50:20 by ninisse          ###   ########.fr       */
+/*   Updated: 2025/03/03 16:16:17 by ninisse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	easy_command(t_token *lst_token, t_shell *shell)
 		file = open_file(lst_token, print_or_file(lst_token));
 	if (lst_token->type == 0)
 	{
-		if(!ft_strncmp(lst_token->value, "env", 3) && ft_strlen(lst_token->value) == 3)
+		if(!ft_strncmp(lst_token->value, "env", 4))
 			env_command(shell, lst_token, file);
-		else if(!ft_strncmp(lst_token->value, "pwd", 3) && ft_strlen(lst_token->value) == 3)
+		else if(!ft_strncmp(lst_token->value, "pwd", 4))
 			pwd_command(file);
-		else if (!ft_strncmp(lst_token->value, "echo", 4) && ft_strlen(lst_token->value) == 4)
+		else if (!ft_strncmp(lst_token->value, "echo", 5))
 		{
 			if (lst_token->next->type == 8)
 				printf("\n");
@@ -37,6 +37,8 @@ void	easy_command(t_token *lst_token, t_shell *shell)
 			else
 				echo_command(lst_token->next, 0, file);
 		}
+		else if (!ft_strncmp(lst_token->value, "export", 7))
+			export_command(lst_token, shell);
 		else
 		{
 			printf("%s: command not found\n", lst_token->value);

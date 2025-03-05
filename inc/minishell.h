@@ -6,7 +6,7 @@
 /*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:58:03 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/03/03 13:17:21 by ninisse          ###   ########.fr       */
+/*   Updated: 2025/03/05 16:01:29 by ninisse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,11 @@ void    exit_command(t_token *lst_token, t_shell *shell, char *input);
 
 //expand_var
 void    look_for_dolls(t_token *lst_token, t_shell *shell);
-void    find_var(t_shell *shell, char *name, t_token *tmp);
+char    *find_var(t_shell *shell, char *name, char *tmp);
+
+//export
+void    export_command(t_token *lst_token, t_shell *shell);
+void    print_export(t_shell *shell);
+void    add_var_to_env(char **var_env, char *value);
 
 #endif

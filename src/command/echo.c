@@ -6,7 +6,7 @@
 /*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:50:36 by parissachat       #+#    #+#             */
-/*   Updated: 2025/03/03 14:08:45 by ninisse          ###   ########.fr       */
+/*   Updated: 2025/03/03 14:34:52 by ninisse          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	echo_single_quote(char **line, t_file *file)
 	}
 	if (**line == '\'')
 		(*line)++;
-
 }
 
 void	echo_double_quote(char **line, t_file *file)
