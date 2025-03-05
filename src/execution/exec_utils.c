@@ -62,3 +62,24 @@ int	is_builtin(t_token *lst_token)
 	else 
 		return (0);
 }
+
+//look if < << > ou >> sont present dans l'input de base 
+int is_redir(t_token *lst_token)
+{
+	t_token *temp;
+
+	temp = lst_token;
+	while (temp->type != END)
+	{
+		if (temp->type == HEREDOC)
+			return (1);
+		else if (temp->type == APPEND)
+			return (2);
+		else if (temp->type == REDIR_IN)
+			return (3);
+		else if (temp->type == REDIR_OUT)
+			return (4);
+		temp = temp->next;
+	}
+	return (0);
+}
