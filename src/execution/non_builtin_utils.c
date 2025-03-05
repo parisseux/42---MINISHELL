@@ -21,8 +21,6 @@ void	execve_non_builtin(t_token *lst_token, t_shell *shell)
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
-	free(cmd);
-	ft_free_char_tab(cmd_args);
 }
 
 //Cette fonction permet de trouver le path d'un executable (non builtin cmd)

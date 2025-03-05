@@ -9,13 +9,8 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int pipe)
 }
 
 //simple redirection au fonctions correpondantes aux buitltin
-void	exec_builtin_cmd(t_token *lst_token, t_shell *shell)
+void	exec_builtin_cmd(t_token *lst_token, t_shell *shell, t_file *file)
 {
-	t_file	*file;
-
-	file = NULL;
-	if (print_or_file(lst_token))
-		file = open_file(lst_token, print_or_file(lst_token));
 	if (lst_token->type == 0)
 	{
 		if (!ft_strncmp(lst_token->value, "env", 4))
@@ -66,7 +61,11 @@ void	exec_non_builtin_command(t_token *lst_token, t_shell *shell)
 void	execution(t_token *lst_token, t_shell *shell)
 {
 	int	pipe;
+	t_file	*file;
 
+	file = NULL;
+	if (print_or_file(lst_token))
+		file = open_file(lst_token, print_or_file(lst_token));
 	pipe = is_pipe(lst_token);
 	if (pipe)
 	{
@@ -75,7 +74,7 @@ void	execution(t_token *lst_token, t_shell *shell)
 	else
 	{
 		if (is_builtin(lst_token))
-			exec_builtin_cmd(lst_token, shell);
+			exec_builtin_cmd(lst_token, shell, file);
 		else
 			exec_non_builtin_command(lst_token, shell);
 	}

@@ -59,7 +59,7 @@ char	**find_cmd_args(t_token *lst_token);
 
 //command
 void	cd_command(char *line);
-void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
+void	exec_builtin_cmd(t_token *lst_token, t_shell *shell, t_file *file);
 void	env_command(t_shell *shell, t_token *lst_token, t_file *file);
 void	pwd_command(t_file *file);
 
@@ -83,6 +83,7 @@ void	print_token_list(t_token *lst_token);
 void	msg_error(char *msg, t_token *lst_token);
 void	free_token_list(t_token *lst_token);
 int		ft_varcmp(const char *s1, const char *s2, size_t n);
+void	clean_exit(int exit_status, t_token *lst_token, char **env);
 
 //parsing 
 t_token	*create_token(char *value, t_token_type type);
