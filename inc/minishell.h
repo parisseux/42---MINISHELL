@@ -1,3 +1,4 @@
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -73,7 +74,7 @@ void	echo_single_quote(char **line, t_file *file);
 void	echo_double_quote(char **line, t_file *file);
 void	echo_no_quote(char **line, t_file *file);
 char	*dolar_sign(char **line);
-char	*dolar_special_cases(char **line, t_shell *shell);
+char    *dolar_special_cases(char **line, char *linee);
 int		echo_check_n_flag(char **line);
 
 //command/utils
@@ -110,7 +111,13 @@ t_file	*open_file(t_token *lst_token, int type);
 void	exit_command(t_token *lst_token, t_shell *shell, char *input);
 
 //expand_var
-void	look_for_dolls(t_token *lst_token, t_shell *shell);
-void	find_var(t_shell *shell, char *name, t_token *tmp);
+void    look_for_dolls(t_token *lst_token, t_shell *shell);
+char    *find_var(t_shell *shell, char *name, char *tmp);
+char	*add(char *new_value, char *value, int name_len);
+
+//export
+void    export_command(t_token *lst_token, t_shell *shell);
+void    print_export(t_shell *shell);
+void    add_var_to_env(char **var_env, char *value);
 
 #endif 
