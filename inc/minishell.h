@@ -13,11 +13,10 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
-extern int	g_exit_status;
-
 typedef struct s_shell
 {
 	char	**var_env;
+	int		exit;
 }	t_shell;
 
 typedef enum e_token_type
@@ -70,7 +69,7 @@ void	echo_single_quote(char **line, t_file *file);
 void	echo_double_quote(char **line, t_file *file);
 void	echo_no_quote(char **line, t_file *file);
 char	*dolar_sign(char **line);
-char	*dolar_special_cases(char **line);
+char	*dolar_special_cases(char **line, t_shell *shell);
 int		echo_check_n_flag(char **line);
 
 //command/utils
@@ -109,4 +108,4 @@ void	exit_command(t_token *lst_token, t_shell *shell, char *input);
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
 void	find_var(t_shell *shell, char *name, t_token *tmp);
 
-#endif
+#endif 
