@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/11 13:58:03 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/03/05 16:01:29 by ninisse          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -70,7 +59,7 @@ void	echo_single_quote(char **line, t_file *file);
 void	echo_double_quote(char **line, t_file *file);
 void	echo_no_quote(char **line, t_file *file);
 char	*dolar_sign(char **line);
-char    *dolar_special_cases(char **line);
+char    *dolar_special_cases(char **line, char *linee);
 int		echo_check_n_flag(char **line);
 
 //command/utils
@@ -108,6 +97,7 @@ void    exit_command(t_token *lst_token, t_shell *shell, char *input);
 //expand_var
 void    look_for_dolls(t_token *lst_token, t_shell *shell);
 char    *find_var(t_shell *shell, char *name, char *tmp);
+char	*add(char *new_value, char *value, int name_len);
 
 //export
 void    export_command(t_token *lst_token, t_shell *shell);
