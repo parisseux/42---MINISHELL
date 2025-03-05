@@ -34,7 +34,7 @@ void	exec_builtin_cmd(t_token *lst_token, t_shell *shell)
 		else
 		{
 			printf("%s: command not found\n", lst_token->value);
-			g_exit_status = 127;
+			shell->exit = 127;
 		}
 	}
 	if (print_or_file(lst_token))

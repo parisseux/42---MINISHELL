@@ -1,7 +1,5 @@
 #include "../inc/minishell.h"
 
-int	g_exit_status = 0;
-
 void	start_minishell(t_shell *shell, char *input)
 {
 	t_token	*lst_token;
@@ -51,6 +49,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	shell.var_env = setup_minishell(env);
+	shell.exit = 0;
 	if (!shell.var_env)
 		return (1);
 	while (1)
