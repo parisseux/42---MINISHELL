@@ -60,6 +60,7 @@ int	main(int ac, char **av, char **env)
 	if (!shell.var_env)
 		return (1);
 	shell.exit = 0;
+	input = NULL;
 	while (1)
 	{
 		input = readline("\033[35mminishell$ \033[0m");
@@ -68,8 +69,7 @@ int	main(int ac, char **av, char **env)
 			printf("exit\n");
 			break ;
 		}
-			
-		if (input)
+		else
 			add_history(input);
 		if (ft_strlen(input) > 0)
 			start_minishell(&shell, input);
