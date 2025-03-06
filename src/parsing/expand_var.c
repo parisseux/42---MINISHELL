@@ -67,6 +67,7 @@ void	find_var(t_shell *shell, char *name, t_token *tmp)
 	}
 }
 
+//AUSSI FAIRE POUR NO QUOTE
 void	look_for_dolls(t_token *lst_token, t_shell *shell)
 {
 	t_token	*tmp;
