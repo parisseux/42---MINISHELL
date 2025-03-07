@@ -1,16 +1,24 @@
 #include "../inc/minishell.h"
 
+//corriger pour gerer correcter les STDOUT
+//on ne peut pas faire comme ca car ne fonction pas thr
+//ex: exit >> lala devrait crer le ficher lala et la ca met numeric argument required
 void	exit_command(t_token *lst_token, t_shell *shell, char *input)
 {
-	printf("exit\n");
+	write(STDOUT_FILENO, "exit\n", 5);
 	if (lst_token->next->value)
 	{
 		if (!ft_str_digit(lst_token->next->value))
-			printf("minishell: exit: %s: numeric argument required\n", lst_token->next->value);
+		{
+			write(STDOUT_FILENO, "minishell: exit: ", 17);
+			write(STDOUT_FILENO, lst_token->next->value, ft_strlen(lst_token->next->value));
+			write(STDOUT_FILENO, ": numeric argument required\n", 28);
+		}
 	}
 	free_token_list(lst_token);
 	ft_free_char_tab(shell->var_env);
-	free(input);
+	if (input != NULL)
+		free(input);
 	shell->exit = 0;
 	exit (0);
 }

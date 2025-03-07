@@ -66,7 +66,7 @@ int	look_for_fd_input(t_token *lst_token)
 
 //handle the redirection in the case of non builtin cmd
 //look for the fd of the input and output file and send it to the function to eecute
-void	handle_redir(t_token *lst_token, t_shell *shell)
+void	handle_redir(t_token *lst_token, t_shell *shell, int builtin)
 {
 	int fd_in;
 	int fd_out;
@@ -85,5 +85,10 @@ void	handle_redir(t_token *lst_token, t_shell *shell)
 			printf("lets handle HEREDOC\n");
 		temp = temp->next;
 	}
-	execve_non_builtin(lst_token,shell, fd_out, fd_in);
+	if (builtin == 0)
+		execve_non_builtin(lst_token,shell, fd_out, fd_in);
+	else if (builtin == 1)
+		builtin_cmd(lst_token, shell, fd_out);
+	else 
+		printf("error only accept 0  for non builtin and 1 for buitlin\n");
 }
