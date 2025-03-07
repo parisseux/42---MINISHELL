@@ -1,6 +1,7 @@
 #include "../inc/minishell.h"
 
 // a revoir
+//meme chose il faut introduire fd_out et corriger les prints pour des write
 void    print_export(t_shell *shell)
 {
     int i;

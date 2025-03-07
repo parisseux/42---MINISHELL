@@ -1,7 +1,9 @@
 #include "../inc/minishell.h"
 
-//modification de printf en write 
+//deja modification de printf en write 
 // remplacmeent de getenv car faut utilsier notre copy de env
+//j'ai pas fait tous les tests mais semble marcher correctement environ mais je pense qu'il faut rajouter un check pour verifier 
+//que line est bien largument de cd et pas une pipe ou redireectoin car c'est manquant? pt mettre le token en arg et char*
 void	cd_command(char *line, t_shell *shell)
 {
 	int	i;

@@ -24,7 +24,6 @@ void	start_minishell(t_shell *shell, char *input)
 		clean_exit(EXIT_SUCCESS, NULL, shell->var_env);
 	}
 	look_for_dolls(lst_token, shell);
-	print_token_list(lst_token);
 	if (!ft_strncmp(lst_token->value, "exit", 4))
 		exit_command(lst_token, shell, input);
 	if (check_syntax_error(lst_token))

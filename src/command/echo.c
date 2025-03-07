@@ -1,6 +1,9 @@
 
 #include "../inc/minishell.h"
 
+// a modifier --> write au lieu de printf comme exemple de pwd, env
+// introduier fd_out avec utilisation de dup() et dup2 comme pour pwd, env
+
 int	print_or_file(t_token *lst_token)
 {
 	t_token	*tmp;
@@ -114,4 +117,17 @@ void	echo_no_quote(char **line, t_file *file)
 			(*line)++;
 		}
 	}
+}
+
+int	echo_check_n_flag(char **line)
+{
+	int	n_flag;
+
+	n_flag = 0;
+	while (**line == '-' && *((*line) + 1) == 'n')
+	{
+		(*line) += 2;
+		n_flag = 1;
+	}
+	return (n_flag);
 }

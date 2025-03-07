@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-//corriger pour gerer correcter les STDOUT
+//deja corriger pour gerer correcter les STDOUT
 void	pwd_command(int fd_out)
 {
 	char	*pwd;

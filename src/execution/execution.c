@@ -1,5 +1,6 @@
 #include "../inc/minishell.h"
 
+//je ferai plus tard quand les execution builtin et non builtin avec redirection sreont bonnes
 void	exec_with_pipe(t_token *lst_token, t_shell *shell, int pipe)
 {
 	printf("there is at least one pipe\n");

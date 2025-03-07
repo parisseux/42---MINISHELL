@@ -1,6 +1,9 @@
 
 #include "../inc/minishell.h"
 
+// diviser dans execution dans les fonction builtin et builtin_utils 
+
+
 // void	easy_command(t_token *lst_token, t_shell *shell)
 // {
 // 	t_file	*file;

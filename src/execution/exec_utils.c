@@ -22,6 +22,7 @@ char	*get_env_value(char **env, char *key)
 	return (NULL);
 }
 
+//cherche la presence de pipe dans lst de token
 int	is_pipe(t_token *lst_token)
 {
 	int		pipe;
@@ -38,6 +39,7 @@ int	is_pipe(t_token *lst_token)
 	return (pipe);
 }
 
+//cherche la presence de builtin dans la lst de token
 int	is_builtin(t_token *lst_token)
 {
 	t_token	*temp;
@@ -67,7 +69,7 @@ int	is_builtin(t_token *lst_token)
 	return (0);
 }
 
-//look if < << > ou >> sont present dans l'input de base 
+//cherche la presence de redirection dans la lst de token
 int is_redir(t_token *lst_token)
 {
 	t_token *temp;

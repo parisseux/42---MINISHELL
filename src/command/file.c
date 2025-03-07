@@ -1,5 +1,8 @@
 #include "../inc/minishell.h"
 
+//je suis pas sur qu'on ait besoins de ca si on utiliser dup et dup2() c'est plus simple car on utilsier 
+//juste fd = open() qui est un int qu'on envoit --> pas de strucutre 
+// mais garder ay cas ou pour plus tard 
 char	*filename(t_token *lst_token)
 {
 	t_token	*tmp;
