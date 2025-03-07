@@ -64,7 +64,6 @@ int	is_builtin(t_token *lst_token)
 		}
 		temp = temp->next;
 	}
-	printf("no builtin found\n");
 	return (0);
 }
 

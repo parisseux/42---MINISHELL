@@ -1,5 +1,8 @@
 #include "../inc/minishell.h"
 
+//corriger pour gerer correcter les STDOUT
+//on ne peut pas faire comme ca car ne fonction pas thr
+//ex: exit >> lala devrait crer le ficher lala et la ca met numeric argument required
 void	exit_command(t_token *lst_token, t_shell *shell, char *input)
 {
 	write(STDOUT_FILENO, "exit\n", 5);

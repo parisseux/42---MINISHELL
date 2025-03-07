@@ -1,5 +1,6 @@
 #include "../inc/minishell.h"
 
+//corriger pour gerer correcter les STDOUT
 //dup2 allow to redirect the outsput to the file associated to fd
 void	env_command(t_shell *shell, t_token *lst_token, int fd_out)
 {
