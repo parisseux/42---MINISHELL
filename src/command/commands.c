@@ -1,19 +1,19 @@
+
 #include "../inc/minishell.h"
 
 // void	easy_command(t_token *lst_token, t_shell *shell)
 // {
 // 	t_file	*file;
-	
 // 	file = NULL;
 // 	if (print_or_file(lst_token))
 // 		file = open_file(lst_token, print_or_file(lst_token));
 // 	if (lst_token->type == 0)
 // 	{
-// 		if(!ft_strncmp(lst_token->value, "env", 3) && ft_strlen(lst_token->value) == 3)
+// 		if(!ft_strncmp(lst_token->value, "env", 4))
 // 			env_command(shell, lst_token, file);
-// 		else if(!ft_strncmp(lst_token->value, "pwd", 3) && ft_strlen(lst_token->value) == 3)
+// 		else if(!ft_strncmp(lst_token->value, "pwd", 4))
 // 			pwd_command(file);
-// 		else if (!ft_strncmp(lst_token->value, "echo", 4) && ft_strlen(lst_token->value) == 4)
+// 		else if (!ft_strncmp(lst_token->value, "echo", 5))
 // 		{
 // 			if (lst_token->next->type == 8)
 // 				printf("\n");
@@ -22,6 +22,8 @@
 // 			else
 // 				echo_command(lst_token->next, 0, file);
 // 		}
+// 		else if (!ft_strncmp(lst_token->value, "export", 7))
+// 			export_command(lst_token, shell);
 // 		else
 // 		{
 // 			printf("%s: command not found\n", lst_token->value);
@@ -31,5 +33,3 @@
 // 	if (print_or_file(lst_token))
 // 		fclose(file->file);
 // }
-
-

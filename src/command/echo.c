@@ -1,3 +1,4 @@
+
 #include "../inc/minishell.h"
 
 int	print_or_file(t_token *lst_token)
@@ -59,7 +60,6 @@ void	echo_single_quote(char **line, t_file *file)
 	}
 	if (**line == '\'')
 		(*line)++;
-
 }
 
 void	echo_double_quote(char **line, t_file *file)

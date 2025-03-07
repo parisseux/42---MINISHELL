@@ -1,6 +1,5 @@
 #include "../inc/minishell.h"
 
-
 // a revoir
 void    print_export(t_shell *shell)
 {
