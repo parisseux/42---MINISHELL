@@ -57,7 +57,7 @@ char	*add_special_case(char *name, char *line)
 	return (tmp);
 }
 
-char	*dolar_special_cases(char **line, char *linee)
+char	*dolar_special_cases(char **line, char *linee, t_shell *shell)
 {
 	char	*name;
 	char	*token;
@@ -238,7 +238,7 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 				else
 				{
 					free(lst_token->value);
-					lst_token->value = dolar_special_cases(&value, value2);
+					lst_token->value = dolar_special_cases(&value, value2, shell);
 				}
 				printf("lst_token->value dans lookfordolls= %s\n", lst_token->value);
 			}

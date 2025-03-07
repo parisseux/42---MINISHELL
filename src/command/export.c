@@ -76,14 +76,14 @@ void    export_command(t_token *lst_token, t_shell *shell)
             if (good_varname(tmp->value))
             {
                 printf("minishell: export: `%s': not a valid identifier\n", tmp->value);
-                g_exit_status = 1;
+                shell->exit = 1;
                 return ;
             }
             else
                 add_var_to_env(shell->var_env, tmp->value);
         }
         else
-            g_exit_status = 1;
+            shell->exit = 1;
         tmp = tmp->next;
     }
 }

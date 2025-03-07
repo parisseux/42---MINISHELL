@@ -74,7 +74,7 @@ void	echo_single_quote(char **line, t_file *file);
 void	echo_double_quote(char **line, t_file *file);
 void	echo_no_quote(char **line, t_file *file);
 char	*dolar_sign(char **line);
-char    *dolar_special_cases(char **line, char *linee);
+char    *dolar_special_cases(char **line, char *linee, t_shell *shell);
 int		echo_check_n_flag(char **line);
 
 //command/utils
