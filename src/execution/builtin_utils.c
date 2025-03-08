@@ -64,13 +64,12 @@ void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out)
                 
             else if (!ft_strncmp(lst_token->value, "echo", 5))
 			{
-				write(STDOUT_FILENO, "il faut corriger echo\n", 22);
-			// 	if (lst_token->next->type == END)
-			// 		write(STDOUT_FILENO, "\n", 1);
-			// 	else if (!ft_strncmp(lst_token->next->value, "-n", 2))
-			// 		echo_command(lst_token->next->next, 1, fd_out);
-			// 	else
-			// 		echo_command(lst_token->next, 0, fd_out);
+				if (lst_token->next->type == END)
+					write(STDOUT_FILENO, "\n", 1);
+				else if (!ft_strncmp(lst_token->next->value, "-n", 2))
+					echo_command(lst_token->next->next, 1, fd_out);
+				else
+					echo_command(lst_token->next, 0, fd_out);
 			 	break ; 
 			}
 			temp = temp->next;

@@ -1,123 +1,117 @@
-
 #include "../inc/minishell.h"
 
 // a modifier --> write au lieu de printf comme exemple de pwd, env
 // introduier fd_out avec utilisation de dup() et dup2 comme pour pwd, env
 
-int	print_or_file(t_token *lst_token)
-{
-	t_token	*tmp;
-	
-	tmp = lst_token;
-	while (tmp)
-	{	
-		if (tmp->type == APPEND || tmp->type == REDIR_OUT)
-			return (tmp->type);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-void	echo_command(t_token *lst_token, int n_flag, t_file *file)
+void	echo_command(t_token *lst_token, int n_flag, int fd_out)
 {
 	char	*line;
 	int		type;
-	char	*space;
-	char	*space2;
 
-	space = " ";
-	space2 = "\n";
 	while (lst_token)
 	{
 		line = lst_token->value;
 		type = lst_token->type;
-		while (*line)
+		if (*line)
 		{
 			if (type == SQUOTE)
-				echo_single_quote(&line, file);
+				echo_single_quote(&line, fd_out);
 			else if (type == DQUOTE)
-				echo_double_quote(&line, file);
+				echo_double_quote(&line, fd_out);
 			else
-				echo_no_quote(&line, file);
+				echo_no_quote(&line, fd_out);
 		}
 		if (lst_token->type == END)
 		{
 			if (n_flag == 0)
-				printf_or_fprintf(file, &space2);
-			break;
+				write(STDOUT_FILENO, "\n", 1);
 		}
-		else
-			printf_or_fprintf(file, &space);
+		else if (lst_token->next->type != END)
+			write(STDOUT_FILENO, " ", 1);
 		lst_token = lst_token->next;
 	}
 }
 
-void	echo_single_quote(char **line, t_file *file)
+void	echo_single_quote(char **line, int fd_out)
 {
-	if (file != NULL && file->type == APPEND)
-		fprintf(file->file, "\n");
-	while (**line)
+	int	saved_stdout;
+
+	saved_stdout = dup(STDOUT_FILENO);
+	if (fd_out != -1)
 	{
-		printf_or_fprintf(file, line);
-		(*line)++;
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
 	}
-	if (**line == '\'')
-		(*line)++;
+	write (STDOUT_FILENO, *line, ft_strlen(*line));
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdout);
+}
+// if (**line == '\'')
+// 	(*line)++; rajouter commme dans expand_var ??
+
+void	echo_double_quote(char **line, int fd_out)
+{
+	int	saved_stdout;
+
+	saved_stdout = dup(STDOUT_FILENO);
+	if (fd_out != -1)
+	{
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
+	}
+	write(STDOUT_FILENO, *line, ft_strlen(*line));
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdout);
 }
 
-void	echo_double_quote(char **line, t_file *file)
+// while (**line)
+// {
+// 	if (**line == '\\')
+// 	{
+// 		(*line)++;
+// 		if (**line == '\\' || **line == '$' || **line == '`')
+// 			printf_or_fprintf(file, line);
+// 		else
+// 		{
+// 			if (file != NULL)
+// 				fprintf(file->file, "\\%c", **line);
+// 			else
+// 				printf("\\%c", **line);				
+// 		}
+// 		line++;
+// 	}
+// }
+
+void	echo_no_quote(char **line, int fd_out)
 {
-	if (file != NULL && file->type == APPEND)
-		fprintf(file->file, "\n");
-	while (**line)
+	int	saved_stdout;
+
+	saved_stdout = dup(STDOUT_FILENO);
+	if (fd_out != -1)
 	{
-		if (**line == '\\')
-		{
-			(*line)++;
-			if (**line == '\\' || **line == '$' || **line == '`')
-				printf_or_fprintf(file, line);
-			else
-			{
-				if (file != NULL)
-					fprintf(file->file, "\\%c", **line);
-				else
-					printf("\\%c", **line);				
-			}
-			line++;
-		}
-		else
-		{
-			printf_or_fprintf(file, line);
-			(*line)++;
-		}
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
 	}
+	write(STDOUT_FILENO, *line, ft_strlen(*line));
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdout);
 }
 
-void	echo_no_quote(char **line, t_file *file)
-{
-	if (file != NULL && file->type == APPEND)
-		fprintf(file->file, "\n");
-	while (**line)
-	{
-		if (**line == '\\')
-		{
-			(*line)++;
-			if (**line)
-			{
-				if (file != NULL)
-					fprintf(file->file, "\\%c", **line);
-				else
-					printf("\\%c", **line);
-				(*line)++;
-			}
-		}
-		else
-		{
-			printf_or_fprintf(file, line);
-			(*line)++;
-		}
-	}
-}
+// while (**line)
+// {
+// 	if (**line == '\\')
+// 	{
+// 		(*line)++;
+// 		if (**line)
+// 		{
+// 			if (file != NULL)
+// 				fprintf(file->file, "\\%c", **line);
+// 			else
+// 				printf("\\%c", **line);
+// 			(*line)++;
+// 		}
+// 	}
+// }
 
 int	echo_check_n_flag(char **line)
 {
