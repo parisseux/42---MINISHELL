@@ -71,6 +71,11 @@ int	good_varname(char *name)
 	return (0);
 }
 
+void	export_message_error(char *value)
+{
+	printf("minishell: export: `%s': not a valid identifier\n", value);
+}
+
 void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
 {
 	t_token	*tmp;
@@ -87,7 +92,7 @@ void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
 		{
 			if (good_varname(tmp->value))
 			{
-				printf("minishell: export: `%s': not a valid identifier\n", tmp->value);
+				export_message_error(tmp->value);
 				shell->exit = 1;
 				return ;
 			}

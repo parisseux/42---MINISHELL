@@ -1,6 +1,7 @@
 #include "../inc/minishell.h"
 
-//attention on n/'a pas le droit a la fonction fprintf??? il faut utiliser write(STDOUT_FILENO, ...)
+//attention on n/'a pas le droit a la fonction fprintf??? 
+// il faut utiliser write(STDOUT_FILENO, ...)
 void	printf_or_fprintf(t_file *file, char **line)
 {
 	if (file != NULL)
@@ -8,4 +9,3 @@ void	printf_or_fprintf(t_file *file, char **line)
 	else
 		printf("%c", **line);
 }
-
