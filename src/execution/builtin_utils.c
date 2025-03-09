@@ -19,12 +19,12 @@ void builtin_parent_process(t_token *lst_token, t_shell *shell, int fd_out)
 			}
 			else if (!ft_strncmp(temp->value, "export", 7))
 			{
-				printf("handle export\n");
+				export_command(temp, shell, fd_out);
 				break ;
 			}
 			else if (!ft_strncmp(temp->value, "unset", 6))
 			{
-				printf("handle unset\n");
+				unset_command(temp->next->value, shell);
 				break ;
 			}
 			else if (!ft_strncmp(temp->value, "exit", 5))

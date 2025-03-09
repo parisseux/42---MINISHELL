@@ -110,10 +110,10 @@ t_file	*open_file(t_token *lst_token, int type);
 void	exit_command(t_token *lst_token, t_shell *shell, char *input);
 
 //exports 
-void    print_export(t_shell *shell);
+void    print_export(t_shell *shell, int fd_out);
 void    add_var_to_env(char **var_env, char *value);
 int 	good_varname(char *name);
-void    export_command(t_token *lst_token, t_shell *shell);
+void    export_command(t_token *lst_token, t_shell *shell, int fd_out);
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
@@ -127,5 +127,8 @@ char 	*rm_var(char *value);
 char	*add(char *new_value, char *value, int name_len);
 int		alphanum_len(char *value);
 int		malloc_size(char *new_value, char *value, int name_len);
+
+//unset
+void    unset_command(char *line, t_shell *shell);
 
 #endif 
