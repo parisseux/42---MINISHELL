@@ -116,14 +116,16 @@ int 	good_varname(char *name);
 void    export_command(t_token *lst_token, t_shell *shell);
 
 //expand_var
+void	look_for_dolls(t_token *lst_token, t_shell *shell);
 char	*find_var(t_shell *shell, char *name, char *value2);
-int		alphanum_len(char *value);
+char	*dolar_sign(char **line);
+char	*dolar_special_cases(char **line, char *linee, t_shell *shell);
+
+//expand_var_utils
+char	*add_special_case(char *name, char *line);
 char 	*rm_var(char *value);
 char	*add(char *new_value, char *value, int name_len);
-int		jpp(char *new_value, char *value, int name_len);
-char	*dolar_special_cases(char **line, char *linee, t_shell *shell);
-char	*add_special_case(char *name, char *line);
-char	*dolar_sign(char **line);
-void	look_for_dolls(t_token *lst_token, t_shell *shell);
+int		alphanum_len(char *value);
+int		malloc_size(char *new_value, char *value, int name_len);
 
 #endif 
