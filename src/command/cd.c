@@ -1,31 +1,28 @@
 #include "../inc/minishell.h"
 
-// environ mais je pense qu'il faut rajouter un check pour verifier 
-//que line est bien largument de cd et pas une pipe ou redireectoin 
-// car c'est manquant? pt mettre le token en arg et char*
-void	cd_command(char *line, t_shell *shell)
+void	cd_command(t_token *lst_token, t_shell *shell)
 {
-	int		i;
-	char	*home;
+	char *home;
+	char *path;
 
-	while (*line == ' ' || *line == '\t')
-		line++;
-	if (!*line)
+	path = NULL;
+	if (lst_token && (lst_token->type ==  WORD || lst_token->type ==  SQUOTE
+				|| lst_token->type ==  DQUOTE))
+				path = lst_token->value;
+	if (!path)
 	{
 		home = get_env_value(shell->var_env, "HOME");
 		if (!home)
 		{
-			write(STDOUT_FILENO, "cd: HOME not set\n", 17);
-			return ;
+			write(STDERR_FILENO, "cd: HOME not set\n", 17);
+			return;
 		}
-		i = chdir(home);
+		path = home;
 	}
-	else
-		chdir(line);
-	if (i == -1)
+	if (chdir(path) == -1)
 	{
 		write(STDERR_FILENO, "cd: ", 4);
-		write(STDERR_FILENO, line, ft_strlen(line));
+		write(STDERR_FILENO, path, ft_strlen(path));
 		write(STDERR_FILENO, ": No such file or directory\n", 28);
 	}
 }

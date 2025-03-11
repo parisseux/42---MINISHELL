@@ -1,7 +1,7 @@
 
 #include "../inc/minishell.h"
 
-//permet de gerer CTR - C
+//permet de gerer CTR - C et CTR -/
 void	sigint_handler(int sig)
 {
 	(void)sig;
