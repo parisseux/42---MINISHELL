@@ -1,5 +1,46 @@
 #include "../inc/minishell.h"
 
+// void handle_hereodc_fd(t_token *lst_token, int *fd_in)
+// {
+// 	t_token *temp;
+
+// }
+//fd[0] ==> on lit
+// fd[1] ==> on ecrit
+int	look_for_fd_heredoc(t_token *lst_token)
+{
+	int fd[2];
+	char *line;
+	t_token *temp;
+	char *stop;
+
+	temp = lst_token;
+	line = NULL;
+	while (temp && temp->type != END)
+	{
+		if (temp->type == HEREDOC && temp->next)
+		{
+			if (pipe(fd) == -1)
+				return (-1);
+			stop = temp->next->value;
+			while (1)
+			{
+				line = readline("> ");
+				if (!line || !ft_strncmp(line, stop, ft_strlen(stop) + 1))
+					break ;
+				write(fd[1], line, ft_strlen(line));
+				write(fd[1], "\n", 1);
+				free(line);
+			}
+			if (line)
+				free(line);
+			close(fd[1]);
+			return (fd[0]);
+		}
+		temp = temp->next;
+	}
+	return (-1);
+}
 //if > or >> will go through them to check whats the last file and
 // so where the output need to be
 int	look_for_fd_output(t_token *lst_token)
@@ -67,29 +108,19 @@ int	look_for_fd_input(t_token *lst_token)
 //handle the redirection in the case of non builtin cmd
 //look for the fd of the input and output
 //file and send it to the function to eecute
-void	handle_redir(t_token *lst_token, t_shell *shell, int builtin)
+void	handle_redir(t_token *lst_token, int *fd_in, int *fd_out)
 {
-	int		fd_in;
-	int		fd_out;
 	t_token	*temp;
 
-	fd_in = -1;
-	fd_out = -1;
 	temp = lst_token;
 	while (temp->type != END)
 	{
 		if (temp->type == REDIR_OUT || temp->type == APPEND)
-			fd_out = look_for_fd_output(lst_token);
-		else if (temp->type == REDIR_IN)
-			fd_in = look_for_fd_input(lst_token);
+			*fd_out = look_for_fd_output(lst_token);
 		else if (temp->type == HEREDOC)
-			printf("lets handle HEREDOC\n");
+			*fd_in = look_for_fd_heredoc(lst_token);
+		else if (temp->type == REDIR_IN)
+			*fd_in = look_for_fd_input(lst_token);
 		temp = temp->next;
 	}
-	if (builtin == 0)
-		execve_non_builtin(lst_token, shell, fd_out, fd_in);
-	else if (builtin == 1)
-		builtin_cmd(lst_token, shell, fd_out);
-	else
-		printf("error only accept 0  for non builtin and 1 for buitlin\n");
 }

@@ -58,11 +58,14 @@ void	execve_non_builtin(t_token *lst_token, t_shell *shell,
 			int fd_out, int fd_in);
 char	**find_cmd_args(t_token *lst_token);
 int		is_redir(t_token *lst_token);
-void	handle_redir(t_token *lst_token, t_shell *shell, int redir);
+void	handle_redir(t_token *lst_token, int *fd_in, int *fd_out);
 int		look_for_fd_output(t_token *lst_token);
 int		look_for_fd_input(t_token *lst_token);
-void	exec_non_builtin_cmd(t_token *lst_token, t_shell *shell);
+void	non_builtin_cmd(t_token *lst_token, t_shell *shell, int fd_in, int fd_out);
 void	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out);
+void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out);
+void	builtin_parent_process(t_token *lst_token,
+	t_shell *shell, int fd_out);
 //command
 void	cd_command(t_token *lst_token, t_shell *shell);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
