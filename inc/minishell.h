@@ -107,7 +107,7 @@ char	*filename(t_token *lst_token);
 t_file	*open_file(t_token *lst_token, int type);
 
 //exit
-void	exit_command(t_token *lst_token, t_shell *shell, char *input);
+void	exit_command(t_token *lst_token, t_shell *shell);
 
 //exports 
 void    print_export(t_shell *shell, int fd_out);

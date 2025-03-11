@@ -6,8 +6,6 @@ void builtin_parent_process(t_token *lst_token, t_shell *shell, int fd_out)
 	t_token *temp;
 
 	temp = lst_token;
-	(void)shell;
-	(void)fd_out;
 	while(temp->type != END)
 	{
 		if (temp->type == WORD)
@@ -29,7 +27,7 @@ void builtin_parent_process(t_token *lst_token, t_shell *shell, int fd_out)
 			}
 			else if (!ft_strncmp(temp->value, "exit", 5))
 			{
-				printf("handle exit\n");
+				exit_command(lst_token, shell);
 				break ;
 			}	
 		}
