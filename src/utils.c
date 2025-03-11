@@ -53,7 +53,7 @@ int	ft_varcmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-void clean_exit(int exit_status, t_token *lst_token, char **env)
+void	clean_exit(int exit_status, t_token *lst_token, char **env)
 {
 	clear_history();
 	if (env)

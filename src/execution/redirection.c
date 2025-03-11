@@ -4,8 +4,8 @@
 // so where the output need to be
 int	look_for_fd_output(t_token *lst_token)
 {
-	int fd;
-	t_token *temp;
+	int		fd;
+	t_token	*temp;
 
 	fd = -1;
 	temp = lst_token;
@@ -31,7 +31,7 @@ int	look_for_fd_output(t_token *lst_token)
 			{
 				perror("open");
 				exit(1);
-			} 
+			}
 		}
 		temp = temp->next;
 	}
@@ -41,8 +41,8 @@ int	look_for_fd_output(t_token *lst_token)
 //if < will recoer the fd and send it so the execve know
 int	look_for_fd_input(t_token *lst_token)
 {
-	int fd;
-	t_token *temp;
+	int		fd;
+	t_token	*temp;
 
 	fd = -1;
 	temp = lst_token;
@@ -57,22 +57,23 @@ int	look_for_fd_input(t_token *lst_token)
 			{
 				perror("open");
 				exit(1);
-			} 
+			}
 		}
 		temp = temp->next;
-	} 
+	}
 	return (fd);
 }
 
 //handle the redirection in the case of non builtin cmd
-//look for the fd of the input and output file and send it to the function to eecute
+//look for the fd of the input and output
+//file and send it to the function to eecute
 void	handle_redir(t_token *lst_token, t_shell *shell, int builtin)
 {
-	int fd_in;
-	int fd_out;
-	t_token *temp;
+	int		fd_in;
+	int		fd_out;
+	t_token	*temp;
 
-	fd_in  = -1;
+	fd_in = -1;
 	fd_out = -1;
 	temp = lst_token;
 	while (temp->type != END)
@@ -81,14 +82,14 @@ void	handle_redir(t_token *lst_token, t_shell *shell, int builtin)
 			fd_out = look_for_fd_output(lst_token);
 		else if (temp->type == REDIR_IN)
 			fd_in = look_for_fd_input(lst_token);
-		else if (temp->type == HEREDOC)	
+		else if (temp->type == HEREDOC)
 			printf("lets handle HEREDOC\n");
 		temp = temp->next;
 	}
 	if (builtin == 0)
-		execve_non_builtin(lst_token,shell, fd_out, fd_in);
+		execve_non_builtin(lst_token, shell, fd_out, fd_in);
 	else if (builtin == 1)
 		builtin_cmd(lst_token, shell, fd_out);
-	else 
+	else
 		printf("error only accept 0  for non builtin and 1 for buitlin\n");
 }

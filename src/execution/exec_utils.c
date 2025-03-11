@@ -70,9 +70,9 @@ int	is_builtin(t_token *lst_token)
 }
 
 //cherche la presence de redirection dans la lst de token
-int is_redir(t_token *lst_token)
+int	is_redir(t_token *lst_token)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	temp = lst_token;
 	while (temp->type != END)

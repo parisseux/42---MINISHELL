@@ -1,6 +1,7 @@
 #include "../inc/minishell.h"
 
-//je ferai plus tard quand les execution builtin et non builtin avec redirection sreont bonnes
+//je ferai plus tard quand les execution builtin et
+// non builtin avec redirection sreont bonnes
 void	exec_with_pipe(t_token *lst_token, t_shell *shell, int pipe)
 {
 	printf("there is at least one pipe\n");
@@ -9,10 +10,11 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int pipe)
 	(void)pipe;
 }
 
-//division de la fonction pour handle les redirction dans le cas d'une cmd builtin
+//division de la fonction pour handle les redirction
+//dans le cas d'une cmd builtin
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell)
 {
-	int redir;
+	int	redir;
 
 	redir = is_redir(lst_token);
 	if (redir)
@@ -27,7 +29,7 @@ void	exec_builtin_cmd(t_token *lst_token, t_shell *shell)
 void	exec_non_builtin_cmd(t_token *lst_token, t_shell *shell)
 {
 	int	pid;
-	int redir;
+	int	redir;
 
 	pid = fork();
 	redir = is_redir(lst_token);

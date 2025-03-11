@@ -1,17 +1,17 @@
-
 #include "../inc/minishell.h"
 
 //permet de gerer CTR - C et CTR -/
 void	sigint_handler(int sig)
 {
 	(void)sig;
-    write(1, "\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();  
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-//parsing de l'input, separation en token, expansion variable, sytnhaxx error, et lancement de l'execution
+//parsing de l'input, separation en token, expansion
+//variable, sytnhaxx error, et lancement de l'execution
 void	start_minishell(t_shell *shell, char *input)
 {
 	t_token	*lst_token;
@@ -59,7 +59,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	signal(SIGINT, sigint_handler);
-    signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	shell.var_env = setup_minishell(env);
 	if (!shell.var_env)
 		return (1);

@@ -1,4 +1,3 @@
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -55,14 +54,15 @@ int		is_builtin(t_token *lst_token);
 char	*ft_strjoin_paths(char *dir, char *cmd);
 char	*get_env_value(char **env, char *key);
 char	*find_cmd_path(char *cmd, char **env);
-void	execve_non_builtin(t_token *lst_token, t_shell *shell, int fd_out, int fd_in);
+void	execve_non_builtin(t_token *lst_token, t_shell *shell,
+			int fd_out, int fd_in);
 char	**find_cmd_args(t_token *lst_token);
-int 	is_redir(t_token *lst_token);
+int		is_redir(t_token *lst_token);
 void	handle_redir(t_token *lst_token, t_shell *shell, int redir);
 int		look_for_fd_output(t_token *lst_token);
 int		look_for_fd_input(t_token *lst_token);
 void	exec_non_builtin_cmd(t_token *lst_token, t_shell *shell);
-void 	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out);
+void	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out);
 //command
 void	cd_command(t_token *lst_token, t_shell *shell);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
@@ -80,7 +80,7 @@ int		echo_check_n_flag(char **line);
 void	printf_or_fprintf(t_file *file, char **line);
 int		print_or_file(t_token *lst_token);
 
-//utils 
+//utils
 void	ft_free_char_tab(char **tab);
 void	skip_space(char **input);
 void	print_token_list(t_token *lst_token);
@@ -110,10 +110,10 @@ t_file	*open_file(t_token *lst_token, int type);
 void	exit_command(t_token *lst_token, t_shell *shell);
 
 //exports 
-void    print_export(t_shell *shell, int fd_out);
-void    add_var_to_env(char **var_env, char *value);
-int 	good_varname(char *name);
-void    export_command(t_token *lst_token, t_shell *shell, int fd_out);
+void	print_export(t_shell *shell, int fd_out);
+void	add_var_to_env(char **var_env, char *value);
+int		good_varname(char *name);
+void	export_command(t_token *lst_token, t_shell *shell, int fd_out);
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
@@ -123,12 +123,12 @@ char	*dolar_special_cases(char **line, char *linee, t_shell *shell);
 
 //expand_var_utils
 char	*add_special_case(char *name, char *line);
-char 	*rm_var(char *value);
+char	*rm_var(char *value);
 char	*add(char *new_value, char *value, int name_len);
 int		alphanum_len(char *value);
 int		malloc_size(char *new_value, char *value, int name_len);
 
 //unset
-void    unset_command(char *line, t_shell *shell);
+void	unset_command(char *line, t_shell *shell);
 
 #endif 

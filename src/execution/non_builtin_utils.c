@@ -2,10 +2,12 @@
 
 //Cette commmand a pour but d'executer une non builtin cmd
 //creation d'un child process pour execution de execve 
-void	execve_non_builtin(t_token *lst_token, t_shell *shell, int fd_out, int fd_in)
+void	execve_non_builtin(t_token *lst_token,
+	t_shell *shell, int fd_out, int fd_in)
 {
 	char	*cmd;
 	char	**cmd_args;
+
 	if (fd_out != -1)
 	{
 		dup2(fd_out, STDOUT_FILENO);
@@ -108,4 +110,3 @@ char	**find_cmd_args(t_token *lst_token)
 	cmd_args[n] = '\0';
 	return (cmd_args);
 }
-
