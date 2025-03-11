@@ -64,7 +64,7 @@ int		look_for_fd_input(t_token *lst_token);
 void	exec_non_builtin_cmd(t_token *lst_token, t_shell *shell);
 void 	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out);
 //command
-void	cd_command(char *line, t_shell *shell);
+void	cd_command(t_token *lst_token, t_shell *shell);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 void	env_command(t_shell *shell, t_token *lst_token, int fd_out);
 void	pwd_command(int fd_out);

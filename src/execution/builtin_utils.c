@@ -12,7 +12,7 @@ void builtin_parent_process(t_token *lst_token, t_shell *shell, int fd_out)
 		{
 			if (!ft_strncmp(temp->value, "cd", 3))
 			{
-				cd_command(temp->next->value, shell);
+				cd_command(temp->next, shell);
 				break ;
 			}
 			else if (!ft_strncmp(temp->value, "export", 7))
