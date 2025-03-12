@@ -34,6 +34,7 @@ t_token	*tokenisation(char *input)
 				return (NULL);
 			}
 		}
+		
 		else if (*input == '>')
 			new_token = extract_out(&input);
 		else if (*input == '<')

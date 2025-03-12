@@ -1,111 +1,56 @@
 #include "../inc/minishell.h"
 
-
-//doit introduire plusieurs HEREDOC succesif 
-void	handle_heredoc_prompt(t_token *lst_token, int fd_write)
+void	look_for_fd_heredoc(t_token *token, int *fd)
 {
-	char *stop;
-	char *line;
-	t_token *temp;
+	int		fd_pipe[2];
+	char	*stop;
 
-	temp = lst_token;
-	stop = temp->next->value;
-	while (1)
+	stop = token->value;
+	if (pipe(fd_pipe) == -1)
 	{
-		line = readline("> ");
-		if (!line || !ft_strncmp(line, stop, ft_strlen(stop) + 1))
-			break ;
-		write(fd_write, line, ft_strlen(line));
-		write(fd_write, "\n", 1);
-		free(line);
+		perror("pipe");
+		exit(1);
 	}
-	if (line)
-		free(line);
-	close(fd_write);
+	handle_heredoc_prompt(fd_pipe[1], stop);
+	close(fd_pipe[1]);
+	*fd = fd_pipe[0];
 }
 
-int	look_for_fd_heredoc(t_token *lst_token)
+void	look_for_fd_append(t_token *token, int *fd)
 {
-	int fd[2];
-	t_token *temp;
-
-
-	temp = lst_token;
-	while (temp && temp->type != END)
+	if (*fd != -1)
+		close(*fd);
+	*fd = open(token->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (*fd == -1)
 	{
-		if (temp->type == HEREDOC && temp->next)
-		{
-			if (pipe(fd) == -1)
-				return (-1);
-			handle_heredoc_prompt(temp, fd[1]);
-			return (fd[0]);
-		}
-		temp = temp->next;
+		perror("open");
+		exit(1);
 	}
-	return (-1);
 }
-//if > or >> will go through them to check whats the last file and
-// so where the output need to be
-int	look_for_fd_output(t_token *lst_token)
-{
-	int		fd;
-	t_token	*temp;
 
-	fd = -1;
-	temp = lst_token;
-	while (temp->type != END)
+void	look_for_fd_output(t_token *token, int *fd)
+{
+	if (*fd != -1)
+		close(*fd);
+	*fd = open(token->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (*fd == -1)
 	{
-		if (temp->type == REDIR_OUT)
-		{
-			if (fd != -1)
-				close(fd);
-			fd = open(temp->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd == -1)
-			{
-				perror("open");
-				exit(1);
-			}
-		}
-		else if (temp->type == APPEND)
-		{
-			if (fd != -1)
-				close(fd);
-			fd = open(temp->next->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (fd == -1)
-			{
-				perror("open");
-				exit(1);
-			}
-		}
-		temp = temp->next;
+		perror("open");
+		exit(1);
 	}
-	return (fd);
 }
 
 //if < will recoer the fd and send it so the execve know
-int	look_for_fd_input(t_token *lst_token)
+void	look_for_fd_input(t_token *token, int *fd)
 {
-	int		fd;
-	t_token	*temp;
-
-	fd = -1;
-	temp = lst_token;
-	while (temp->type != END)
+	if (*fd != -1)
+		close (*fd);
+	*fd = open(token->value, O_RDONLY);
+	if (*fd == -1)
 	{
-		if (temp->type == REDIR_IN)
-		{
-			if (fd != -1)
-				close (fd);
-			fd = open(temp->next->value, O_RDONLY);
-			if (fd == -1)
-			{
-				perror("open");
-				exit(1);
-			}
-		}
-		temp = temp->next;
+		perror("open");
+		exit(1);
 	}
-	return (fd);
 }
 
 //handle the redirection in the case of non builtin cmd
@@ -118,12 +63,14 @@ void	handle_redir(t_token *lst_token, int *fd_in, int *fd_out)
 	temp = lst_token;
 	while (temp->type != END)
 	{
-		if (temp->type == REDIR_OUT || temp->type == APPEND)
-			*fd_out = look_for_fd_output(lst_token);
+		if (temp->type == REDIR_OUT)
+			look_for_fd_output(temp->next, fd_out);
+		else if (temp->type == APPEND)
+			look_for_fd_append(temp->next, fd_out);
 		else if (temp->type == HEREDOC)
-			*fd_in = look_for_fd_heredoc(lst_token);
+			look_for_fd_heredoc(temp->next, fd_in);
 		else if (temp->type == REDIR_IN)
-			*fd_in = look_for_fd_input(lst_token);
+			look_for_fd_input(temp->next, fd_in);
 		temp = temp->next;
 	}
 }
