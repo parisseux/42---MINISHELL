@@ -26,7 +26,7 @@ void	print_export(t_shell *shell, int fd_out)
 }
 
 // add a la fin pas exactement pareil mais bon ...
-void	add_var_to_env(char **var_env, char *value)
+int	add_var_to_env(char **var_env, char *value, int shell)
 {
 	int	i;
 	int	j;
@@ -37,22 +37,24 @@ void	add_var_to_env(char **var_env, char *value)
 	check = 0;
 	while (value[j] != '=')
 		j++;
-	while (var_env[i] != NULL)
+	while (var_env && var_env[i] != NULL)
 	{
 		if (!ft_varcmp(var_env[i], value, j))
 		{
 			free(var_env[i]);
 			var_env[i] = ft_strdup(value);
 			check = 1;
-			return ;
+			return (1);
 		}
 		i++;
 	}
-	if (!check)
+	write(1, "ok\n", 4);
+	if (!check && shell == 0)
 	{
 		var_env[i] = ft_strdup(value);
-		var_env[i + 1] = NULL;
+		var_env[i + 1] = NULL;			
 	}
+	return (0);
 }
 
 int	good_varname(char *name)
@@ -71,9 +73,10 @@ int	good_varname(char *name)
 	return (0);
 }
 
-void	export_message_error(char *value)
+void	export_message_error(char *value, t_shell *shell)
 {
 	printf("minishell: export: `%s': not a valid identifier\n", value);
+	shell->exit = 1;
 }
 
 void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
@@ -92,15 +95,12 @@ void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
 		{
 			if (good_varname(tmp->value))
 			{
-				export_message_error(tmp->value);
-				shell->exit = 1;
+				export_message_error(tmp->value, shell);
 				return ;
 			}
 			else
-				add_var_to_env(shell->var_env, tmp->value);
+				add_var_to_env(shell->var_env, tmp->value, 0);
 		}
-		else
-			shell->exit = 1;
 		tmp = tmp->next;
 	}
 }
