@@ -76,7 +76,7 @@ void	pwd_command(int fd_out);
 void	echo_command(t_token *lst_token, int n_flag, int fd_out);
 void	echo_single_quote(char **line, int fd_out);
 void	echo_double_quote(char **line, int fd_out);
-void	echo_no_quote(char **line, int fd_out);
+void	echo_no_quote(char **line);
 int		echo_check_n_flag(char **line);
 
 //command/utils
