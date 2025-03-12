@@ -4,6 +4,8 @@
 // introduier fd_out avec utilisation de dup() et dup2 comme pour pwd, env
 //probleme lie a linux??
 
+//minishell$ echo<<file ->pas bon retour
+
 void	echo_command(t_token *lst_token, int n_flag, int fd_out)
 {
 	char	*line;

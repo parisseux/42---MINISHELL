@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-//permet de gerer CTR - C et CTR -/
+//permet de gerer CTR -C et CTR -/
 void	sigint_handler(int sig)
 {
 	(void)sig;
@@ -11,7 +11,7 @@ void	sigint_handler(int sig)
 }
 
 //parsing de l'input, separation en token, expansion
-//variable, sytnhaxx error, et lancement de l'execution
+//variable, synthax error, et lancement de l'execution
 void	start_minishell(t_shell *shell, char *input)
 {
 	t_token	*lst_token;

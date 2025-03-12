@@ -25,18 +25,16 @@ char	*get_env_value(char **env, char *key)
 //cherche la presence de pipe dans lst de token
 int	is_pipe(t_token *lst_token)
 {
-	int		pipe;
 	t_token	*temp;
 
-	pipe = 0;
 	temp = lst_token;
 	while (temp->type != END)
 	{
 		if (temp->type == PIPE)
-			pipe++;
+			return (1);
 		temp = temp->next;
 	}
-	return (pipe);
+	return (0);
 }
 
 //cherche la presence de builtin dans la lst de token
