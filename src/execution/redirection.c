@@ -1,40 +1,43 @@
 #include "../inc/minishell.h"
 
-// void handle_hereodc_fd(t_token *lst_token, int *fd_in)
-// {
-// 	t_token *temp;
 
-// }
-//fd[0] ==> on lit
-// fd[1] ==> on ecrit
+//doit introduire plusieurs HEREDOC succesif 
+void	handle_heredoc_prompt(t_token *lst_token, int fd_write)
+{
+	char *stop;
+	char *line;
+	t_token *temp;
+
+	temp = lst_token;
+	stop = temp->next->value;
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || !ft_strncmp(line, stop, ft_strlen(stop) + 1))
+			break ;
+		write(fd_write, line, ft_strlen(line));
+		write(fd_write, "\n", 1);
+		free(line);
+	}
+	if (line)
+		free(line);
+	close(fd_write);
+}
+
 int	look_for_fd_heredoc(t_token *lst_token)
 {
 	int fd[2];
-	char *line;
 	t_token *temp;
-	char *stop;
+
 
 	temp = lst_token;
-	line = NULL;
 	while (temp && temp->type != END)
 	{
 		if (temp->type == HEREDOC && temp->next)
 		{
 			if (pipe(fd) == -1)
 				return (-1);
-			stop = temp->next->value;
-			while (1)
-			{
-				line = readline("> ");
-				if (!line || !ft_strncmp(line, stop, ft_strlen(stop) + 1))
-					break ;
-				write(fd[1], line, ft_strlen(line));
-				write(fd[1], "\n", 1);
-				free(line);
-			}
-			if (line)
-				free(line);
-			close(fd[1]);
+			handle_heredoc_prompt(temp, fd[1]);
 			return (fd[0]);
 		}
 		temp = temp->next;
