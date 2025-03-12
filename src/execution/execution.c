@@ -3,12 +3,13 @@
 //je ferai plus tard quand les execution builtin et
 // non builtin avec redirection sreont bonnes
 void	exec_with_pipe(t_token *lst_token, t_shell *shell, int fd_in, int fd_out)
-{
+{	
 	printf("there is at least one pipe\n");
-	(void)lst_token;
+	printf("test avec une seule pipe\n");
 	(void)shell;
 	(void)fd_in;
 	(void)fd_out;
+	(void)lst_token;
 }
 
 //considere les redirections si presente avant d'executer
@@ -82,7 +83,7 @@ void	execution(t_token *lst_token, t_shell *shell)
 	fd_in = -1;
 	fd_out = -1;
 	handle_redir(lst_token, &fd_in, &fd_out);
-	pipe = is_pipe(lst_token);	
+	pipe = is_pipe(lst_token);
 	if (pipe)
 	{
 		exec_with_pipe(lst_token, shell, fd_in, fd_out);

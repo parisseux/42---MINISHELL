@@ -59,8 +59,11 @@ void	execve_non_builtin(t_token *lst_token, t_shell *shell,
 char	**find_cmd_args(t_token *lst_token);
 int		is_redir(t_token *lst_token);
 void	handle_redir(t_token *lst_token, int *fd_in, int *fd_out);
-int		look_for_fd_output(t_token *lst_token);
-int		look_for_fd_input(t_token *lst_token);
+void	look_for_fd_input(t_token *token, int *fd);
+void look_for_fd_output(t_token *token, int *fd);
+void look_for_fd_append(t_token *token, int *fd);
+void	look_for_fd_heredoc(t_token *token, int *fd);
+void	handle_heredoc_prompt( int fd_write, char *stop);
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell, int fd_in, int fd_out);
 void	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out);
 void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out);
