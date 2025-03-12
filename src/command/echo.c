@@ -9,9 +9,16 @@
 void	echo_command(t_token *lst_token, int n_flag, int fd_out)
 {
 	char	*line;
+	int		saved_stdout;
 	int		type;
 
-	while (lst_token)
+	saved_stdout = dup(STDOUT_FILENO);
+	if (fd_out != -1)
+	{
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
+	}
+	while (lst_token->type == WORD || lst_token->type == SQUOTE || lst_token->type == DQUOTE )
 	{
 		line = lst_token->value;
 		type = lst_token->type;
@@ -22,17 +29,19 @@ void	echo_command(t_token *lst_token, int n_flag, int fd_out)
 			else if (type == DQUOTE)
 				echo_double_quote(&line, fd_out);
 			else
-				echo_no_quote(&line, fd_out);
+				echo_no_quote(&line);
 		}
-		if (lst_token->type == END)
+		if (lst_token->next->type != WORD && lst_token->next->type != SQUOTE && lst_token->next->type != DQUOTE)
 		{
 			if (n_flag == 0)
 				write(STDOUT_FILENO, "\n", 1);
 		}
-		else if (lst_token->next->type != END)
+		else if (lst_token->next->type == WORD || lst_token->next->type == SQUOTE || lst_token->next->type == DQUOTE )
 			write(STDOUT_FILENO, " ", 1);
 		lst_token = lst_token->next;
 	}
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdout);
 }
 
 void	echo_single_quote(char **line, int fd_out)
@@ -67,54 +76,10 @@ void	echo_double_quote(char **line, int fd_out)
 	close(saved_stdout);
 }
 
-// while (**line)
-// {
-// 	if (**line == '\\')
-// 	{
-// 		(*line)++;
-// 		if (**line == '\\' || **line == '$' || **line == '`')
-// 			printf_or_fprintf(file, line);
-// 		else
-// 		{
-// 			if (file != NULL)
-// 				fprintf(file->file, "\\%c", **line);
-// 			else
-// 				printf("\\%c", **line);				
-// 		}
-// 		line++;
-// 	}
-// }
-
-void	echo_no_quote(char **line, int fd_out)
+void	echo_no_quote(char **line)
 {
-	int	saved_stdout;
-
-	saved_stdout = dup(STDOUT_FILENO);
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
 	write(STDOUT_FILENO, *line, ft_strlen(*line));
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
 }
-
-// while (**line)
-// {
-// 	if (**line == '\\')
-// 	{
-// 		(*line)++;
-// 		if (**line)
-// 		{
-// 			if (file != NULL)
-// 				fprintf(file->file, "\\%c", **line);
-// 			else
-// 				printf("\\%c", **line);
-// 			(*line)++;
-// 		}
-// 	}
-// }
 
 int	echo_check_n_flag(char **line)
 {
