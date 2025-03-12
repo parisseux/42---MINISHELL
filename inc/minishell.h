@@ -16,6 +16,7 @@
 typedef struct s_shell
 {
 	char	**var_env;
+	char	**shell_env;
 	int		exit;
 }	t_shell;
 
@@ -117,7 +118,7 @@ void	exit_command(t_token *lst_token, t_shell *shell);
 
 //exports 
 void	print_export(t_shell *shell, int fd_out);
-void	add_var_to_env(char **var_env, char *value);
+int		add_var_to_env(char **var_env, char *value, int shell);
 int		good_varname(char *name);
 void	export_command(t_token *lst_token, t_shell *shell, int fd_out);
 
@@ -136,5 +137,9 @@ int		malloc_size(char *new_value, char *value, int name_len);
 
 //unset
 void	unset_command(char *line, t_shell *shell);
+
+//shell_var
+void	shell_var(t_token *lst_token, t_shell *shell);
+void	prep_var_shell(char ***var);
 
 #endif 

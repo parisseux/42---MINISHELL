@@ -23,6 +23,7 @@ void	start_minishell(t_shell *shell, char *input)
 		printf("Error: tokenisation failed\n");
 		clean_exit(EXIT_SUCCESS, NULL, shell->var_env);
 	}
+	shell_var(lst_token, shell);
 	look_for_dolls(lst_token, shell);
 	if (check_syntax_error(lst_token))
 		return ;
@@ -61,6 +62,7 @@ int	main(int ac, char **av, char **env)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	shell.var_env = setup_minishell(env);
+	shell.shell_env = NULL;
 	if (!shell.var_env)
 		return (1);
 	shell.exit = 0;
