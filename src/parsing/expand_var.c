@@ -64,6 +64,19 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 		}
 		i++;
 	}
+	i = 0;
+	if (!check)
+	{
+		while (shell->shell_env[i])
+		{
+			if (!ft_varcmp(shell->shell_env[i], name, len))
+			{
+				check = 1;
+				tmp = add(shell->shell_env[i], value2, len + 1);
+			}
+			i++;
+		}		
+	}
 	if (!check)
 		tmp = rm_var(value2);
 	free(name);

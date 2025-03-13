@@ -94,7 +94,7 @@ void	print_token_list(t_token *lst_token);
 void	msg_error(char *msg, t_token *lst_token);
 void	free_token_list(t_token *lst_token);
 int		ft_varcmp(const char *s1, const char *s2, size_t n);
-void	clean_exit(int exit_status, t_token *lst_token, char **env);
+void	clean_exit(int exit_status, t_token *lst_token, char **env, char **shell);
 
 //parsing 
 t_token	*create_token(char *value, t_token_type type);

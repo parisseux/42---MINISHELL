@@ -21,7 +21,7 @@ void	start_minishell(t_shell *shell, char *input)
 	if (!lst_token)
 	{
 		printf("Error: tokenisation failed\n");
-		clean_exit(EXIT_SUCCESS, NULL, shell->var_env);
+		clean_exit(EXIT_SUCCESS, NULL, shell->var_env, shell->shell_env);
 	}
 	shell_var(lst_token, shell);
 	look_for_dolls(lst_token, shell);
@@ -77,6 +77,6 @@ int	main(int ac, char **av, char **env)
 		start_minishell(&shell, input);
 		free(input);
 	}
-	clean_exit(EXIT_SUCCESS, NULL, shell.var_env);
+	clean_exit(EXIT_SUCCESS, NULL, shell.var_env, shell.shell_env);
 	return (0);
 }

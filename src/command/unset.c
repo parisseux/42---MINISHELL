@@ -19,4 +19,19 @@ void	unset_command(char *line, t_shell *shell)
 		}
 		i++;
 	}
+	i = 0;
+	while (shell->shell_env[i])
+	{
+		if (!ft_varcmp(shell->shell_env[i], line, ft_strlen(line)))
+		{
+			free(shell->shell_env[i]);
+			while (shell->shell_env[i])
+			{
+				shell->shell_env[i] = shell->shell_env[i + 1];
+				i++;
+			}
+			return ;
+		}
+		i++;
+	}
 }
