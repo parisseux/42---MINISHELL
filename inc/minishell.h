@@ -70,6 +70,7 @@ void	execve_non_builtin(t_token *lst_token, t_shell *shell,
 			int fd_out, int fd_in);
 char	**find_cmd_args(t_token *lst_token);
 int		is_redir(t_token *lst_token);
+int	is_def(t_token *lst_token);
 void	handle_redir(t_token *lst_token, int *fd_in, int *fd_out);
 void	look_for_fd_input(t_token *token, int *fd);
 void look_for_fd_output(t_token *token, int *fd);
@@ -117,9 +118,11 @@ t_token	*extract_d_quote(char **input);
 t_token	*ext_word(char **input);
 t_token	*extract_out(char **input);
 t_token	*extract_in(char **input);
-int		check_syntax_error(t_token *lst_token);
-int		check_first_last_token(t_token *lst_token);
-int		check_synthax_redirection(t_token *lst_token);
+int	check_syntax_error(t_token *lst_token, t_shell *shell);
+int	check_first_last_token(t_token *lst_token, t_shell *shell);
+int	check_synthax_pipe(t_token *lst_token, t_shell *shell);
+int	check_synthax_redirection(t_token *lst_token, t_shell *shell);
+
 
 //file
 char	*filename(t_token *lst_token);

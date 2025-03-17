@@ -32,7 +32,6 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell)
 	(void)lst_token;
 }
 
-//considere les redirections si presente avant d'executer
 //creation d'un child process qui va utiliser execve pour executer
 //l'executable present dans le bin
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell, int fd_in, int fd_out)
@@ -55,14 +54,8 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell, int fd_in, int fd_out)
 		waitpid(pid, NULL, 0);
 }
 
-//attribution to the cmd echo, cd, pwd, export, unset, env, exit
-//and if redierction fd_out is beinf passed to the cmd
-//if no redirection fd = -1 
 //builtin qui necessitent stdout: echo, pwd, export, env
 //builtin  qui ncesstient stdin: aucune donc pas besoins de gere < et <<
-//seul truc a gerer est si le file ou directory
-//quil veut ouvrrir n'exsite pas alors rreur
-//pour plus tard -> introduction de pipe
 //run in a forked child: echo, pwd, env
 //run in parent (change de state): cd, export, unset and exit
 void	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out)
@@ -100,22 +93,20 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out)
 //      pipe
 void	execution(t_token *lst_token, t_shell *shell)
 {
-	int	pipe;
 	int	fd_in;
 	int	fd_out;
 
 	fd_in = -1;
 	fd_out = -1;
-	pipe = is_pipe(lst_token);
-	if (pipe)
+	if (is_pipe(lst_token))
 	{
 		exec_with_pipe(lst_token, shell);
 	}
 	else
 	{
 		handle_redir(lst_token, &fd_in, &fd_out);
-		//if (is_egal)
-		//	return ;
+		if (is_def(lst_token))
+			return ;
 		if (is_builtin(lst_token))
 			builtin_cmd(lst_token, shell, fd_out);
 		else
