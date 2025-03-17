@@ -2,14 +2,33 @@
 
 //je ferai plus tard quand les execution builtin et
 // non builtin avec redirection sreont bonnes
-void	exec_with_pipe(t_token *lst_token, t_shell *shell, int fd_in, int fd_out)
-{	
-	printf("there is at least one pipe\n");
-	printf("test avec une seule pipe\n");
-	(void)shell;
-	(void)fd_in;
-	(void)fd_out;
-	(void)lst_token;
+void	exec_with_pipe(t_token *lst_token, t_shell *shell)
+{
+	separate_cmd(lst_token);
+	// int pipe_fds[2];
+	// int pid;
+
+	// pipe_fds[0] = -1;
+	// pipe_fds[1] = -1;
+	// if (pipe(pipe_fds) == -1)
+	// 	return (perror("pipe"), -1);
+	// pid  = fork();
+	// if (pid < 0)
+	// {
+	// 	close(pipe_fds[0]);
+	// 	close(pipe_fds[1]);
+	// 	return (perror("fork"), -1);
+	// }
+	// else if (pid = 0)
+	// {
+	// 	ft_putstr_fd("child process in pipe", 1);
+	// 	exit(0);
+	// }
+	// waitpid(pid, NULL, 0);
+	// printf("there is at least one pipe\n");
+	// printf("test avec une seule pipe\n");
+	// (void)shell;
+	// (void)lst_token;
 }
 
 //considere les redirections si presente avant d'executer
@@ -82,14 +101,16 @@ void	execution(t_token *lst_token, t_shell *shell)
 
 	fd_in = -1;
 	fd_out = -1;
-	handle_redir(lst_token, &fd_in, &fd_out);
 	pipe = is_pipe(lst_token);
 	if (pipe)
 	{
-		exec_with_pipe(lst_token, shell, fd_in, fd_out);
+		exec_with_pipe(lst_token, shell);
 	}
 	else
 	{
+		handle_redir(lst_token, &fd_in, &fd_out);
+		//if (is_egal)
+		//	return ;
 		if (is_builtin(lst_token))
 			builtin_cmd(lst_token, shell, fd_out);
 		else
