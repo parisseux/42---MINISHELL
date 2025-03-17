@@ -24,7 +24,7 @@ void    shell_var(t_token *lst_token, t_shell *shell)
         return ;
     while (tmp->type != END)
     {
-        if (ft_strchr(tmp->value, '=') && tmp->type == WORD && tmp->type != DQUOTE)
+        if (tmp->type == DEF)
         {
             if (good_varname(tmp->value))
                 return ;
