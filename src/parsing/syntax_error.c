@@ -4,8 +4,8 @@ int	check_syntax_error(t_token *lst_token, t_shell *shell)
 {
 	if (check_first_last_token(lst_token, shell))
 		return (1);
-	// else if (check_synthax_pipe(lst_token, shell))
-	//  	return (1);
+	else if (check_synthax_pipe(lst_token, shell))
+	  	return (1);
 	else if (check_synthax_redirection(lst_token, shell))
 		return (1);
 	return (0);
@@ -40,24 +40,24 @@ int	check_first_last_token(t_token *lst_token, t_shell *shell)
 	return (0);
 }
 
-// int	check_synthax_pipe(t_token *lst_token, t_shell *shell)
-// {
-// 	t_token *temp;
+int	check_synthax_pipe(t_token *lst_token, t_shell *shell)
+{
+	t_token *temp;
 
-// 	(void)shell;
-// 	temp = lst_token;
-// 	while (temp->type != END)
-// 	{
-// 		if (temp->type == PIPE)
-// 		{
-// 			if (temp->next->type == REDIR_IN || temp->next->type == REDIR_OUT
-// 					|| temp->next->type == HEREDOC || temp->next->type == APPEND)
-// 				perror("lala");
-// 		}
-// 		temp = temp->next;
-// 	}
-// 	return (0);
-// }
+	(void)shell;
+	temp = lst_token;
+	while (temp->type != END)
+	{
+		if (temp->type == PIPE)
+		{
+			if (temp->next->type == REDIR_IN || temp->next->type == REDIR_OUT
+					|| temp->next->type == HEREDOC || temp->next->type == APPEND)
+				perror("lala");
+		}
+		temp = temp->next;
+	}
+	return (0);
+}
 
 int	check_synthax_redirection(t_token *lst_token, t_shell *shell)
 {
