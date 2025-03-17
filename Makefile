@@ -43,6 +43,9 @@ $(OBJ_DIR)/signals:
 $(OBJ_DIR)/parsing:
 	@mkdir -p $(OBJ_DIR)/parsing
 
+$(OBJ_DIR)/signals:
+	@mkdir -p $(OBJ_DIR)/signals
+
 $(OBJ_DIR)/command:
 	@mkdir -p $(OBJ_DIR)/command
 
