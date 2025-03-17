@@ -19,7 +19,7 @@ int	start_minishell(t_shell *shell, char *input)
 		return (0);
 	shell_var(lst_token, shell);
 	look_for_dolls(lst_token, shell);
-	if (check_syntax_error(lst_token))
+	if (check_syntax_error(lst_token, shell))
 	{
 		free(input);
 		return -1;

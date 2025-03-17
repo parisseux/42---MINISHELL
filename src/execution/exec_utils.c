@@ -37,6 +37,20 @@ int	is_pipe(t_token *lst_token)
 	return (0);
 }
 
+int	is_def(t_token *lst_token)
+{
+	t_token	*temp;
+
+	temp = lst_token;
+	while (temp->type != END)
+	{
+		if (temp->type == DEF)
+			return (1);
+		temp = temp->next;
+	}
+	return (0);
+}
+
 //cherche la presence de builtin dans la lst de token
 int	is_builtin(t_token *lst_token)
 {
