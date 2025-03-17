@@ -16,7 +16,7 @@ int	start_minishell(t_shell *shell, char *input)
 		return -1;
 	}
 	if (lst_token->type == END)
-		return ;
+		return (0);
 	shell_var(lst_token, shell);
 	look_for_dolls(lst_token, shell);
 	if (check_syntax_error(lst_token))
