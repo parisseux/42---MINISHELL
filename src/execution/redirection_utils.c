@@ -5,7 +5,9 @@
 void	handle_heredoc_prompt( int fd_write, char *stop)
 {
 	char	*line;
-
+	
+	restore_signals();
+	signals_heredoc();
 	while (1)
 	{
 		line = readline("> ");
@@ -24,4 +26,5 @@ void	handle_heredoc_prompt( int fd_write, char *stop)
 		free(line);
 	}
 	close(fd_write);
+	init_signals();
 }

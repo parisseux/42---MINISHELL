@@ -13,6 +13,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+extern int g_stop;
+
 typedef struct s_shell
 {
 	char	**var_env;
@@ -48,6 +50,14 @@ typedef struct s_file
 	char	*file_name;
 }	t_file;
 
+//signals 
+void    init_signals(void);
+void	sigint_handler(int sig);
+void	restore_signals(void);
+void 	signals_heredoc(void);
+
+int	start_minishell(t_shell *shell, char *input);
+
 //execution 
 void	execution(t_token *lst_token, t_shell *shell);
 int		is_pipe(t_token *lst_token);
@@ -70,6 +80,7 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out);
 void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out);
 void	builtin_parent_process(t_token *lst_token,
 	t_shell *shell, int fd_out);
+
 //command
 void	cd_command(t_token *lst_token, t_shell *shell);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
