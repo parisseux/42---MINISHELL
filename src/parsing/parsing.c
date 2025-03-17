@@ -11,7 +11,9 @@ t_token	*tokenisation(char *input)
 		skip_space(&input);
 		if (*input == '\0')
 			break ;
-		if (*input == '|')
+		if (detect_var(input))
+			new_token = token_var(&input);
+		else if (*input == '|')
 		{
 			new_token = create_token("|", PIPE);
 			input++;
@@ -33,8 +35,7 @@ t_token	*tokenisation(char *input)
 				msg_error("unclosed double quote", lst_token);
 				return (NULL);
 			}
-		}
-		
+		}	
 		else if (*input == '>')
 			new_token = extract_out(&input);
 		else if (*input == '<')

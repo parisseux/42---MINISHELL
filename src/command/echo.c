@@ -36,8 +36,6 @@ void	echo_command(t_token *lst_token, int n_flag, int fd_out)
 			if (n_flag == 0)
 				write(STDOUT_FILENO, "\n", 1);
 		}
-		else if (lst_token->next->type == WORD || lst_token->next->type == SQUOTE || lst_token->next->type == DQUOTE )
-			write(STDOUT_FILENO, " ", 1);
 		lst_token = lst_token->next;
 	}
 	dup2(saved_stdout, STDOUT_FILENO);

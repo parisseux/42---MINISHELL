@@ -30,6 +30,7 @@ typedef enum e_token_type
 	APPEND,
 	SQUOTE,
 	DQUOTE,
+	DEF,
 	END
 }	t_token_type;
 
@@ -141,5 +142,9 @@ void	unset_command(char *line, t_shell *shell);
 //shell_var
 void	shell_var(t_token *lst_token, t_shell *shell);
 void	prep_var_shell(char ***var);
+
+// detect_var
+t_token	*token_var(char **input);
+int 	detect_var(char *input);
 
 #endif 
