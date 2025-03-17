@@ -21,13 +21,14 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell)
 	// }
 	// else if (pid = 0)
 	// {
+	//	restore_Signals();	
 	// 	ft_putstr_fd("child process in pipe", 1);
 	// 	exit(0);
 	// }
 	// waitpid(pid, NULL, 0);
 	// printf("there is at least one pipe\n");
 	// printf("test avec une seule pipe\n");
-	 (void)shell;
+	(void)shell;
 	(void)lst_token;
 }
 
@@ -45,7 +46,11 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell, int fd_in, int fd_out)
 		exit(EXIT_FAILURE);
 	}
 	else if (pid == 0)
+	{
+		restore_signals();
 		execve_non_builtin(lst_token, shell, fd_out, fd_in);
+	}
+		
 	else
 		waitpid(pid, NULL, 0);
 }

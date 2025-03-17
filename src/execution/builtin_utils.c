@@ -46,6 +46,7 @@ void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out)
 	pid = fork();
 	if (pid == 0)
 	{
+		restore_signals();
 		temp = lst_token;
 		while (temp->type != END)
 		{

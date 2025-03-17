@@ -5,7 +5,7 @@ SRC_DIR = ./src
 PARSING_DIR = $(SRC_DIR)/parsing
 COMMAND_DIR = $(SRC_DIR)/command
 EXEC_DIR = $(SRC_DIR)/execution
-SIG_DIR =  $(SRC_DIR)/signals
+SIG_DIR = $(SRC_DIR)/signals
 LIBFT_DIR = ./libft
 OBJ_DIR = ./obj
 
@@ -13,7 +13,11 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -Iinclude -I$(HEADERS)
 LDFLAGS = -lreadline
 
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(EXEC_DIR)/*.c)  $(wildcard $(SIG_DIR)/*.c) $(wildcard $(PARSING_DIR)/*.c) $(wildcard $(COMMAND_DIR)/*.c) 
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c) \
+			$(wildcard $(EXEC_DIR)/*.c) \
+			$(wildcard $(PARSING_DIR)/*.c) \
+			$(wildcard $(COMMAND_DIR)/*.c) \
+			$(wildcard $(SIG_DIR)/*.c)
 
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
@@ -29,8 +33,12 @@ $(NAME): $(OBJ_FILES) $(LIBFT_LIB)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ_FILES) $(LIBFT_LIB) $(LDFLAGS)
 	@echo "💕 $(ROSE)minishell is ready for you$(RESET) 💕"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/signals $(OBJ_DIR)/command $(OBJ_DIR)/execution 
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(OBJ_DIR)/parsing $(OBJ_DIR)/command $(OBJ_DIR)/execution $(OBJ_DIR)/signals
 	@$(CC) $(CFLAGS) -o $@ -c $<
+
+
+$(OBJ_DIR)/signals:
+	@mkdir -p $(OBJ_DIR)/signals
 
 $(OBJ_DIR)/parsing:
 	@mkdir -p $(OBJ_DIR)/parsing

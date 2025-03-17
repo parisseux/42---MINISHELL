@@ -4,15 +4,33 @@ void	look_for_fd_heredoc(t_token *token, int *fd)
 {
 	int		fd_pipe[2];
 	char	*stop;
+	int pid;
 
-	stop = token->value;
 	if (pipe(fd_pipe) == -1)
 	{
 		perror("pipe");
 		exit(1);
 	}
-	handle_heredoc_prompt(fd_pipe[1], stop);
+	pid  = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		exit(1);
+	}
+	else if (pid  == 0)
+	{
+		restore_signals();
+		close(fd_pipe[0]);
+		stop = ft_strdup(token->value);
+		handle_heredoc_prompt(fd_pipe[1], stop);
+		free(stop);
+		close(fd_pipe[1]);
+		exit(0);
+	}
 	close(fd_pipe[1]);
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, NULL, 0);
+	init_signals();
 	*fd = fd_pipe[0];
 }
 
