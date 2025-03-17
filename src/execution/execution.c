@@ -4,7 +4,7 @@
 // non builtin avec redirection sreont bonnes
 void	exec_with_pipe(t_token *lst_token, t_shell *shell)
 {
-	separate_cmd(lst_token);
+	//separate_cmd(lst_token);
 	// int pipe_fds[2];
 	// int pid;
 
@@ -27,8 +27,8 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell)
 	// waitpid(pid, NULL, 0);
 	// printf("there is at least one pipe\n");
 	// printf("test avec une seule pipe\n");
-	// (void)shell;
-	// (void)lst_token;
+	 (void)shell;
+	(void)lst_token;
 }
 
 //considere les redirections si presente avant d'executer
