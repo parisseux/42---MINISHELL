@@ -86,7 +86,7 @@ t_token *token_var(char **input)
     len = 0;
     new = NULL;
     copy = ft_strdup(*input);
-    while (**input != ' ' && !ft_strchr("|<> \'\"", **input) && **input!= '\0')
+    while (**input != ' ' && !ft_strchr("|<>", **input) && **input!= '\0')
     {
         len++;
         (*input)++;
