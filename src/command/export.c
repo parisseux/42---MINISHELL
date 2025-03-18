@@ -2,6 +2,7 @@
 
 // a revoir
 //meme chose il faut introduire fd_out et corriger les prints pour des write
+// ATTETION SI SHELL VIDE
 void	print_export(t_shell *shell, int fd_out)
 {
 	int	i;
@@ -92,10 +93,14 @@ void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
 	}
 	while (tmp->type != END)
 	{
-		if (ft_strchr(tmp->value, '='))
+		ft_putnbr_fd(tmp->type, 1);
+		write (1, "\n", 1);
+		if (tmp->type == DEF)
 		{
+			write (1, "ya var\n", 7);
 			if (good_varname(tmp->value))
 			{
+				write (1, "name pas ok\n", 12);
 				export_message_error(tmp->value, shell);
 				return ;
 			}

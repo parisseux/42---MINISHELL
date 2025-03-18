@@ -32,7 +32,7 @@ void    shell_var(t_token *lst_token, t_shell *shell)
             {
                 if (shell->shell_env == NULL)
                     prep_var_shell(&shell->shell_env);
-                (add_var_to_env(shell->shell_env, tmp->value, 0));
+                add_var_to_env(shell->shell_env, tmp->value, 0);
             }
         }
         tmp = tmp->next;
