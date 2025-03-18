@@ -2,7 +2,7 @@
 
 //introduire expansion variable
 //doit introduire plusieurs HEREDOC succesif 
-void	handle_heredoc_prompt( int fd_write, char *stop)
+void	handle_heredoc_prompt( int fd_write, char *stop, t_shell *shell)
 {
 	char	*line;
 	
@@ -14,6 +14,7 @@ void	handle_heredoc_prompt( int fd_write, char *stop)
 		if (!line)
 		{
 			write(STDOUT_FILENO, "warning: here-document delimited by EOF\n", 40);
+			shell->exit = 0;
 			break ;
 		}
 		if (!line || !ft_strncmp(line, stop, ft_strlen(stop) + 1))

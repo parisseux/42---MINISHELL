@@ -37,6 +37,7 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell)
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell, int fd_in, int fd_out)
 {
 	int	pid;
+	int	status;
 
 	pid = fork();
 	if (pid == -1)
@@ -48,10 +49,12 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell, int fd_in, int fd_out)
 	{
 		restore_signals();
 		execve_non_builtin(lst_token, shell, fd_out, fd_in);
-	}
-		
+	}	
 	else
-		waitpid(pid, NULL, 0);
+	{
+		waitpid(pid, &status, 0);
+		extract_exit_status(status, shell);
+	}
 }
 
 //builtin qui necessitent stdout: echo, pwd, export, env
@@ -104,7 +107,8 @@ void	execution(t_token *lst_token, t_shell *shell)
 	}
 	else
 	{
-		handle_redir(lst_token, &fd_in, &fd_out);
+		if (handle_redir(lst_token, &fd_in, &fd_out, shell) == 1)
+		 	return ;
 		if (is_def(lst_token))
 			return ;
 		if (is_builtin(lst_token))

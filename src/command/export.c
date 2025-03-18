@@ -48,7 +48,6 @@ int	add_var_to_env(char **var_env, char *value, int shell)
 		}
 		i++;
 	}
-	write(1, "ok\n", 4);
 	if (!check && shell == 0)
 	{
 		var_env[i] = ft_strdup(value);
@@ -75,7 +74,9 @@ int	good_varname(char *name)
 
 void	export_message_error(char *value, t_shell *shell)
 {
-	printf("minishell: export: `%s': not a valid identifier\n", value);
+	write(STDOUT_FILENO, "minishell: export: ", 19);
+	write(STDOUT_FILENO, value, ft_strlen(value));
+	write(STDOUT_FILENO, ": not a valid identifier\n", 25);
 	shell->exit = 1;
 }
 
