@@ -48,7 +48,6 @@ int	add_var_to_env(char **var_env, char *value, int shell)
 		}
 		i++;
 	}
-	write(1, "ok\n", 4);
 	if (!check && shell == 0)
 	{
 		var_env[i] = ft_strdup(value);
