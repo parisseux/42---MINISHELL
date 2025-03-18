@@ -42,6 +42,7 @@ void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out)
 {
 	int		pid;
 	t_token	*temp;
+	int status;
 
 	pid = fork();
 	if (pid == 0)
@@ -75,5 +76,8 @@ void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out)
 		exit(0);
 	}
 	else
-		waitpid(pid, NULL, 0);
+	{
+		waitpid(pid, &status, 0);
+		extract_exit_status(status, shell);
+	}
 }

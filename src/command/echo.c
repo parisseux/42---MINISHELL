@@ -5,6 +5,7 @@
 //probleme lie a linux??
 
 //minishell$ echo<<file ->pas bon retour
+//exit status grace a waitpid
 
 void	echo_command(t_token *lst_token, int n_flag, int fd_out)
 {

@@ -69,12 +69,14 @@ int	check_synthax_redirection(t_token *lst_token, t_shell *shell)
 		if (temp->type == REDIR_IN && (temp->next->type == REDIR_OUT
 				|| temp->next->type == APPEND))
 		{
+			shell->exit = 2;
 			perror("bash: syntax error near unexpected token `>'\n");
 			return (1);
 		}
 		else if (temp->type == REDIR_OUT && (temp->next->type == REDIR_IN
 				|| temp->next->type == HEREDOC))
 		{
+			shell->exit = 2;
 			perror("bash: syntax error near unexpected token `<'\n");
 			return (1);
 		}
@@ -82,6 +84,7 @@ int	check_synthax_redirection(t_token *lst_token, t_shell *shell)
 				|| temp->next->type == APPEND || temp->next->type == REDIR_OUT
 				|| temp->next->type == HEREDOC))
 		{
+			shell->exit = 2;
 			perror("bash: syntax error near unexpected token `<<'\n");
 			return (1);
 		}
@@ -89,12 +92,14 @@ int	check_synthax_redirection(t_token *lst_token, t_shell *shell)
 				|| temp->next->type == APPEND || temp->next->type == REDIR_OUT
 				|| temp->next->type == HEREDOC))
 		{
+			shell->exit = 2;
 			perror("bash: syntax error near unexpected token `>>'\n");
 			return (1);
 		}
 		else if ((temp->type == REDIR_IN || temp->type == APPEND
 				|| temp->type == HEREDOC) && temp->next->type == PIPE)
 		{
+			shell->exit = 2;
 			perror("bash: syntax error near unexpected token `|'\n");
 			return (1);
 		}

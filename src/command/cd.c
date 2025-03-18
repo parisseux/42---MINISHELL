@@ -15,6 +15,7 @@ void	cd_command(t_token *lst_token, t_shell *shell)
 		if (!home)
 		{
 			write(STDERR_FILENO, "cd: HOME not set\n", 17);
+			shell->exit = 1;
 			return ;
 		}
 		path = home;
@@ -24,5 +25,6 @@ void	cd_command(t_token *lst_token, t_shell *shell)
 		write(STDERR_FILENO, "cd: ", 4);
 		write(STDERR_FILENO, path, ft_strlen(path));
 		write(STDERR_FILENO, ": No such file or directory\n", 28);
+		shell->exit = 2;
 	}
 }

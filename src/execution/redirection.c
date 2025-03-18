@@ -1,40 +1,43 @@
 #include "../inc/minishell.h"
 
-void	look_for_fd_heredoc(t_token *token, int *fd)
+int	look_for_fd_heredoc(t_token *token, int *fd, t_shell *shell)
 {
 	int		fd_pipe[2];
 	char	*stop;
 	int pid;
+	int status;
 
 	if (pipe(fd_pipe) == -1)
 	{
 		perror("pipe");
-		exit(1);
+		return (1);
 	}
 	pid  = fork();
 	if (pid < 0)
 	{
 		perror("fork");
-		exit(1);
+		return (1);
 	}
 	else if (pid  == 0)
 	{
 		restore_signals();
 		close(fd_pipe[0]);
 		stop = ft_strdup(token->value);
-		handle_heredoc_prompt(fd_pipe[1], stop);
+		handle_heredoc_prompt(fd_pipe[1], stop, shell);
 		free(stop);
 		close(fd_pipe[1]);
 		exit(0);
 	}
 	close(fd_pipe[1]);
 	signal(SIGINT, SIG_IGN);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &status, 0);
+	extract_exit_status(status, shell);
 	init_signals();
 	*fd = fd_pipe[0];
+	return (0);
 }
 
-void	look_for_fd_append(t_token *token, int *fd)
+int	look_for_fd_append(t_token *token, int *fd, t_shell *shell)
 {
 	if (*fd != -1)
 		close(*fd);
@@ -42,11 +45,13 @@ void	look_for_fd_append(t_token *token, int *fd)
 	if (*fd == -1)
 	{
 		perror("open");
-		exit(1);
+		shell->exit = 1;
+		return (1);
 	}
+	return (0);
 }
 
-void	look_for_fd_output(t_token *token, int *fd)
+int	look_for_fd_output(t_token *token, int *fd, t_shell *shell)
 {
 	if (*fd != -1)
 		close(*fd);
@@ -54,12 +59,14 @@ void	look_for_fd_output(t_token *token, int *fd)
 	if (*fd == -1)
 	{
 		perror("open");
-		exit(1);
+		shell->exit = 1;
+		return (1);
 	}
+	return (0);
 }
 
 //if < will recoer the fd and send it so the execve know
-void	look_for_fd_input(t_token *token, int *fd)
+int	look_for_fd_input(t_token *token, int *fd, t_shell *shell)
 {
 	if (*fd != -1)
 		close (*fd);
@@ -67,14 +74,16 @@ void	look_for_fd_input(t_token *token, int *fd)
 	if (*fd == -1)
 	{
 		perror("open");
-		exit(1);
+		shell->exit = 1;
+		return (1);
 	}
+	return (0);
 }
 
 //handle the redirection in the case of non builtin cmd
 //look for the fd of the input and output
 //file and send it to the function to eecute
-void	handle_redir(t_token *lst_token, int *fd_in, int *fd_out)
+int	handle_redir(t_token *lst_token, int *fd_in, int *fd_out, t_shell *shell)
 {
 	t_token	*temp;
 
@@ -82,13 +91,26 @@ void	handle_redir(t_token *lst_token, int *fd_in, int *fd_out)
 	while (temp->type != END)
 	{
 		if (temp->type == REDIR_OUT)
-			look_for_fd_output(temp->next, fd_out);
+		{
+			if (look_for_fd_output(temp->next, fd_out, shell) == 1)
+				return (1);
+		}
 		else if (temp->type == APPEND)
-			look_for_fd_append(temp->next, fd_out);
+		{
+			if (look_for_fd_append(temp->next, fd_out, shell) == 1)
+				return (1);
+		}
 		else if (temp->type == HEREDOC)
-			look_for_fd_heredoc(temp->next, fd_in);
+		{
+			if (look_for_fd_heredoc(temp->next, fd_in, shell) == 1)
+			return (1);
+		}
 		else if (temp->type == REDIR_IN)
-			look_for_fd_input(temp->next, fd_in);
+		{
+			if (look_for_fd_input(temp->next, fd_in, shell) == 1)
+				return (1);
+		}
 		temp = temp->next;
 	}
+	return (0);
 }
