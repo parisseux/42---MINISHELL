@@ -7,18 +7,18 @@
 //minishell$ echo<<file ->pas bon retour
 //exit status grace a waitpid
 
-void	echo_command(t_token *lst_token, int n_flag, int fd_out)
+void	echo_command(t_token *lst_token, int n_flag)
 {
 	char	*line;
-	int		saved_stdout;
+	// int		saved_stdout;
 	int		type;
 
-	saved_stdout = dup(STDOUT_FILENO);
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
+	//saved_stdout = dup(STDOUT_FILENO);
+	// if (fd_out != -1)
+	// {
+	// 	dup2(fd_out, STDOUT_FILENO);
+	// 	close(fd_out);
+	// }
 	while (lst_token->type == WORD || lst_token->type == SQUOTE || lst_token->type == DQUOTE )
 	{
 		line = lst_token->value;
@@ -26,9 +26,9 @@ void	echo_command(t_token *lst_token, int n_flag, int fd_out)
 		if (*line)
 		{
 			if (type == SQUOTE)
-				echo_single_quote(&line, fd_out);
+				echo_single_quote(&line);
 			else if (type == DQUOTE)
-				echo_double_quote(&line, fd_out);
+				echo_double_quote(&line);
 			else
 				echo_no_quote(&line);
 		}
@@ -39,40 +39,22 @@ void	echo_command(t_token *lst_token, int n_flag, int fd_out)
 		}
 		lst_token = lst_token->next;
 	}
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
+	// dup2(saved_stdout, STDOUT_FILENO);
+	// close(saved_stdout);
 }
 
-void	echo_single_quote(char **line, int fd_out)
+void	echo_single_quote(char **line)
 {
-	int	saved_stdout;
 
-	saved_stdout = dup(STDOUT_FILENO);
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
 	write (STDOUT_FILENO, *line, ft_strlen(*line));
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
 }
 // if (**line == '\'')
 // 	(*line)++; rajouter commme dans expand_var ??
 
-void	echo_double_quote(char **line, int fd_out)
+void	echo_double_quote(char **line)
 {
-	int	saved_stdout;
-
-	saved_stdout = dup(STDOUT_FILENO);
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
 	write(STDOUT_FILENO, *line, ft_strlen(*line));
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
+
 }
 
 void	echo_no_quote(char **line)

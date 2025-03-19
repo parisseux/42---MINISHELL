@@ -51,6 +51,13 @@ typedef struct s_file
 	char	*file_name;
 }	t_file;
 
+// pipe
+void	close_all_pipes(int pipefd[][2], int n_pipes);
+void	wait_all_pids(int *pids, int *status,  int n_cmd);
+void	create_all_pipes(int pipefd[][2], int n_pipes);
+void handle_first_cmd(t_token *lst_token, t_shell *shell, int pipefd[][2], int n_pipes);
+void handle_last_cmd(t_token *lst_token, t_shell *shell, int pipefd[][2], int n_pipes);
+
 //signals 
 void    init_signals(void);
 void	sigint_handler(int sig);
@@ -66,30 +73,28 @@ int		is_builtin(t_token *lst_token);
 char	*ft_strjoin_paths(char *dir, char *cmd);
 char	*get_env_value(char **env, char *key);
 char	*find_cmd_path(char *cmd, char **env);
-void	execve_non_builtin(t_token *lst_token, t_shell *shell,
-			int fd_out, int fd_in);
+void	execve_non_builtin(t_token *lst_token, t_shell *shell);
 char	**find_cmd_args(t_token *lst_token);
 int		is_redir(t_token *lst_token);
-int	is_def(t_token *lst_token);
-int	handle_redir(t_token *lst_token, int *fd_in, int *fd_out, t_shell *shell);
+int		is_def(t_token *lst_token);
+int		handle_redir(t_token *lst_token, t_shell *shell);
 void	handle_heredoc_prompt( int fd_write, char *stop, t_shell *shell);
-void	non_builtin_cmd(t_token *lst_token, t_shell *shell, int fd_in, int fd_out);
-void	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out);
-void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out);
-void	builtin_parent_process(t_token *lst_token,
-	t_shell *shell, int fd_out);
+void	non_builtin_cmd(t_token *lst_token, t_shell *shell);
+void	builtin_child_process(t_token *lst_token, t_shell *shell);
+void	builtin_parent_process(t_token *lst_token, t_shell *shell);
+void restore_and_close_fd(int saved_stdout, int saved_stdin);
 
 //command
 void	cd_command(t_token *lst_token, t_shell *shell);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
-void	env_command(t_shell *shell, t_token *lst_token, int fd_out);
-void	pwd_command(int fd_out);
+void	env_command(t_shell *shell, t_token *lst_token);
+void	pwd_command(void);
 int	extract_exit_status(int status, t_shell *shell);
 
 //echo_command
-void	echo_command(t_token *lst_token, int n_flag, int fd_out);
-void	echo_single_quote(char **line, int fd_out);
-void	echo_double_quote(char **line, int fd_out);
+void	echo_command(t_token *lst_token, int n_flag);
+void	echo_single_quote(char **line);
+void	echo_double_quote(char **line);
 void	echo_no_quote(char **line);
 int		echo_check_n_flag(char **line);
 
@@ -129,10 +134,10 @@ t_file	*open_file(t_token *lst_token, int type);
 void	exit_command(t_token *lst_token, t_shell *shell);
 
 //exports 
-void	print_export(t_shell *shell, int fd_out);
+void	print_export(t_shell *shell);
 int		add_var_to_env(char **var_env, char *value, int shell);
 int		good_varname(char *name);
-void	export_command(t_token *lst_token, t_shell *shell, int fd_out);
+void	export_command(t_token *lst_token, t_shell *shell);
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);

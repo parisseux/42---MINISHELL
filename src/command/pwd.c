@@ -2,21 +2,21 @@
 
 //exit status grace a waitpid
 
-void	pwd_command(int fd_out)
+void	pwd_command(void)
 {
 	char	*pwd;
-	int		saved_stdout;
+	// int		saved_stdout;
 
-	saved_stdout = dup(STDOUT_FILENO);
+	// saved_stdout = dup(STDOUT_FILENO);
 	pwd = getcwd(NULL, 0);
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
+	// if (fd_out != -1)
+	// {
+	// 	dup2(fd_out, STDOUT_FILENO);
+	// 	close(fd_out);
+	// }
 	write(STDOUT_FILENO, pwd, ft_strlen(pwd));
 	write(STDOUT_FILENO, "\n", 1);
 	free(pwd);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
+	// dup2(saved_stdout, STDOUT_FILENO);
+	// close(saved_stdout);
 }

@@ -2,18 +2,18 @@
 
 // a revoir
 //meme chose il faut introduire fd_out et corriger les prints pour des write
-void	print_export(t_shell *shell, int fd_out)
+void	print_export(t_shell *shell)
 {
 	int	i;
-	int	saved_stdout;
+	// int	saved_stdout;
 
 	i = 0;
-	saved_stdout = dup(STDOUT_FILENO);
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
+	// saved_stdout = dup(STDOUT_FILENO);
+	// if (fd_out != -1)
+	// {
+	// 	dup2(fd_out, STDOUT_FILENO);
+	// 	close(fd_out);
+	// }
 	while (shell->var_env[i])
 	{
 		write(STDOUT_FILENO, "declare -x ", 11);
@@ -21,8 +21,8 @@ void	print_export(t_shell *shell, int fd_out)
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
+	// dup2(saved_stdout, STDOUT_FILENO);
+	// close(saved_stdout);
 }
 
 // add a la fin pas exactement pareil mais bon ...
@@ -80,14 +80,14 @@ void	export_message_error(char *value, t_shell *shell)
 	shell->exit = 1;
 }
 
-void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
+void	export_command(t_token *lst_token, t_shell *shell)
 {
 	t_token	*tmp;
 
 	tmp = lst_token->next;
 	if (tmp->type == END)
 	{
-		print_export(shell, fd_out);
+		print_export(shell);
 		return ;
 	}
 	while (tmp->type != END)

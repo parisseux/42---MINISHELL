@@ -13,7 +13,7 @@ int	start_minishell(t_shell *shell, char *input)
 	if (!lst_token)
 	{
 		free(input);
-		return -1;
+		return 1;
 	}
 	if (lst_token->type == END)
 		return (0);
@@ -22,7 +22,7 @@ int	start_minishell(t_shell *shell, char *input)
 	if (check_syntax_error(lst_token, shell))
 	{
 		free(input);
-		return -1;
+		return (1);
 	}
 	execution(lst_token, shell);
 	return (0);
@@ -71,8 +71,8 @@ int	main(int ac, char **av, char **env)
 			break ;
 		else
 			add_history(input);
-		if (start_minishell(&shell, input) == -1)
-			return (EXIT_FAILURE);
+		if (start_minishell(&shell, input) == 1)
+			return (shell.exit);
 		free(input);
 	}
 	clean_exit(EXIT_SUCCESS, NULL, shell.var_env, shell.shell_env);
