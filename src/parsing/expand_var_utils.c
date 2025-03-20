@@ -57,7 +57,7 @@ char	*add(char *new_value, char *value, int name_len)
 {
 	char	*tmp;
 	int		i;
-	int		j;
+	size_t	j;
 	int		size;
 
 	i = 0;
@@ -74,6 +74,11 @@ char	*add(char *new_value, char *value, int name_len)
 		tmp[i] = new_value[name_len];
 		i++;
 		name_len++;
+	}
+	if (j >= ft_strlen(value))
+	{
+		tmp[i] = '\0';
+		return (tmp);
 	}
 	ft_strcat(tmp, value + j);
 	free(value);
