@@ -84,7 +84,6 @@ t_token *token_var(char **input)
     int     len;
 
     len = 0;
-    new = NULL;
     copy = ft_strdup(*input);
     while (**input != ' ' && !ft_strchr("|<>", **input) && **input!= '\0')
     {
@@ -95,8 +94,10 @@ t_token *token_var(char **input)
     new = rm_quotes(copy);
     if (!new)
         new_token = NULL;
-    else
+    else if (!good_varname(new))
         new_token = create_token(new, DEF);
+    else
+        new_token = create_token(new, WORD);
     free(copy);
     new = NULL;
     if (!new_token)

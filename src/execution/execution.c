@@ -68,7 +68,7 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell, int fd_out)
 	temp = lst_token;
 	while (temp->type != END)
 	{
-		if (temp->type == WORD)
+		if (temp->type == WORD || temp->type == DEF)
 		{
 			if (!ft_strncmp(temp->value, "cd", 3)
 				|| !ft_strncmp(temp->value, "export", 7)
@@ -109,7 +109,7 @@ void	execution(t_token *lst_token, t_shell *shell)
 	{
 		if (handle_redir(lst_token, &fd_in, &fd_out, shell) == 1)
 		 	return ;
-		if (is_def(lst_token))
+		if (is_def(lst_token) && ft_strncmp(lst_token->value, "export", 7))
 			return ;
 		if (is_builtin(lst_token))
 			builtin_cmd(lst_token, shell, fd_out);
