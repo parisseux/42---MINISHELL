@@ -18,9 +18,9 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 		if (pids[i] == 0)
 		{
 			if (i == 0)
-				handle_first_cmd(lst_token, shell, pipefd, n_pipes);
+				handle_first_cmd(&lst_token, shell, pipefd, n_pipes);
 			else if (i == n_pipes)
-				handle_last_cmd(lst_token, shell, pipefd, n_pipes);
+			 	handle_last_cmd(&lst_token, shell, pipefd, n_pipes);
 			// else 
 			// 	handle_middle_cmd(lst_token, shell, i, pipefd);
 		}
@@ -69,7 +69,8 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell)
 	temp = lst_token;
 	saved_stdout = dup(STDOUT_FILENO);
 	saved_stdin = dup(STDIN_FILENO);
-	handle_redir(lst_token, shell);
+	if (handle_redir(lst_token, shell) == 1)
+		return ;
 	while (temp->type != END)
 	{
 		if (temp->type == WORD)
@@ -97,6 +98,20 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell)
 	restore_and_close_fd(saved_stdout, saved_stdin);
 }
 
+
+void exec_one_cmd(t_token *lst_token, t_shell *shell)
+{
+	if (is_builtin(lst_token))
+		builtin_cmd(lst_token, shell);
+	else 
+	{
+		if (handle_redir(lst_token, shell) == 1)
+			return ;
+		if (is_def(lst_token))
+			return ;
+		non_builtin_cmd(lst_token, shell);
+		}
+}
 //divise l'execution en trois
 //      pas de pipe et builtin cmd
 //      pas de pipe et non builtin cmd
@@ -109,16 +124,6 @@ void	execution(t_token *lst_token, t_shell *shell)
 	}
 	else
 	{
-		if (is_builtin(lst_token))
-			builtin_cmd(lst_token, shell);
-		else 
-		{
-			if (handle_redir(lst_token, shell) == 1)
-				return ;
-			if (is_def(lst_token))
-				return ;
-			non_builtin_cmd(lst_token, shell);
-		}
-
+		exec_one_cmd(lst_token, shell);
 	}
 }

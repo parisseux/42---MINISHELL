@@ -55,8 +55,10 @@ typedef struct s_file
 void	close_all_pipes(int pipefd[][2], int n_pipes);
 void	wait_all_pids(int *pids, int *status,  int n_cmd);
 void	create_all_pipes(int pipefd[][2], int n_pipes);
-void handle_first_cmd(t_token *lst_token, t_shell *shell, int pipefd[][2], int n_pipes);
-void handle_last_cmd(t_token *lst_token, t_shell *shell, int pipefd[][2], int n_pipes);
+void	handle_first_cmd(t_token **lst_token, t_shell *shell, int pipefd[][2], int n_pipes);
+void	handle_last_cmd(t_token **lst_token, t_shell *shell, int pipefd[][2], int n_pipes);
+void	go_to_next_pipe(t_token **lst_token);
+t_token *create_mini_list_token(t_token *lst_token);
 
 //signals 
 void    init_signals(void);
@@ -83,6 +85,7 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell);
 void	builtin_child_process(t_token *lst_token, t_shell *shell);
 void	builtin_parent_process(t_token *lst_token, t_shell *shell);
 void restore_and_close_fd(int saved_stdout, int saved_stdin);
+void exec_one_cmd(t_token *lst_token, t_shell *shell);
 
 //command
 void	cd_command(t_token *lst_token, t_shell *shell);
