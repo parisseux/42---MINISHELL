@@ -98,6 +98,11 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 			if (*value == '$')
 			{
 				name = dolar_sign(&value);
+				// if (name)
+				// {
+				// 	write (1, name, ft_strlen(name));
+				// 	write (1, "\n", 1);					
+				// }
 				if (name)
 				{
 					free(lst_token->value);
@@ -109,6 +114,7 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 					free(lst_token->value);
 					lst_token->value = dolar_special_cases(&value, value2, shell);
 				}
+				value2 = ft_strdup(lst_token->value);
 			}
 			value++;
 		}

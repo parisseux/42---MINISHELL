@@ -33,7 +33,7 @@ int	check_first_last_token(t_token *lst_token, t_shell *shell)
 	else if (temp->type == REDIR_IN || temp->type == REDIR_OUT
 		|| temp->type == HEREDOC || temp->type == APPEND)
 	{
-		perror("bash: syntax error near unexpected token `newline'\n");
+		perror("bash: syntax error near unexpected token `newline'\n"); // affiche : Success dans le terminal
 		shell->exit = 2;
 		return (1);
 	}

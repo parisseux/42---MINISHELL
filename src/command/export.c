@@ -26,6 +26,34 @@ void	print_export(t_shell *shell, int fd_out)
 	close(saved_stdout);
 }
 
+int	new_tab(int i, char **var_env, char *value)
+{
+	char	**new_env;
+	int		j;
+
+	new_env = malloc(sizeof(char *) * (i + 2));
+    // if (!new_env)
+    //     return (1);
+	j = 0;
+	while (j < i)
+	{
+		new_env[j] = var_env[j];
+		j++;
+	}
+	i++;
+	write (1, value, ft_strlen(value));
+	new_env[i] = ft_strdup(value);
+    new_env[i + 1] = NULL;
+	j = 0;
+	while (j < i)
+	{
+		var_env[j] = ft_strdup(new_env[j]);
+		j++;
+	}
+	var_env[j + 1] = NULL;
+	return (0);
+}
+
 // add a la fin pas exactement pareil mais bon ...
 int	add_var_to_env(char **var_env, char *value, int shell)
 {
@@ -51,9 +79,12 @@ int	add_var_to_env(char **var_env, char *value, int shell)
 	}
 	if (!check && shell == 0)
 	{
+		// new_tab(i, var_env, value);
+
 		var_env[i] = ft_strdup(value);
-		var_env[i + 1] = NULL;			
+		var_env[i + 1] = NULL;
 	}
+				
 	return (0);
 }
 
@@ -93,14 +124,10 @@ void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
 	}
 	while (tmp->type != END)
 	{
-		ft_putnbr_fd(tmp->type, 1);
-		write (1, "\n", 1);
 		if (tmp->type == DEF)
 		{
-			write (1, "ya var\n", 7);
 			if (good_varname(tmp->value))
 			{
-				write (1, "name pas ok\n", 12);
 				export_message_error(tmp->value, shell);
 				return ;
 			}

@@ -9,7 +9,6 @@ void	builtin_parent_process(t_token *lst_token,
 	temp = lst_token;
 	while (temp->type != END)
 	{
-		ft_putnbr_fd(temp->type, 1);
 		if (temp->type == WORD || temp->type == DEF)
 		{
 			if (!ft_strncmp(temp->value, "cd", 3))
@@ -19,7 +18,6 @@ void	builtin_parent_process(t_token *lst_token,
 			}
 			else if (!ft_strncmp(temp->value, "export", 7))
 			{
-				write (1, "exporting\n", 10);
 				export_command(temp, shell, fd_out);
 				break ;
 			}
