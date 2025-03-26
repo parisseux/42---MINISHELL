@@ -8,7 +8,15 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 	int status;
 	int pids[n_pipes + 1];
 	int i;
+	t_token *cmds[n_pipes + 2];
 
+	i = 0;
+	while (i < n_pipes + 1)
+	{
+		cmds[i] = create_mini_list(&lst_token);
+		i++;
+	}
+	cmds[n_pipes + 1] = NULL;
 	create_all_pipes(pipefd, n_pipes);
 	i = 0;
 	while (i < n_pipes + 1)
@@ -18,12 +26,18 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 		if (pids[i] == 0)
 		{
 			if (i == 0)
-				handle_first_cmd(&lst_token, shell, pipefd, n_pipes);
+				handle_first_cmd(cmds[i], shell, pipefd);
 			else if (i == n_pipes)
-			 	handle_last_cmd(&lst_token, shell, pipefd, n_pipes);
-			// else 
-			// 	handle_middle_cmd(lst_token, shell, i, pipefd);
+			 	handle_last_cmd(cmds[i], shell, pipefd, n_pipes);
+			else 
+				handle_middle_cmd(cmds[i], shell, pipefd, i);
 		}
+		i++;
+	}
+	i = 0;
+	while (i < n_pipes + 1)
+	{
+		free_token_list(cmds[i]);
 		i++;
 	}
 	close_all_pipes(pipefd, n_pipes);
@@ -110,7 +124,7 @@ void exec_one_cmd(t_token *lst_token, t_shell *shell)
 		if (is_def(lst_token))
 			return ;
 		non_builtin_cmd(lst_token, shell);
-		}
+	}
 }
 //divise l'execution en trois
 //      pas de pipe et builtin cmd
@@ -119,11 +133,7 @@ void exec_one_cmd(t_token *lst_token, t_shell *shell)
 void	execution(t_token *lst_token, t_shell *shell)
 {
 	if (is_pipe(lst_token))
-	{
 		exec_with_pipe(lst_token, shell, is_pipe(lst_token));
-	}
 	else
-	{
 		exec_one_cmd(lst_token, shell);
-	}
 }
