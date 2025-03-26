@@ -7,6 +7,14 @@ void	skip_space(char **input)
 		(*input)++;
 }
 
+int	spaces(char input)
+{
+	if (input == ' ' || input == '\t' || input == '\v'
+		|| input == '\r' || input == '\n' || input == '\f')
+		return (1);
+	return (0);
+}
+
 void	print_token_list(t_token *lst_token)
 {
 	t_token	*current;

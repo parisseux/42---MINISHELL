@@ -106,9 +106,9 @@ int	good_varname(char *name)
 
 void	export_message_error(char *value, t_shell *shell)
 {
-	write(STDOUT_FILENO, "minishell: export: ", 19);
+	write(STDOUT_FILENO, "minishell: export: `", 20);
 	write(STDOUT_FILENO, value, ft_strlen(value));
-	write(STDOUT_FILENO, ": not a valid identifier\n", 25);
+	write(STDOUT_FILENO, "': not a valid identifier\n", 26);
 	shell->exit = 1;
 }
 
@@ -124,7 +124,7 @@ void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
 	}
 	while (tmp->type != END)
 	{
-		if (tmp->type == DEF)
+		if (tmp->type == DEF || tmp->type == WORD)
 		{
 			if (good_varname(tmp->value))
 			{

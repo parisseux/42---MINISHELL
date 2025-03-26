@@ -33,6 +33,7 @@ typedef enum e_token_type
 	SQUOTE,
 	DQUOTE,
 	DEF,
+	BIN,
 	END
 }	t_token_type;
 
@@ -100,6 +101,7 @@ int		print_or_file(t_token *lst_token);
 //utils
 void	ft_free_char_tab(char **tab);
 void	skip_space(char **input);
+int		spaces(char input);
 void	print_token_list(t_token *lst_token);
 void	msg_error(char *msg, t_token *lst_token);
 void	free_token_list(t_token *lst_token);
@@ -157,5 +159,13 @@ void	prep_var_shell(char ***var);
 // detect_var
 t_token	*token_var(char **input);
 int 	detect_var(char *input);
+int		in_quote(char pipe_or_else, char *input);
+
+int not_cmd(t_token *lst_token);
+
+//bin_path
+void	execve_bin_token(t_token *lst_token, t_shell *shell, int fd_out, int fd_in);
+t_token *bin_path(char **input);
+int     is_bin_path(t_token *lst_token);
 
 #endif
