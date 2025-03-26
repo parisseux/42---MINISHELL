@@ -27,10 +27,10 @@ int	closed_quotes(char *copy, char quote, int i)
 	i++;
 	while (copy[i] != '\0')
 	{
-		if (copy[i] == quote)
-			return (len);
 		i++;
 		len++;
+		if (copy[i] == quote)
+			return (len);
 	}
 	return (-1);
 }
@@ -114,7 +114,7 @@ t_token	*token_var(char **input)
 
 	len = 0;
 	copy = ft_strdup(*input);
-	while (**input != ' ' && (!ft_strchr("|<>", **input) || in_quote(**input, copy)) && **input != '\0')
+	while ((**input != ' ' || in_quote(**input, copy)) && (!ft_strchr("|<>", **input) || in_quote(**input, copy)) && **input != '\0')
 	{
 		len++;
 		(*input)++;
