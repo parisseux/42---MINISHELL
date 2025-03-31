@@ -132,7 +132,7 @@ void	exit_command(t_token *lst_token, t_shell *shell);
 
 //exports 
 void	print_export(t_shell *shell, int fd_out);
-int		add_var_to_env(char **var_env, char *value, int shell);
+char	**add_var_to_env(char **var_env, char *value, int shell);
 int		good_varname(char *name);
 void	export_command(t_token *lst_token, t_shell *shell, int fd_out);
 
