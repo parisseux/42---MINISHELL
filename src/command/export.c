@@ -26,40 +26,42 @@ void	print_export(t_shell *shell, int fd_out)
 	close(saved_stdout);
 }
 
-int	new_tab(int i, char **var_env, char *value)
+char **new_tab(char **var_env, char *value, char **new_env, int add)
 {
-	char	**new_env;
 	int		j;
 
-	new_env = malloc(sizeof(char *) * (i + 2));
-    // if (!new_env)
-    //     return (1);
 	j = 0;
-	while (j < i)
+	if (add == 1)
 	{
-		new_env[j] = var_env[j];
-		j++;
+		while (var_env[j] != NULL)
+		{
+			if (var_env[j + 1] == NULL)
+			{
+				new_env[j] = ft_strdup(var_env[j]);
+				new_env[j + 1] = ft_strdup(value);
+			}
+			else
+				new_env[j] = ft_strdup(var_env[j]);
+			j++;
+		}		
 	}
-	i++;
-	write (1, value, ft_strlen(value));
-	new_env[i] = ft_strdup(value);
-    new_env[i + 1] = NULL;
-	j = 0;
-	while (j < i)
+	else
 	{
-		var_env[j] = ft_strdup(new_env[j]);
-		j++;
+		while (var_env[j] != NULL)
+		{
+			new_env[j] = ft_strdup(var_env[j]);
+			j++;
+		}
 	}
-	var_env[j + 1] = NULL;
-	return (0);
+	return (new_env);
 }
 
-// add a la fin pas exactement pareil mais bon ...
-int	add_var_to_env(char **var_env, char *value, int shell)
+char	**add_var_to_env(char **var_env, char *value, int shell)
 {
 	int	i;
 	int	j;
-	int	check;
+	int check;
+	char	**tmp;
 
 	i = 0;
 	j = 0;
@@ -73,20 +75,24 @@ int	add_var_to_env(char **var_env, char *value, int shell)
 			free(var_env[i]);
 			var_env[i] = ft_strdup(value);
 			check = 1;
-			return (1);
 		}
 		i++;
 	}
-	if (!check && shell == 0)
+	if (check == 1)
 	{
-		// new_tab(i, var_env, value);
-
-		var_env[i] = ft_strdup(value);
-		var_env[i + 1] = NULL;
+		tmp = ft_calloc(sizeof(char *), i + 1);
+		new_tab(var_env, value, tmp, 0);
+		return (tmp);		
 	}
-				
-	return (0);
+	if (shell == 0)
+	{
+		tmp = ft_calloc(sizeof(char *), i + 2);
+		new_tab(var_env, value, tmp, 1);
+		return (tmp);
+	}		
+	return (NULL);
 }
+
 
 int	good_varname(char *name)
 {
@@ -115,6 +121,7 @@ void	export_message_error(char *value, t_shell *shell)
 void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
 {
 	t_token	*tmp;
+	char	**tab;
 
 	tmp = lst_token->next;
 	if (tmp->type == END)
@@ -132,7 +139,11 @@ void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
 				return ;
 			}
 			else
-				add_var_to_env(shell->var_env, tmp->value, 0);
+			{
+				tab = add_var_to_env(shell->var_env, tmp->value, 0);
+				ft_free_char_tab(shell->var_env);
+				shell->var_env = tab;				
+			}
 		}
 		tmp = tmp->next;
 	}

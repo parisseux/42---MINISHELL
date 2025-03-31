@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-int not_cmd(t_token *lst_token)
+int not_cmd(t_token *lst_token) // ajouter tout le reste ?
 {
     t_token *tmp;
 
