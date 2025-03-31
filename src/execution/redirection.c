@@ -70,6 +70,7 @@ int	look_for_fd_input(t_token *token, int *fd, t_shell *shell)
 {
 	if (*fd != -1)
 		close (*fd);
+	ft_putstr_fd("look foor input\n", 1);
 	*fd = open(token->value, O_RDONLY);
 	if (*fd == -1)
 	{

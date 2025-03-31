@@ -69,8 +69,7 @@ int	main(int ac, char **av, char **env)
 		input = readline("\033[35mminishell$ \033[0m");
 		if (!input)
 			break ;
-		else
-			add_history(input);
+		add_history(input);
 		if (start_minishell(&shell, input) == 1)
 			return (shell.exit);
 		free(input);

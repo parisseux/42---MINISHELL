@@ -4,12 +4,13 @@
 // pipefd[1] → is the writing end ✍️
 void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 {
-	int pipefd[n_pipes][2];
+	int pipefd[n_pipes + 1][2];
 	int status;
 	int pids[n_pipes + 1];
 	int i;
 	t_token *cmds[n_pipes + 2];
 
+	ft_memset(pipefd, 0, sizeof(pipefd));
 	i = 0;
 	while (i < n_pipes + 1)
 	{
@@ -26,11 +27,11 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 		if (pids[i] == 0)
 		{
 			if (i == 0)
-				handle_first_cmd(cmds[i], shell, pipefd);
+				handle_first_cmd(cmds[i], shell, pipefd, n_pipes);
 			else if (i == n_pipes)
 			 	handle_last_cmd(cmds[i], shell, pipefd, n_pipes);
 			else 
-				handle_middle_cmd(cmds[i], shell, pipefd, i);
+				handle_middle_cmd(cmds[i], shell, pipefd, i, n_pipes);
 		}
 		i++;
 	}
@@ -111,7 +112,6 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell)
 	}
 	restore_and_close_fd(saved_stdout, saved_stdin);
 }
-
 
 void exec_one_cmd(t_token *lst_token, t_shell *shell)
 {

@@ -55,13 +55,13 @@ typedef struct s_file
 void	close_all_pipes(int pipefd[][2], int n_pipes);
 void	wait_all_pids(int *pids, int *status,  int n_cmd);
 void	create_all_pipes(int pipefd[][2], int n_pipes);
-void	handle_first_cmd(t_token *mini_lst, t_shell *shell, int pipefd[][2]);
+void	handle_first_cmd(t_token *mini_lst, t_shell *shell, int pipefd[][2], int n_pipes);
 void	handle_last_cmd(t_token *mini_lst, t_shell *shell, int pipefd[][2], int n_pipes);
 void	go_to_next_pipe(t_token **lst_token);
 t_token *create_mini_list_token(t_token *lst_token);
 t_token *create_mini_list(t_token **lst_token);
-void handle_middle_cmd(t_token *lst, t_shell *shell, int pipefd[][2], int i);
-
+void handle_middle_cmd(t_token *lst, t_shell *shell, int pipefd[][2], int i, int n_pipes);
+void close_all_pipes_except(int pipefd[][2], int i, int n_pipes);
 //signals 
 void    init_signals(void);
 void	sigint_handler(int sig);

@@ -14,6 +14,22 @@ void	close_all_pipes(int pipefd[][2], int n_pipes)
 
 }
 
+void close_all_pipes_except(int pipefd[][2], int i, int n_pipes)
+{
+	int j;
+
+	j = 0;
+	while (j < n_pipes)
+	{
+		if (j!= i && j != i-1)
+		{
+			close(pipefd[j][0]);
+			close(pipefd[j][1]);
+		}
+		j++;
+	}
+}
+
 void	wait_all_pids(int *pids, int *status,  int n_cmd)
 {
 	int	i;
