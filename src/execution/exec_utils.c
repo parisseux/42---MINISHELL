@@ -26,9 +26,9 @@ char	*get_env_value(char **env, char *key)
 int	is_pipe(t_token *lst_token)
 {
 	t_token	*temp;
-	int pipe;
+	int		pipe;
 
-	pipe =0;
+	pipe = 0;
 	temp = lst_token;
 	while (temp->type != END)
 	{

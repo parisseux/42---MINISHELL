@@ -59,12 +59,12 @@ void	go_to_next_pipe(t_token **lst_token)
 {
 
 	if (!lst_token || !*lst_token)
-        return;
-    while (*lst_token && (*lst_token)->type != PIPE && (*lst_token)->type != END)
-        *lst_token = (*lst_token)->next;
+		return;
+	while (*lst_token && (*lst_token)->type != PIPE && (*lst_token)->type != END)
+		*lst_token = (*lst_token)->next;
 
-    if (*lst_token && (*lst_token)->type == PIPE)
-        *lst_token = (*lst_token)->next;
+	if (*lst_token && (*lst_token)->type == PIPE)
+		*lst_token = (*lst_token)->next;
 }
 
 t_token *create_mini_list_token(t_token *lst_token)

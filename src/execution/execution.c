@@ -4,11 +4,11 @@
 // pipefd[1] → is the writing end ✍️
 void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 {
-	int pipefd[n_pipes + 1][2];
-	int status;
-	int pids[n_pipes + 1];
-	int i;
-	t_token *cmds[n_pipes + 2];
+	int		pipefd[n_pipes + 1][2];
+	int		status;
+	int		pids[n_pipes + 1];
+	int		i;
+	t_token	*cmds[n_pipes + 2];
 
 	ft_memset(pipefd, 0, sizeof(pipefd));
 	i = 0;
@@ -23,14 +23,13 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 	while (i < n_pipes + 1)
 	{
 		pids[i] = fork();
-
 		if (pids[i] == 0)
 		{
 			if (i == 0)
 				handle_first_cmd(cmds[i], shell, pipefd, n_pipes);
 			else if (i == n_pipes)
-			 	handle_last_cmd(cmds[i], shell, pipefd, n_pipes);
-			else 
+				handle_last_cmd(cmds[i], shell, pipefd, n_pipes);
+			else
 				handle_middle_cmd(cmds[i], shell, pipefd, i, n_pipes);
 		}
 		i++;
@@ -61,10 +60,6 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	}
 	else if (pid == 0)
 	{
-		if (handle_redir(lst_token, shell) == 1)
-			return ;
-		if (is_def(lst_token))
-			return ;
 		restore_signals();
 		execve_non_builtin(lst_token, shell);
 	}	
@@ -83,7 +78,7 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell)
 {
 	t_token	*temp;
 	int		saved_stdout;
-	int saved_stdin;
+	int		saved_stdin;
 
 	temp = lst_token;
 	saved_stdout = dup(STDOUT_FILENO);
@@ -117,13 +112,20 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell)
 	restore_and_close_fd(saved_stdout, saved_stdin);
 }
 
-void exec_one_cmd(t_token *lst_token, t_shell *shell)
+void	exec_one_cmd(t_token *lst_token, t_shell *shell)
 {
 	if (is_builtin(lst_token))
 		builtin_cmd(lst_token, shell);
-	else 
+	else
+	{
+		if (handle_redir(lst_token, shell) == 1)
+			return ;
+		if (is_def(lst_token))
+			return ;
 		non_builtin_cmd(lst_token, shell);
+	}
 }
+
 //divise l'execution en trois
 //      pas de pipe et builtin cmd
 //      pas de pipe et non builtin cmd

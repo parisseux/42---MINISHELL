@@ -42,7 +42,7 @@ void	builtin_child_process(t_token *lst_token, t_shell *shell)
 {
 	int		pid;
 	t_token	*temp;
-	int status;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)
@@ -81,7 +81,8 @@ void	builtin_child_process(t_token *lst_token, t_shell *shell)
 		extract_exit_status(status, shell);
 	}
 }
-void restore_and_close_fd(int saved_stdout, int saved_stdin)
+
+void	restore_and_close_fd(int saved_stdout, int saved_stdin)
 {
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);

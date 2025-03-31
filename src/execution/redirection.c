@@ -4,8 +4,8 @@ int	look_for_fd_heredoc(t_token *token, int *fd, t_shell *shell)
 {
 	int		fd_pipe[2];
 	char	*stop;
-	int pid;
-	int status;
+	int		pid;
+	int		status;
 
 	if (pipe(fd_pipe) == -1)
 	{
@@ -70,7 +70,6 @@ int	look_for_fd_input(t_token *token, int *fd, t_shell *shell)
 {
 	if (*fd != -1)
 		close (*fd);
-	ft_putstr_fd("look foor input\n", 1);
 	*fd = open(token->value, O_RDONLY);
 	if (*fd == -1)
 	{
@@ -101,8 +100,8 @@ void change_fd(int fd_out, int fd_in)
 int	handle_redir(t_token *lst_token, t_shell *shell)
 {
 	t_token	*temp;
-	int	fd_in;
-	int	fd_out;
+	int		fd_in;
+	int		fd_out;
 
 	fd_in = -1;
 	fd_out = -1;
