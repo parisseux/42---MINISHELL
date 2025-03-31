@@ -94,12 +94,14 @@ char	**add_var_to_env(char **var_env, char *value, int shell)
 }
 
 
-int	good_varname(char *name)
+int	good_varname(char *name, char until)
 {
 	int	i;
 
 	i = 0;
-	while (name[i] != '=')
+	if (ft_isdigit(name[0]))
+		return (1);
+	while (name[i] != until)
 	{
 		if (!ft_isalnum(name[i]) && name[i] != '_')
 			return (1);
@@ -112,10 +114,22 @@ int	good_varname(char *name)
 
 void	export_message_error(char *value, t_shell *shell)
 {
-	write(STDOUT_FILENO, "minishell: export: `", 20);
-	write(STDOUT_FILENO, value, ft_strlen(value));
-	write(STDOUT_FILENO, "': not a valid identifier\n", 26);
-	shell->exit = 1;
+	if (!ft_strncmp(value, "-", 1))
+	{
+		write(STDOUT_FILENO, "minishell: export: -", 20);
+		write(STDOUT_FILENO, &value[1], 1);
+		write(STDOUT_FILENO, ": invalid option\n", 17);
+		write(STDOUT_FILENO, "export: usage: export [-fn] [name[=value] ...] or export -p\n", 60);
+		shell->exit = 2;	
+	}
+	else
+	{
+		write(STDERR_FILENO, "minishell: export: `", 20);
+		write(STDERR_FILENO, value, ft_strlen(value));
+		write(STDERR_FILENO, "': not a valid identifier\n", 26);
+		shell->exit = 1;		
+	}
+	
 }
 
 void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
@@ -131,20 +145,17 @@ void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
 	}
 	while (tmp->type != END)
 	{
-		if (tmp->type == DEF || tmp->type == WORD)
+		if (tmp->type == DEF || (ft_strchr(tmp->value, '=') && !good_varname(tmp->value, '=')))
 		{
-			if (good_varname(tmp->value))
-			{
-				export_message_error(tmp->value, shell);
-				return ;
-			}
-			else
-			{
-				tab = add_var_to_env(shell->var_env, tmp->value, 0);
-				ft_free_char_tab(shell->var_env);
-				shell->var_env = tab;				
-			}
+			tab = add_var_to_env(shell->var_env, tmp->value, 0);
+			ft_free_char_tab(shell->var_env);
+			shell->var_env = tab;
 		}
+		else if ((ft_strchr(tmp->value, '=') && good_varname(tmp->value, '=')) || good_varname(tmp->value, '\0'))
+			return (export_message_error(tmp->value, shell));
+		else
+			return ;
 		tmp = tmp->next;
 	}
 }
+

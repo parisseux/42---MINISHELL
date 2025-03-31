@@ -27,7 +27,7 @@ void    shell_var(t_token *lst_token, t_shell *shell)
     {
         if (tmp->type == DEF)
         {
-            if (good_varname(tmp->value))
+            if (good_varname(tmp->value, '='))
                 return ;
             if (add_var_to_env(shell->var_env, tmp->value, 1) == NULL)
             {

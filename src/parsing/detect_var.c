@@ -27,10 +27,10 @@ int	closed_quotes(char *copy, char quote, int i)
 	i++;
 	while (copy[i] != '\0')
 	{
-		i++;
-		len++;
 		if (copy[i] == quote)
 			return (len);
+		i++;
+		len++;
 	}
 	return (-1);
 }
@@ -126,7 +126,7 @@ t_token	*token_var(char **input)
 		write (1, "unclosed quotes \n", 17);
 		new_token = NULL;
 	}
-	else if (!good_varname(new))
+	else if (!good_varname(new, '='))
 		new_token = create_token(new, DEF);
 	else
 		new_token = create_token(new, WORD);
