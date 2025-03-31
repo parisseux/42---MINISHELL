@@ -61,6 +61,10 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	}
 	else if (pid == 0)
 	{
+		if (handle_redir(lst_token, shell) == 1)
+			return ;
+		if (is_def(lst_token))
+			return ;
 		restore_signals();
 		execve_non_builtin(lst_token, shell);
 	}	
@@ -118,13 +122,7 @@ void exec_one_cmd(t_token *lst_token, t_shell *shell)
 	if (is_builtin(lst_token))
 		builtin_cmd(lst_token, shell);
 	else 
-	{
-		if (handle_redir(lst_token, shell) == 1)
-			return ;
-		if (is_def(lst_token))
-			return ;
 		non_builtin_cmd(lst_token, shell);
-	}
 }
 //divise l'execution en trois
 //      pas de pipe et builtin cmd
