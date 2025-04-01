@@ -19,26 +19,34 @@ void	echo_command(t_token *lst_token, int n_flag, int fd_out)
 		dup2(fd_out, STDOUT_FILENO);
 		close(fd_out);
 	}
-	while (lst_token->type == WORD || lst_token->type == SQUOTE || lst_token->type == DQUOTE )
+	while (lst_token->type != END && lst_token->type != PIPE)
 	{
-		line = lst_token->value;
-		type = lst_token->type;
-		if (*line)
+		if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
+			|| lst_token->type == HEREDOC || lst_token->type == APPEND)
+			lst_token = lst_token->next->next;
+		else
 		{
-			if (type == SQUOTE)
-				echo_single_quote(&line, fd_out);
-			else if (type == DQUOTE)
-				echo_double_quote(&line, fd_out);
-			else
-				echo_no_quote(&line);
+			line = lst_token->value;
+			type = lst_token->type;
+			if (*line)
+			{
+				if (type == SQUOTE)
+					echo_single_quote(&line, fd_out);
+				else if (type == DQUOTE)
+					echo_double_quote(&line, fd_out);
+				else
+					echo_no_quote(&line);
+			}
+			// if (lst_token->next->type != WORD && lst_token->next->type != SQUOTE && lst_token->next->type != DQUOTE)
+			// {
+			// 	if (n_flag == 0)
+			// 		write(STDOUT_FILENO, "\n", 1);
+			// }
+			lst_token = lst_token->next;
 		}
-		if (lst_token->next->type != WORD && lst_token->next->type != SQUOTE && lst_token->next->type != DQUOTE)
-		{
-			if (n_flag == 0)
-				write(STDOUT_FILENO, "\n", 1);
-		}
-		lst_token = lst_token->next;
 	}
+	if (n_flag == 0)
+					write(STDOUT_FILENO, "\n", 1);
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdout);
 }
