@@ -48,7 +48,10 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell, int fd_in, int fd_out)
 	else if (pid == 0)
 	{
 		restore_signals();
-		execve_non_builtin(lst_token, shell, fd_out, fd_in);
+		if (is_bin_path(lst_token))
+			execve_bin_token(lst_token, shell, fd_out, fd_in);
+		else
+			execve_non_builtin(lst_token, shell, fd_out, fd_in);
 	}	
 	else
 	{

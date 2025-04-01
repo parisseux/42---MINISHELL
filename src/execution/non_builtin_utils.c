@@ -90,7 +90,7 @@ char	**find_cmd_args(t_token *lst_token)
 
 	temp = lst_token;
 	n = 0;
-	while (temp && (temp->type == WORD
+	while (temp && (temp->type == BIN || temp->type == WORD
 			|| temp->type == SQUOTE || temp->type == DQUOTE))
 	{
 		n++;

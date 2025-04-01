@@ -33,12 +33,14 @@ typedef enum e_token_type
 	SQUOTE,
 	DQUOTE,
 	DEF,
+	BIN,
 	END
 }	t_token_type;
 
 typedef struct s_token
 {
 	char			*value;
+	int				space;
 	t_token_type	type;
 	struct s_token	*next;
 }	t_token;
@@ -99,16 +101,18 @@ int		print_or_file(t_token *lst_token);
 
 //utils
 void	ft_free_char_tab(char **tab);
-void	skip_space(char **input);
+int		skip_space(char **input);
+int		spaces(char input);
 void	print_token_list(t_token *lst_token);
 void	msg_error(char *msg, t_token *lst_token);
 void	free_token_list(t_token *lst_token);
 int		ft_varcmp(const char *s1, const char *s2, size_t n);
 void	clean_exit(int exit_status, t_token *lst_token, char **env, char **shell);
+void	cmd_err(char *msg, char *cmd, int exit, t_shell *shell);
 
 //parsing 
 t_token	*create_token(char *value, t_token_type type);
-void	add_token_to_lst(t_token**lst_token, t_token *new_token);
+void	add_token_to_lst(t_token**lst_token, t_token *new_token, int space);
 t_token	*tokenisation(char *input);
 t_token	*extract_s_quote(char **input);
 t_token	*extract_d_quote(char **input);
@@ -130,8 +134,8 @@ void	exit_command(t_token *lst_token, t_shell *shell);
 
 //exports 
 void	print_export(t_shell *shell, int fd_out);
-int		add_var_to_env(char **var_env, char *value, int shell);
-int		good_varname(char *name);
+char	**add_var_to_env(char **var_env, char *value, int shell);
+int		good_varname(char *name, char until);
 void	export_command(t_token *lst_token, t_shell *shell, int fd_out);
 
 //expand_var
@@ -157,5 +161,13 @@ void	prep_var_shell(char ***var);
 // detect_var
 t_token	*token_var(char **input);
 int 	detect_var(char *input);
+int		in_quote(char pipe_or_else, char *input);
+
+int not_cmd(t_token *lst_token);
+
+//bin_path
+void	execve_bin_token(t_token *lst_token, t_shell *shell, int fd_out, int fd_in);
+t_token *bin_path(char **input);
+int     is_bin_path(t_token *lst_token);
 
 #endif
