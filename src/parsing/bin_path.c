@@ -1,17 +1,26 @@
 #include "../inc/minishell.h"
 
-int     is_bin_path(t_token *lst_token)
+int	is_bin_path(t_token *lst_token)
 {
-    t_token *tmp;
+	t_token	*tmp;
 
-    tmp = lst_token;
-    while (tmp->type != END)
-    {
-        if (tmp->type == BIN)
-            return (1);
-        tmp = tmp->next;
-    }
-    return (0);
+	tmp = lst_token;
+	while (tmp->type != END)
+	{
+		if (tmp->type == BIN)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+// n'existe pas ?
+
+void	cmd_not_found(t_token *lst_token)
+{
+	write(STDERR_FILENO, "minishell: ", 14);
+	write(STDERR_FILENO, lst_token->value, ft_strlen(lst_token->value));
+	write(STDERR_FILENO, " command not found\n", 19);
+	exit(EXIT_FAILURE);
 }
 
 void	execve_bin_token(t_token *lst_token,
@@ -32,10 +41,7 @@ void	execve_bin_token(t_token *lst_token,
 	}
 	cmd = lst_token->value;
 	if (!cmd)
-	{
-		printf("couldnt foudnt the executable path\n");
-		exit(EXIT_FAILURE);
-	}
+		cmd_not_found(lst_token);
 	cmd_args = find_cmd_args(lst_token);
 	if (!cmd_args)
 		exit(EXIT_FAILURE);
@@ -46,22 +52,22 @@ void	execve_bin_token(t_token *lst_token,
 	}
 }
 
-t_token *bin_path(char **input)
+t_token	*bin_path(char **input)
 {
-    t_token *new_token;
-    char    *start;
-    char    *value;
-    int     len;
+	t_token	*new_token;
+	char	*start;
+	char	*value;
+	int		len;
 
-    start = *input;
-    while (!spaces(**input) && !ft_strchr("|<> \'\"", **input) && **input)
-        (*input)++;
-    len = *input - start;
-    value = (char *)malloc(sizeof(char) * (len + 1));
-    if (!value)
-        return (NULL);
-    ft_strlcpy(value, start, len + 1);
-    new_token = create_token(value, BIN);
+	start = *input;
+	while (!spaces(**input) && !ft_strchr("|<> \'\"", **input) && **input)
+		(*input)++;
+	len = *input - start;
+	value = (char *)malloc(sizeof(char) * (len + 1));
+	if (!value)
+		return (NULL);
+	ft_strlcpy(value, start, len + 1);
+	new_token = create_token(value, BIN);
 	free(value);
-    return (new_token);
+	return (new_token);
 }

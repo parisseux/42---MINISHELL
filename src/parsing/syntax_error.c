@@ -5,7 +5,7 @@ int	check_syntax_error(t_token *lst_token, t_shell *shell)
 	if (check_first_last_token(lst_token, shell))
 		return (1);
 	else if (check_synthax_pipe(lst_token, shell))
-	  	return (1);
+		return (1);
 	else if (check_synthax_redirection(lst_token, shell))
 		return (1);
 	return (0);
@@ -33,7 +33,7 @@ int	check_first_last_token(t_token *lst_token, t_shell *shell)
 	else if (temp->type == REDIR_IN || temp->type == REDIR_OUT
 		|| temp->type == HEREDOC || temp->type == APPEND)
 	{
-		perror("bash: syntax error near unexpected token `newline'\n"); // affiche : Success dans le terminal
+		perror("bash: syntax error near unexpected token `newline'\n");
 		shell->exit = 2;
 		return (1);
 	}
@@ -42,7 +42,7 @@ int	check_first_last_token(t_token *lst_token, t_shell *shell)
 
 int	check_synthax_pipe(t_token *lst_token, t_shell *shell)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	(void)shell;
 	temp = lst_token;
@@ -51,7 +51,7 @@ int	check_synthax_pipe(t_token *lst_token, t_shell *shell)
 		if (temp->type == PIPE)
 		{
 			if (temp->next->type == REDIR_IN || temp->next->type == REDIR_OUT
-					|| temp->next->type == HEREDOC || temp->next->type == APPEND)
+				|| temp->next->type == HEREDOC || temp->next->type == APPEND)
 				perror("lala");
 		}
 		temp = temp->next;
@@ -62,6 +62,7 @@ int	check_synthax_pipe(t_token *lst_token, t_shell *shell)
 int	check_synthax_redirection(t_token *lst_token, t_shell *shell)
 {
 	t_token	*temp;
+
 	(void)shell;
 	temp = lst_token;
 	while (temp->type != END)

@@ -91,5 +91,3 @@ t_token	*ext_word(char **input)
 	free(value);
 	return (new_token);
 }
-
-
