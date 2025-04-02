@@ -66,7 +66,7 @@ int	main(int ac, char **av, char **env)
 	input = NULL;
 	while (1)
 	{
-		input = readline("\033[35mminishell$ \033[0m");
+		input = readline("minishell$ ");
 		if (!input)
 			break ;
 		add_history(input);

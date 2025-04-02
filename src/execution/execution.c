@@ -45,8 +45,6 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 	extract_exit_status(status, shell);
 }
 
-//creation d'un child process qui va utiliser execve pour executer
-//l'executable present dans le bin
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 {
 	int	pid;
@@ -61,6 +59,10 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	else if (pid == 0)
 	{
 		restore_signals();
+		if (handle_redir(lst_token, shell) == 1)
+			return ;
+		if (is_def(lst_token))
+			return ;
 		execve_non_builtin(lst_token, shell);
 	}	
 	else
@@ -70,10 +72,6 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	}
 }
 
-//builtin qui necessitent stdout: echo, pwd, export, env
-//builtin  qui ncesstient stdin: aucune donc pas besoins de gere < et <<
-//run in a forked child: echo, pwd, env
-//run in parent (change de state): cd, export, unset and exit
 void	builtin_cmd(t_token *lst_token, t_shell *shell)
 {
 	t_token	*temp;
@@ -117,19 +115,9 @@ void	exec_one_cmd(t_token *lst_token, t_shell *shell)
 	if (is_builtin(lst_token))
 		builtin_cmd(lst_token, shell);
 	else
-	{
-		if (handle_redir(lst_token, shell) == 1)
-			return ;
-		if (is_def(lst_token))
-			return ;
 		non_builtin_cmd(lst_token, shell);
-	}
 }
 
-//divise l'execution en trois
-//      pas de pipe et builtin cmd
-//      pas de pipe et non builtin cmd
-//      pipe
 void	execution(t_token *lst_token, t_shell *shell)
 {
 	if (is_pipe(lst_token))
