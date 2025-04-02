@@ -143,17 +143,10 @@ t_file	*open_file(t_token *lst_token, int type);
 void	exit_command(t_token *lst_token, t_shell *shell);
 
 //exports 
-<<<<<<< HEAD
 void	print_export(t_shell *shell);
-int		add_var_to_env(char **var_env, char *value, int shell);
-int		good_varname(char *name);
+char		**add_var_to_env(char **var_env, char *value, int shell);
+int		good_varname(char *name, char unitl);
 void	export_command(t_token *lst_token, t_shell *shell);
-=======
-void	print_export(t_shell *shell, int fd_out);
-char	**add_var_to_env(char **var_env, char *value, int shell);
-int		good_varname(char *name, char until);
-void	export_command(t_token *lst_token, t_shell *shell, int fd_out);
->>>>>>> main
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);

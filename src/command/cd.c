@@ -22,16 +22,9 @@ void	cd_command(t_token *lst_token, t_shell *shell)
 	}
 	if (chdir(path) == -1)
 	{
-<<<<<<< HEAD
-		write(STDOUT_FILENO, "cd: ", 4);
-		write(STDOUT_FILENO, path, ft_strlen(path));
-		write(STDOUT_FILENO, ": No such file or directory\n", 28);
-		shell->exit = 2;
-=======
 		write(STDERR_FILENO, "cd: ", 4);
 		write(STDERR_FILENO, path, ft_strlen(path));
 		write(STDERR_FILENO, ": No such file or directory\n", 28);
 		shell->exit = 1;
->>>>>>> main
 	}
 }

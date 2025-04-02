@@ -10,69 +10,31 @@
 void	echo_command(t_token *lst_token, int n_flag)
 {
 	char	*line;
-	// int		saved_stdout;
 	int		type;
 
-<<<<<<< HEAD
-	//saved_stdout = dup(STDOUT_FILENO);
-	// if (fd_out != -1)
-	// {
-	// 	dup2(fd_out, STDOUT_FILENO);
-	// 	close(fd_out);
-	// }
-	while (lst_token->type == WORD || lst_token->type == SQUOTE || lst_token->type == DQUOTE )
-=======
-	saved_stdout = dup(STDOUT_FILENO);
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
 	while (lst_token->type != END && lst_token->type != PIPE)
->>>>>>> main
 	{
 		if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
 			|| lst_token->type == HEREDOC || lst_token->type == APPEND)
 			lst_token = lst_token->next->next;
 		else
 		{
-<<<<<<< HEAD
-			if (type == SQUOTE)
-				echo_single_quote(&line);
-			else if (type == DQUOTE)
-				echo_double_quote(&line);
-			else
-				echo_no_quote(&line);
-=======
 			line = lst_token->value;
 			type = lst_token->type;
 			if (*line)
 			{
 				if (type == SQUOTE)
-					echo_single_quote(&line, fd_out);
+					echo_single_quote(&line);
 				else if (type == DQUOTE)
-					echo_double_quote(&line, fd_out);
+					echo_double_quote(&line);
 				else
 					echo_no_quote(&line);
 			}
-			// if (lst_token->next->type != WORD && lst_token->next->type != SQUOTE && lst_token->next->type != DQUOTE)
-			// {
-			// 	if (n_flag == 0)
-			// 		write(STDOUT_FILENO, "\n", 1);
-			// }
 			lst_token = lst_token->next;
->>>>>>> main
 		}
 	}
-<<<<<<< HEAD
-	// dup2(saved_stdout, STDOUT_FILENO);
-	// close(saved_stdout);
-=======
 	if (n_flag == 0)
-					write(STDOUT_FILENO, "\n", 1);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdout);
->>>>>>> main
+		write(STDOUT_FILENO, "\n", 1);
 }
 
 void	echo_single_quote(char **line)

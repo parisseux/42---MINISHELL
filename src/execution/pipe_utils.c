@@ -78,10 +78,10 @@ t_token *create_mini_list_token(t_token *lst_token)
 	while (temp != NULL && temp->type != PIPE && temp->type != END)
 	{
 		new_token = create_token(temp->value, temp->type);
-		add_token_to_lst(&mini_lst, new_token);
+		add_token_to_lst(&mini_lst, new_token, temp->space);
 		temp = temp->next;
 	}
 	new_token = create_token("", END);
-	add_token_to_lst(&mini_lst, new_token);
+	add_token_to_lst(&mini_lst, new_token, 0);
 	return (mini_lst);
 }

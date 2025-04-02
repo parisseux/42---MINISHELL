@@ -3,28 +3,19 @@
 // a revoir
 //meme chose il faut introduire fd_out et corriger les prints pour des write
 // ATTETION SI SHELL VIDE
-void	print_export(t_shell *shell, int fd_out)
 void	print_export(t_shell *shell)
 {
 	int	i;
-	// int	saved_stdout;
 
 	i = 0;
-	// saved_stdout = dup(STDOUT_FILENO);
-	// if (fd_out != -1)
-	// {
-	// 	dup2(fd_out, STDOUT_FILENO);
-	// 	close(fd_out);
-	// }
+
 	while (shell->var_env[i])
 	{
-		write(STDOUT_FILENO, "declare -x ", 11);
-		write(STDOUT_FILENO, shell->var_env[i], ft_strlen(shell->var_env[i]));
-		write(STDOUT_FILENO, "\n", 1);
+		write(STDERR_FILENO, "declare -x ", 11);
+		write(STDERR_FILENO, shell->var_env[i], ft_strlen(shell->var_env[i]));
+		write(STDERR_FILENO, "\n", 1);
 		i++;
 	}
-	// dup2(saved_stdout, STDOUT_FILENO);
-	// close(saved_stdout);
 }
 
 char **new_tab(char **var_env, char *value, char **new_env, int add)
@@ -133,7 +124,7 @@ void	export_message_error(char *value, t_shell *shell)
 	
 }
 
-void	export_command(t_token *lst_token, t_shell *shell, int fd_out)
+void	export_command(t_token *lst_token, t_shell *shell)
 {
 	t_token	*tmp;
 	char	**tab;

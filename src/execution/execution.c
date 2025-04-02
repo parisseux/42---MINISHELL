@@ -59,18 +59,11 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	else if (pid == 0)
 	{
 		restore_signals();
-<<<<<<< HEAD
 		if (handle_redir(lst_token, shell) == 1)
 			return ;
 		if (is_def(lst_token))
 			return ;
 		execve_non_builtin(lst_token, shell);
-=======
-		if (is_bin_path(lst_token))
-			execve_bin_token(lst_token, shell, fd_out, fd_in);
-		else
-			execve_non_builtin(lst_token, shell, fd_out, fd_in);
->>>>>>> main
 	}	
 	else
 	{
@@ -130,18 +123,5 @@ void	execution(t_token *lst_token, t_shell *shell)
 	if (is_pipe(lst_token))
 		exec_with_pipe(lst_token, shell, is_pipe(lst_token));
 	else
-<<<<<<< HEAD
 		exec_one_cmd(lst_token, shell);
-=======
-	{
-		if (handle_redir(lst_token, &fd_in, &fd_out, shell) == 1)
-		 	return ;
-		if (is_def(lst_token) && ft_strncmp(lst_token->value, "export", 7))
-			return ;
-		if (is_builtin(lst_token))
-			builtin_cmd(lst_token, shell, fd_out);
-		else
-			non_builtin_cmd(lst_token, shell, fd_in, fd_out);
-	}
->>>>>>> main
 }
