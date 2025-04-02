@@ -10,7 +10,7 @@ LIBFT_DIR = ./libft
 OBJ_DIR = ./obj
 
 CC = gcc 
-CFLAGS = -Wall -Werror -Wextra -Iinclude -I$(HEADERS)
+CFLAGS = -Wall -Werror -Wextra -Iinclude -I$(HEADERS) -g3
 LDFLAGS = -lreadline
 
 SRC_FILES = $(wildcard $(SRC_DIR)/*.c) \

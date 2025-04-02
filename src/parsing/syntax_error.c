@@ -47,7 +47,7 @@ int	check_synthax_pipe(t_token *lst_token)
 		if (temp->type == PIPE)
 		{
 			if (temp->next->type == REDIR_IN || temp->next->type == REDIR_OUT
-				|| temp->next->type == HEREDOC || temp->next->type == APPEND)
+					|| temp->next->type == HEREDOC || temp->next->type == APPEND)
 				perror("lala");
 		}
 		temp = temp->next;

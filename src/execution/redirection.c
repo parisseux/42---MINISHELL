@@ -4,8 +4,8 @@ int	look_for_fd_heredoc(t_token *token, int *fd, t_shell *shell)
 {
 	int		fd_pipe[2];
 	char	*stop;
-	int pid;
-	int status;
+	int		pid;
+	int		status;
 
 	if (pipe(fd_pipe) == -1)
 	{
@@ -80,37 +80,56 @@ int	look_for_fd_input(t_token *token, int *fd, t_shell *shell)
 	return (0);
 }
 
+
+void change_fd(int fd_out, int fd_in)
+{
+	if (fd_out != -1)
+	{
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
+	}
+	if (fd_in != -1)
+	{
+		dup2(fd_in, STDIN_FILENO);
+		close (fd_in);
+	}
+}
 //handle the redirection in the case of non builtin cmd
 //look for the fd of the input and output
 //file and send it to the function to eecute
-int	handle_redir(t_token *lst_token, int *fd_in, int *fd_out, t_shell *shell)
+int	handle_redir(t_token *lst_token, t_shell *shell)
 {
 	t_token	*temp;
+	int		fd_in;
+	int		fd_out;
 
+	fd_in = -1;
+	fd_out = -1;
 	temp = lst_token;
-	while (temp->type != END)
+	while (temp->type != END && temp->type != PIPE)
 	{
 		if (temp->type == REDIR_OUT)
 		{
-			if (look_for_fd_output(temp->next, fd_out, shell) == 1)
+			if (look_for_fd_output(temp->next, &fd_out, shell) == 1)
 				return (1);
 		}
 		else if (temp->type == APPEND)
 		{
-			if (look_for_fd_append(temp->next, fd_out, shell) == 1)
+			if (look_for_fd_append(temp->next, &fd_out, shell) == 1)
 				return (1);
 		}
 		else if (temp->type == HEREDOC)
 		{
-			if (look_for_fd_heredoc(temp->next, fd_in, shell) == 1)
+			if (look_for_fd_heredoc(temp->next, &fd_in, shell) == 1)
 			return (1);
 		}
 		else if (temp->type == REDIR_IN)
 		{
-			if (look_for_fd_input(temp->next, fd_in, shell) == 1)
+			if (look_for_fd_input(temp->next, &fd_in, shell) == 1)
 				return (1);
 		}
 		temp = temp->next;
 	}
+	change_fd(fd_out, fd_in);
 	return (0);
 }

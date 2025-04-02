@@ -26,15 +26,17 @@ char	*get_env_value(char **env, char *key)
 int	is_pipe(t_token *lst_token)
 {
 	t_token	*temp;
+	int		pipe;
 
+	pipe = 0;
 	temp = lst_token;
 	while (temp->type != END)
 	{
 		if (temp->type == PIPE)
-			return (1);
+			pipe++;
 		temp = temp->next;
 	}
-	return (0);
+	return (pipe);
 }
 
 int	is_def(t_token *lst_token)

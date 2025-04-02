@@ -2,7 +2,7 @@
 
 //ici il faut gerer: cd, export, unset and exit
 void	builtin_parent_process(t_token *lst_token,
-	t_shell *shell, int fd_out)
+	t_shell *shell)
 {
 	t_token	*temp;
 
@@ -18,7 +18,7 @@ void	builtin_parent_process(t_token *lst_token,
 			}
 			else if (!ft_strncmp(temp->value, "export", 7))
 			{
-				export_command(temp, shell, fd_out);
+				export_command(temp, shell);
 				break ;
 			}
 			else if (!ft_strncmp(temp->value, "unset", 6))
@@ -38,11 +38,11 @@ void	builtin_parent_process(t_token *lst_token,
 
 //ici il faut gerer:echo, pwd, env
 //creation d'un child process qui va executer les builtin
-void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out)
+void	builtin_child_process(t_token *lst_token, t_shell *shell)
 {
 	int		pid;
 	t_token	*temp;
-	int status;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)
@@ -53,12 +53,12 @@ void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out)
 		{
 			if (!ft_strncmp(temp->value, "env", 4))
 			{
-				env_command(shell, lst_token, fd_out);
+				env_command(shell, lst_token);
 				break ;
 			}
 			else if (!ft_strncmp(temp->value, "pwd", 4))
 			{
-				pwd_command(fd_out);
+				pwd_command();
 				break ;
 			}
 			else if (!ft_strncmp(lst_token->value, "echo", 5))
@@ -66,9 +66,9 @@ void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out)
 				if (lst_token->next->type == END)
 					write(STDOUT_FILENO, "\n", 1);
 				else if (!ft_strncmp(lst_token->next->value, "-n", 2))
-					echo_command(lst_token->next->next, 1, fd_out);
+					echo_command(lst_token->next->next, 1);
 				else
-					echo_command(lst_token->next, 0, fd_out);
+					echo_command(lst_token->next, 0);
 				break ;
 			}
 			temp = temp->next;
@@ -80,4 +80,12 @@ void	builtin_child_process(t_token *lst_token, t_shell *shell, int fd_out)
 		waitpid(pid, &status, 0);
 		extract_exit_status(status, shell);
 	}
+}
+
+void	restore_and_close_fd(int saved_stdout, int saved_stdin)
+{
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
 }

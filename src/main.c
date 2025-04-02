@@ -13,7 +13,7 @@ int	start_minishell(t_shell *shell, char *input)
 	if (!lst_token)
 	{
 		free(input);
-		return -1;
+		return 1;
 	}
 	if (lst_token->type == END)
 		return (0);
@@ -67,12 +67,13 @@ int	main(int ac, char **av, char **env)
 	input = NULL;
 	while (1)
 	{
-		input = readline("\033[35mminishell$ \033[0m");
+		input = readline("minishell$ ");
 		if (!input)
 			break ;
 		else
 			add_history(input);
-		start_minishell(&shell, input);
+		if (start_minishell(&shell, input) == -1)
+			return (EXIT_FAILURE);
 		free(input);
 	}
 	clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);

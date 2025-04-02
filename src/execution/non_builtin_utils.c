@@ -3,21 +3,11 @@
 //Cette commmand a pour but d'executer une non builtin cmd
 //creation d'un child process pour execution de execve 
 void	execve_non_builtin(t_token *lst_token,
-	t_shell *shell, int fd_out, int fd_in)
+	t_shell *shell)
 {
 	char	*cmd;
 	char	**cmd_args;
 
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
-	if (fd_in != -1)
-	{
-		dup2(fd_in, STDIN_FILENO);
-		close (fd_in);
-	}
 	cmd = find_cmd_path(lst_token->value, shell->var_env);
 	if (!cmd)
 		cmd_not_found(lst_token);

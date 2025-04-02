@@ -2,7 +2,7 @@
 
 //introduire expansion variable
 //doit introduire plusieurs HEREDOC succesif 
-void	handle_heredoc_prompt( int fd_write, char *stop, t_shell *shell)
+void	handle_heredoc_prompt(int fd_write, char *stop, t_shell *shell)
 {
 	char	*line;
 	

@@ -1,9 +1,9 @@
 #include "../inc/minishell.h"
 
 //CTR -C remet le prompt minishell et CTR -\ ne fait rien
-void    init_signals(void)
+void	init_signals(void)
 {
-    signal(SIGINT, sigint_handler);
+	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -18,7 +18,7 @@ void	sigint_handler(int sig)
 }
 
 //revert to deaultfs signales 
-void restore_signals(void)
+void	restore_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
