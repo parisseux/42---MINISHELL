@@ -1,10 +1,25 @@
 #include "../inc/minishell.h"
 
-void	skip_space(char **input)
+int	skip_space(char **input)
 {
+	int	i;
+
+	i = 0;
 	while (**input == ' ' || **input == '\t' || **input == '\v'
-		|| **input == '\r' ||**input == '\n' || **input == '\f')
+		|| **input == '\r' || **input == '\n' || **input == '\f')
+	{
 		(*input)++;
+		i++;
+	}
+	return (i);
+}
+
+int	spaces(char input)
+{
+	if (input == ' ' || input == '\t' || input == '\v'
+		|| input == '\r' || input == '\n' || input == '\f')
+		return (1);
+	return (0);
 }
 
 void	print_token_list(t_token *lst_token)
@@ -16,7 +31,7 @@ void	print_token_list(t_token *lst_token)
 	{
 		if (current->value != NULL)
 		{
-			printf("Token: [%s], Type: %d\n", current->value, current->type);
+			printf("Token: [%s], Type: %d, Space: %d\n", current->value, current->type, current->space);
 		}
 		else
 		{

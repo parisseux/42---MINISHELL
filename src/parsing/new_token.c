@@ -77,7 +77,7 @@ t_token	*ext_word(char **input)
 	int		len;
 
 	start = *input;
-	while (**input && !ft_strchr("|<> \'\"", **input))
+	while (**input && !ft_strchr("|<> \'\"", **input) && !spaces(**input))
 		(*input)++;
 	len = ft_strlen(*input) - ft_strlen(start);
 	len *= -1;
@@ -91,5 +91,3 @@ t_token	*ext_word(char **input)
 	free(value);
 	return (new_token);
 }
-
-

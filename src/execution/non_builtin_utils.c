@@ -10,10 +10,7 @@ void	execve_non_builtin(t_token *lst_token,
 
 	cmd = find_cmd_path(lst_token->value, shell->var_env);
 	if (!cmd)
-	{
-		printf("couldnt foudnt the executable path\n");
-		exit(EXIT_FAILURE);
-	}
+		cmd_not_found(lst_token);
 	cmd_args = find_cmd_args(lst_token);
 	if (!cmd_args)
 		exit(EXIT_FAILURE);
@@ -80,7 +77,7 @@ char	**find_cmd_args(t_token *lst_token)
 
 	temp = lst_token;
 	n = 0;
-	while (temp && (temp->type == WORD
+	while (temp && (temp->type == BIN || temp->type == WORD
 			|| temp->type == SQUOTE || temp->type == DQUOTE))
 	{
 		n++;

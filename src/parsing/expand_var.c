@@ -48,38 +48,36 @@ char	*dolar_special_cases(char **line, char *linee, t_shell *shell)
 char	*find_var(t_shell *shell, char *name, char *value2)
 {
 	int		i;
-	int		check;
 	int		len;
 	char	*tmp;
 
 	i = 0;
-	check = 0;
+	tmp = NULL;
 	len = alphanum_len(name);
 	while (shell->var_env[i])
 	{
 		if (!ft_varcmp(shell->var_env[i], name, len))
 		{
-			check = 1;
 			tmp = add(shell->var_env[i], value2, len + 1);
+			return (tmp);
 		}
 		i++;
 	}
 	i = 0;
-	if (!check)
+	if (shell->shell_env != NULL)
 	{
 		while (shell->shell_env[i])
 		{
 			if (!ft_varcmp(shell->shell_env[i], name, len))
 			{
-				check = 1;
 				tmp = add(shell->shell_env[i], value2, len + 1);
+				return (tmp);
 			}
 			i++;
-		}		
+		}
 	}
-	if (!check)
+	else
 		tmp = rm_var(value2);
-	free(name);
 	return (tmp);
 }
 
@@ -105,12 +103,14 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 				{
 					free(lst_token->value);
 					lst_token->value = find_var(shell, name, value2);
+					free(name);
 				}
 				else
 				{
 					free(lst_token->value);
 					lst_token->value = dolar_special_cases(&value, value2, shell);
 				}
+				value2 = ft_strdup(lst_token->value);
 			}
 			value++;
 		}

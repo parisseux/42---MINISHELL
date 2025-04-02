@@ -9,7 +9,7 @@ void	builtin_parent_process(t_token *lst_token,
 	temp = lst_token;
 	while (temp->type != END)
 	{
-		if (temp->type == WORD)
+		if (temp->type == WORD || temp->type == DEF)
 		{
 			if (!ft_strncmp(temp->value, "cd", 3))
 			{
