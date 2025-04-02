@@ -119,10 +119,10 @@ t_token	*extract_d_quote(char **input);
 t_token	*ext_word(char **input);
 t_token	*extract_out(char **input);
 t_token	*extract_in(char **input);
-int	check_syntax_error(t_token *lst_token, t_shell *shell);
-int	check_first_last_token(t_token *lst_token, t_shell *shell);
-int	check_synthax_pipe(t_token *lst_token, t_shell *shell);
-int	check_synthax_redirection(t_token *lst_token, t_shell *shell);
+int	check_syntax_error(t_token *lst_token);
+int	check_first_last_token(t_token *lst_token);
+int	check_synthax_pipe(t_token *lst_token);
+int	check_synthax_redirection(t_token *lst_token);
 
 
 //file
@@ -169,5 +169,6 @@ int not_cmd(t_token *lst_token);
 void	execve_bin_token(t_token *lst_token, t_shell *shell, int fd_out, int fd_in);
 t_token *bin_path(char **input);
 int     is_bin_path(t_token *lst_token);
+void	cmd_not_found(t_token *lst_token);
 
 #endif

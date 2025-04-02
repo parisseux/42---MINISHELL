@@ -2,16 +2,13 @@
 
 int	detect_var(char *input)
 {
-	int	len;
 	int	check;
 
-	len = 0;
 	check = 0;
 	while (*input != ' ' && *input != '\0')
 	{
 		if (*input == '=')
 			check = 1;
-		len++;
 		input++;
 	}
 	if (check)
@@ -82,19 +79,14 @@ int	in_quote(char pipe_or_else, char *input)
 
 	single_q = 0;
 	double_q = 0;
-	while (*input != pipe_or_else)
-	{
-		if (*input == '\'')
-			single_q++;
-		else if (*input == '"')
-			double_q++;
-		input++;
-	}
-	if (single_q % 2 == 0 && double_q % 2 == 0)
-		return (0);
 	while (*input != '\0')
 	{
-		if (*input == '\'')
+		if (*input == pipe_or_else)
+		{
+			if (single_q % 2 == 0 && double_q % 2 == 0)
+				return (0);
+		}
+		else if (*input == '\'')
 			single_q++;
 		else if (*input == '"')
 			double_q++;
@@ -114,7 +106,8 @@ t_token	*token_var(char **input)
 
 	len = 0;
 	copy = ft_strdup(*input);
-	while ((**input != ' ' || in_quote(**input, copy)) && (!ft_strchr("|<>", **input) || in_quote(**input, copy)) && **input != '\0')
+	while ((**input != ' ' || in_quote(**input, copy)) && (!ft_strchr("|<>", **input)
+			|| in_quote(**input, copy)) && **input != '\0')
 	{
 		len++;
 		(*input)++;
@@ -122,15 +115,11 @@ t_token	*token_var(char **input)
 	copy[len] = '\0';
 	new = rm_quotes(copy);
 	if (!new)
-	{
-		write (1, "unclosed quotes \n", 17);
 		new_token = NULL;
-	}
 	else if (!good_varname(new, '='))
 		new_token = create_token(new, DEF);
 	else
 		new_token = create_token(new, WORD);
-	free(copy);
 	new = NULL;
 	if (!new_token)
 		return (NULL);

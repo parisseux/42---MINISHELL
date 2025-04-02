@@ -2,16 +2,16 @@
 
 int	skip_space(char **input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (**input == ' ' || **input == '\t' || **input == '\v'
-		|| **input == '\r' ||**input == '\n' || **input == '\f')
+		|| **input == '\r' || **input == '\n' || **input == '\f')
 	{
 		(*input)++;
 		i++;
 	}
-	return (i);	
+	return (i);
 }
 
 int	spaces(char input)

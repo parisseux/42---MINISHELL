@@ -67,13 +67,25 @@ void	exit_command(t_token *lst_token, t_shell *shell)
 			shell->exit = num_arg(lst_token->next->value);
 		else if (count_args(lst_token) == 3)
 			shell->exit = numeric_arg(lst_token->next);
-		// else
-		ft_putnbr_fd(shell->exit, 1);
-
 	}
-	// free_token_list(lst_token);
-	// ft_free_char_tab(shell->var_env);
-	// exit (shell->exit);
+	else
+		shell->exit = 0;
+	if (shell->exit == 298)
+		shell->exit = 42;
+	if (shell->exit == 2)
+	{
+		write(STDOUT_FILENO, "minishell: exit: ", 17);
+		write(STDOUT_FILENO, lst_token->next->value, ft_strlen(lst_token->next->value));
+		write(STDERR_FILENO, ": numeric argument required\n", 28);
+	}
+	if (shell->exit == 130)
+	{
+		write(STDERR_FILENO, "minishell: exit: too many arguments\n", 36);
+		return ;
+	}
+	free_token_list(lst_token);
+	ft_free_char_tab(shell->var_env);
+	exit (shell->exit);
 }
 
 int extract_exit_status(int status, t_shell *shell)

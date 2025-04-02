@@ -52,6 +52,7 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 	char	*tmp;
 
 	i = 0;
+	tmp = NULL;
 	len = alphanum_len(name);
 	while (shell->var_env[i])
 	{
@@ -73,9 +74,9 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 				return (tmp);
 			}
 			i++;
-		}		
+		}
 	}
-	else	
+	else
 		tmp = rm_var(value2);
 	return (tmp);
 }

@@ -20,10 +20,7 @@ void	execve_non_builtin(t_token *lst_token,
 	}
 	cmd = find_cmd_path(lst_token->value, shell->var_env);
 	if (!cmd)
-	{
-		printf("couldnt foudnt the executable path\n");
-		exit(EXIT_FAILURE);
-	}
+		cmd_not_found(lst_token);
 	cmd_args = find_cmd_args(lst_token);
 	if (!cmd_args)
 		exit(EXIT_FAILURE);
