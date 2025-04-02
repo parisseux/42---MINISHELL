@@ -1,12 +1,5 @@
 #include "../inc/minishell.h"
 
-// a modifier --> write au lieu de printf comme exemple de pwd, env
-// introduier fd_out avec utilisation de dup() et dup2 comme pour pwd, env
-//probleme lie a linux??
-
-//minishell$ echo<<file ->pas bon retour
-//exit status grace a waitpid
-
 void	echo_command(t_token *lst_token, int n_flag)
 {
 	char	*line;
@@ -29,6 +22,9 @@ void	echo_command(t_token *lst_token, int n_flag)
 					echo_double_quote(&line);
 				else
 					echo_no_quote(&line);
+				if (lst_token->space == 1 && 
+						lst_token->next->type != END && lst_token->next->type != PIPE)
+					write(STDOUT_FILENO, " ", 1);
 			}
 			lst_token = lst_token->next;
 		}
