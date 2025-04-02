@@ -8,7 +8,9 @@ void	execve_non_builtin(t_token *lst_token,
 	char	*cmd;
 	char	**cmd_args;
 
-	cmd = find_cmd_path(lst_token->value, shell->var_env);
+	cmd = NULL;
+	if (lst_token->next->space == 1 || lst_token->next->type == PIPE || lst_token->next->type == END)
+		cmd = find_cmd_path(lst_token->value, shell->var_env);
 	if (!cmd)
 		cmd_not_found(lst_token);
 	cmd_args = find_cmd_args(lst_token);
