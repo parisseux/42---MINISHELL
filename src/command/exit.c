@@ -42,8 +42,10 @@ int	numeric_arg(t_token *lst_token)
 	int	space;
 
 	space = lst_token->next->space;
-	if (space == 1)
+	if (space == 1 && ft_str_digit(lst_token->value))
 		return (130);
+	else if (space == 1 && !ft_str_digit(lst_token->value))
+		return (2);
 	if (!ft_strncmp(lst_token->value, "+", ft_strlen(lst_token->value)))
 	{
 		if (ft_str_digit(lst_token->next->value))
@@ -101,12 +103,3 @@ int extract_exit_status(int status, t_shell *shell)
 	else 
 		return (1);
 }
-
-// if (!ft_str_digit(lst_token->next->value))
-// 		{
-// 			i = ft_strlen(lst_token->next->value);
-// 			write(STDOUT_FILENO, "minishell: exit: ", 17);
-// 			write(STDOUT_FILENO, lst_token->next->value, i);
-// 			write(STDOUT_FILENO, ": numeric argument required\n", 28);
-// 			shell->exit = 2;
-// 		}

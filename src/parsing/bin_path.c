@@ -48,7 +48,7 @@ void	execve_bin_token(t_token *lst_token,
 	if (execve(cmd, cmd_args, shell->var_env) == -1)
 	{
 		perror("execve");
-		exit(EXIT_FAILURE);
+		exit(126);
 	}
 }
 
