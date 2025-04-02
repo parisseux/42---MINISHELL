@@ -108,10 +108,10 @@ void	export_message_error(char *value, t_shell *shell)
 {
 	if (!ft_strncmp(value, "-", 1))
 	{
-		write(STDOUT_FILENO, "minishell: export: -", 20);
-		write(STDOUT_FILENO, &value[1], 1);
-		write(STDOUT_FILENO, ": invalid option\n", 17);
-		write(STDOUT_FILENO, "export: usage: export [-fn] [name[=value] ...] or export -p\n", 60);
+		write(STDERR_FILENO, "minishell: export: -", 20);
+		write(STDERR_FILENO, &value[1], 1);
+		write(STDERR_FILENO, ": invalid option\n", 17);
+		write(STDERR_FILENO, "export: usage: export [-fn] [name[=value] ...] or export -p\n", 60);
 		shell->exit = 2;	
 	}
 	else

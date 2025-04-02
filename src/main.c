@@ -26,6 +26,7 @@ int	start_minishell(t_shell *shell, char *input)
 		return -1;
 	}
 	execution(lst_token, shell);
+	free_token_list(lst_token);
 	return (0);
 }
 
@@ -72,8 +73,7 @@ int	main(int ac, char **av, char **env)
 			break ;
 		else
 			add_history(input);
-		if (start_minishell(&shell, input) == -1)
-			return (EXIT_FAILURE);
+		start_minishell(&shell, input);
 		free(input);
 	}
 	clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
