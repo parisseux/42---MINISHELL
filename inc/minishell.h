@@ -176,7 +176,7 @@ int		in_quote(char pipe_or_else, char *input);
 int not_cmd(t_token *lst_token);
 
 //bin_path
-void	execve_bin_token(t_token *lst_token, t_shell *shell, int fd_out, int fd_in);
+void	execve_bin_token(t_token *lst_token, t_shell *shell);
 t_token *bin_path(char **input);
 int     is_bin_path(t_token *lst_token);
 void	cmd_not_found(t_token *lst_token);

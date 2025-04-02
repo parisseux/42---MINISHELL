@@ -23,22 +23,11 @@ void	cmd_not_found(t_token *lst_token)
 	exit(127);
 }
 
-void	execve_bin_token(t_token *lst_token,
-	t_shell *shell, int fd_out, int fd_in)
+void	execve_bin_token(t_token *lst_token, t_shell *shell)
 {
 	char	*cmd;
 	char	**cmd_args;
 
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
-	if (fd_in != -1)
-	{
-		dup2(fd_in, STDIN_FILENO);
-		close (fd_in);
-	}
 	cmd = lst_token->value;
 	if (!cmd)
 		cmd_not_found(lst_token);

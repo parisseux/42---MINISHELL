@@ -39,16 +39,12 @@ void	echo_command(t_token *lst_token, int n_flag)
 
 void	echo_single_quote(char **line)
 {
-
 	write (STDOUT_FILENO, *line, ft_strlen(*line));
 }
-// if (**line == '\'')
-// 	(*line)++; rajouter commme dans expand_var ??
 
 void	echo_double_quote(char **line)
 {
 	write(STDOUT_FILENO, *line, ft_strlen(*line));
-
 }
 
 void	echo_no_quote(char **line)
