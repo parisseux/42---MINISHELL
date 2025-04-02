@@ -17,10 +17,10 @@ int	is_bin_path(t_token *lst_token)
 
 void	cmd_not_found(t_token *lst_token)
 {
-	write(STDERR_FILENO, "minishell: ", 14);
+	write(STDERR_FILENO, "minishell: ", 11);
 	write(STDERR_FILENO, lst_token->value, ft_strlen(lst_token->value));
 	write(STDERR_FILENO, " command not found\n", 19);
-	exit(EXIT_FAILURE);
+	exit(127);
 }
 
 void	execve_bin_token(t_token *lst_token,
