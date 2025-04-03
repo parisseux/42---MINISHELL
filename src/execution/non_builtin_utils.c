@@ -9,17 +9,22 @@ void	execve_non_builtin(t_token *lst_token,
 	char	**cmd_args;
 
 	cmd = NULL;
-	if (lst_token->next->space == 1 || lst_token->next->type == PIPE || lst_token->next->type == END)
-		cmd = find_cmd_path(lst_token->value, shell->var_env);
-	if (!cmd)
-		cmd_not_found(lst_token);
-	cmd_args = find_cmd_args(lst_token);
-	if (!cmd_args)
-		exit(EXIT_FAILURE);
-	if (execve(cmd, cmd_args, shell->var_env) == -1)
+	while (lst_token->type != END && lst_token->type != PIPE)
 	{
-		perror("execve");
-		exit(EXIT_FAILURE);
+		if (lst_token->type == REDIR_IN || lst_token->type == APPEND || lst_token->type == REDIR_OUT || lst_token->type == HEREDOC)
+			lst_token = lst_token->next->next;
+		if (lst_token->next->space == 1 || lst_token->next->type == PIPE || lst_token->next->type == END)
+			cmd = find_cmd_path(lst_token->value, shell->var_env);
+		if (!cmd)
+			cmd_not_found(lst_token);
+		cmd_args = find_cmd_args(lst_token);
+		if (!cmd_args)
+			exit(EXIT_FAILURE);
+		if (execve(cmd, cmd_args, shell->var_env) == -1)
+		{
+			perror("execve");
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 
