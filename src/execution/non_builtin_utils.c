@@ -96,6 +96,6 @@ char	**find_cmd_args(t_token *lst_token)
 		i++;
 		temp = temp->next;
 	}
-	cmd_args[n] = NULL;
+	cmd_args[n] = '\0';
 	return (cmd_args);
 }

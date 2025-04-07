@@ -78,5 +78,5 @@ int	main(int ac, char **av, char **env)
 		free(input);
 	}
 	clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
-	return (shell.exit);
+	return (0);
 }
