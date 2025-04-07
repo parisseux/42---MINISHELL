@@ -58,7 +58,7 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 	{
 		if (!ft_varcmp(shell->var_env[i], name, len))
 		{
-			tmp = add(shell->var_env[i], value2, len + 1);
+			tmp = add(shell->var_env[i], value2, len + 1, '$');
 			return (tmp);
 		}
 		i++;
@@ -70,7 +70,7 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 		{
 			if (!ft_varcmp(shell->shell_env[i], name, len))
 			{
-				tmp = add(shell->shell_env[i], value2, len + 1);
+				tmp = add(shell->shell_env[i], value2, len + 1, '$');
 				return (tmp);
 			}
 			i++;

@@ -26,16 +26,16 @@ char	*add_special_case(char *name, char *line)
 	return (tmp);
 }
 
-int	malloc_size(char *new_value, char *value, int name_len)
+int	malloc_size(char *new_value, char *value, int name_len, char symbol)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (value[i] != '$')
+	while (value[i] != symbol && value[i] != '\0')
 		i++;
 	j = name_len + i;
-	if (value[i] == '$')
+	if (value[i] == symbol)
 	{
 		name_len++;
 		while (new_value[name_len] != '\0')
@@ -53,7 +53,7 @@ int	malloc_size(char *new_value, char *value, int name_len)
 	return (i);
 }
 
-char	*add(char *new_value, char *value, int name_len)
+char	*add(char *new_value, char *value, int name_len, char symbol)
 {
 	char	*tmp;
 	int		i;
@@ -61,11 +61,11 @@ char	*add(char *new_value, char *value, int name_len)
 	int		size;
 
 	i = 0;
-	size = malloc_size(new_value, value, name_len);
+	size = malloc_size(new_value, value, name_len, symbol);
 	tmp = malloc(size + 1 * sizeof(char));
 	if (!tmp)
 		return (NULL);
-	while (value[i] != '$')
+	while (value[i] != symbol && value[i] != '\0')
 		i++;
 	ft_strlcpy(tmp, value, i + 1);
 	j = name_len + i;

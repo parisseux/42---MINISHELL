@@ -157,9 +157,9 @@ char	*dolar_special_cases(char **line, char *linee, t_shell *shell);
 //expand_var_utils
 char	*add_special_case(char *name, char *line);
 char	*rm_var(char *value);
-char	*add(char *new_value, char *value, int name_len);
+char	*add(char *new_value, char *value, int name_len, char symbol);
 int		alphanum_len(char *value);
-int		malloc_size(char *new_value, char *value, int name_len);
+int		malloc_size(char *new_value, char *value, int name_len, char symbol);
 
 //unset
 void	unset_command(char *line, t_shell *shell);
