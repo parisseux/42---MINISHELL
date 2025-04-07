@@ -94,7 +94,7 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 		value2 = ft_strdup(lst_token->value);
 		while (*value)
 		{
-			if (lst_token->type != WORD && lst_token->type != DQUOTE)
+			if (lst_token->type != WORD && lst_token->type != DQUOTE && lst_token->type != DEF)
 				break ;
 			if (*value == '$')
 			{

@@ -17,9 +17,10 @@ int	start_minishell(t_shell *shell, char *input)
 	}
 	if (lst_token->type == END)
 		return (0);
+	look_for_dolls(lst_token, shell);
 	if (ft_strncmp(lst_token->value, "export", 7)) // seulement si c'est le premier 
 		shell_var(lst_token, shell);
-	look_for_dolls(lst_token, shell);
+	expand_home(shell, lst_token);
 	if (check_syntax_error(lst_token))
 	{
 		shell->exit = 2;
@@ -77,5 +78,5 @@ int	main(int ac, char **av, char **env)
 		free(input);
 	}
 	clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
-	return (0);
+	return (shell.exit);
 }

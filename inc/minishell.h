@@ -181,4 +181,7 @@ t_token *bin_path(char **input);
 int     is_bin_path(t_token *lst_token);
 void	cmd_not_found(t_token *lst_token);
 
+//expand_home
+void    expand_home(t_shell *shell, t_token *lst_token);
+
 #endif
