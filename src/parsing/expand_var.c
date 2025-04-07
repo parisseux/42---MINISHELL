@@ -58,7 +58,7 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 	{
 		if (!ft_varcmp(shell->var_env[i], name, len))
 		{
-			tmp = add(shell->var_env[i], value2, len + 1);
+			tmp = add(shell->var_env[i], value2, len + 1, '$');
 			return (tmp);
 		}
 		i++;
@@ -70,7 +70,7 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 		{
 			if (!ft_varcmp(shell->shell_env[i], name, len))
 			{
-				tmp = add(shell->shell_env[i], value2, len + 1);
+				tmp = add(shell->shell_env[i], value2, len + 1, '$');
 				return (tmp);
 			}
 			i++;
@@ -94,7 +94,7 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 		value2 = ft_strdup(lst_token->value);
 		while (*value)
 		{
-			if (lst_token->type != WORD && lst_token->type != DQUOTE)
+			if (lst_token->type != WORD && lst_token->type != DQUOTE && lst_token->type != DEF)
 				break ;
 			if (*value == '$')
 			{
