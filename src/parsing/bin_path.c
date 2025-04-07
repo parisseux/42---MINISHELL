@@ -28,9 +28,19 @@ void	execve_bin_token(t_token *lst_token, t_shell *shell)
 	char	*cmd;
 	char	**cmd_args;
 
-	cmd = lst_token->value;
-	if (!cmd)
-		cmd_not_found(lst_token);
+	while (lst_token->type != PIPE && lst_token->type != END)
+	{
+		if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
+			|| lst_token->type == HEREDOC || lst_token->type == APPEND)
+			lst_token = lst_token->next->next;
+		if (lst_token->next->space == 1 || lst_token->next->type == PIPE || lst_token->next->type == END)
+		{
+			cmd = lst_token->value;
+			if (!cmd)
+				cmd_not_found(lst_token);
+			break ;
+		}
+	}
 	cmd_args = find_cmd_args(lst_token);
 	if (!cmd_args)
 		exit(EXIT_FAILURE);
