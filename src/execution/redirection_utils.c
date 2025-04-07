@@ -13,7 +13,7 @@ void	handle_heredoc_prompt(int fd_write, char *stop, t_shell *shell)
 		line = readline("> ");
 		if (!line)
 		{
-			write(STDOUT_FILENO, "warning: here-document delimited by EOF\n", 40);
+			write(STDERR_FILENO, "warning: here-document delimited by EOF\n", 40);
 			shell->exit = 0;
 			break ;
 		}
