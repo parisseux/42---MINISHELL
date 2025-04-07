@@ -13,7 +13,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
-extern int g_stop;
+extern int	g_stop;
 
 typedef struct s_shell
 {
@@ -45,33 +45,28 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_file
-{
-	int		fd;
-	int		type;
-	FILE	*file;
-	char	*file_name;
-}	t_file;
-
 // pipe
 void	close_all_pipes(int pipefd[][2], int n_pipes);
-void	wait_all_pids(int *pids, int *status,  int n_cmd);
+void	wait_all_pids(int *pids, int *status, int n_cmd);
 void	create_all_pipes(int pipefd[][2], int n_pipes);
-void	handle_first_cmd(t_token *mini_lst, t_shell *shell, int pipefd[][2], int n_pipes);
-void	handle_last_cmd(t_token *mini_lst, t_shell *shell, int pipefd[][2], int n_pipes);
+void	handle_first_cmd(t_token *mini_lst, t_shell *shell,
+			int pipefd[][2], int n_pipes);
+void	handle_last_cmd(t_token *mini_lst, t_shell *shell,
+			int pipefd[][2], int n_pipes);
 void	go_to_next_pipe(t_token **lst_token);
-t_token *create_mini_list_token(t_token *lst_token);
-t_token *create_mini_list(t_token **lst_token);
-void handle_middle_cmd(t_token *lst, t_shell *shell, int pipefd[][2], int i, int n_pipes);
-void close_all_pipes_except(int pipefd[][2], int i, int n_pipes);
+t_token	*create_mini_list_token(t_token *lst_token);
+t_token	*create_mini_list(t_token **lst_token);
+void	handle_middle_cmd(t_token *lst, t_shell *shell,
+			int pipefd[][2], int i, int n_pipes);
+void	close_all_pipes_except(int pipefd[][2], int i, int n_pipes);
 
-//signals 
-void    init_signals(void);
+//signals
+void	init_signals(void);
 void	sigint_handler(int sig);
 void	restore_signals(void);
-void 	signals_heredoc(void);
+void	signals_heredoc(void);
 
-int	start_minishell(t_shell *shell, char *input);
+int		start_minishell(t_shell *shell, char *input);
 
 //execution 
 void	execution(t_token *lst_token, t_shell *shell);
@@ -89,15 +84,15 @@ void	handle_heredoc_prompt( int fd_write, char *stop, t_shell *shell);
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell);
 void	builtin_child_process(t_token *lst_token, t_shell *shell);
 void	builtin_parent_process(t_token *lst_token, t_shell *shell);
-void restore_and_close_fd(int saved_stdout, int saved_stdin);
-void exec_one_cmd(t_token *lst_token, t_shell *shell);
+void	restore_and_close_fd(int saved_stdout, int saved_stdin);
+void	exec_one_cmd(t_token *lst_token, t_shell *shell);
 
 //command
 void	cd_command(t_token *lst_token, t_shell *shell);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 void	env_command(t_shell *shell, t_token *lst_token);
 void	pwd_command(void);
-int	extract_exit_status(int status, t_shell *shell);
+int		extract_exit_status(int status, t_shell *shell);
 
 //echo_command
 void	echo_command(t_token *lst_token, int n_flag);
@@ -107,7 +102,6 @@ void	echo_no_quote(char **line);
 int		echo_check_n_flag(char **line);
 
 //command/utils
-void	printf_or_fprintf(t_file *file, char **line);
 int		print_or_file(t_token *lst_token);
 
 //utils
@@ -118,10 +112,11 @@ void	print_token_list(t_token *lst_token);
 void	msg_error(char *msg, t_token *lst_token);
 void	free_token_list(t_token *lst_token);
 int		ft_varcmp(const char *s1, const char *s2, size_t n);
-void	clean_exit(int exit_status, t_token *lst_token, char **env, char **shell);
+void	clean_exit(int exit_status, t_token *lst_token,
+			char **env, char **shell);
 void	cmd_err(char *msg, char *cmd, int exit, t_shell *shell);
 
-//parsing 
+//parsing
 t_token	*create_token(char *value, t_token_type type);
 void	add_token_to_lst(t_token**lst_token, t_token *new_token, int space);
 t_token	*tokenisation(char *input);
@@ -130,22 +125,17 @@ t_token	*extract_d_quote(char **input);
 t_token	*ext_word(char **input);
 t_token	*extract_out(char **input);
 t_token	*extract_in(char **input);
-int	check_syntax_error(t_token *lst_token);
-int	check_first_last_token(t_token *lst_token);
-int	check_synthax_pipe(t_token *lst_token);
-int	check_synthax_redirection(t_token *lst_token);
-
-
-//file
-char	*filename(t_token *lst_token);
-t_file	*open_file(t_token *lst_token, int type);
+int		check_syntax_error(t_token *lst_token);
+int		check_first_last_token(t_token *lst_token);
+int		check_synthax_pipe(t_token *lst_token);
+int		check_synthax_redirection(t_token *lst_token);
 
 //exit
 void	exit_command(t_token *lst_token, t_shell *shell);
 
-//exports 
+//exports
 void	print_export(t_shell *shell);
-char		**add_var_to_env(char **var_env, char *value, int shell);
+char	**add_var_to_env(char **var_env, char *value, int shell);
 int		good_varname(char *name, char unitl);
 void	export_command(t_token *lst_token, t_shell *shell);
 
@@ -172,20 +162,20 @@ void	prep_var_shell(char ***var);
 
 // detect_var
 t_token	*token_var(char **input);
-int 	detect_var(char *input);
+int		detect_var(char *input);
 int		in_quote(char pipe_or_else, char *input);
 
-int not_cmd(t_token *lst_token);
+int		not_cmd(t_token *lst_token);
 
 //bin_path
 void	execve_bin_token(t_token *lst_token, t_shell *shell);
-t_token *bin_path(char **input);
-int     is_bin_path(t_token *lst_token);
+t_token	*bin_path(char **input);
+int		is_bin_path(t_token *lst_token);
 void	cmd_not_found(t_token *lst_token);
 
 //expand_home
-void    expand_home(t_shell *shell, t_token *lst_token);
+void	expand_home(t_shell *shell, t_token *lst_token);
 
-void change_fd(int fd_out, int fd_in);
+void	change_fd(int fd_out, int fd_in);
 
 #endif
