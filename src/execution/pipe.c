@@ -1,6 +1,5 @@
 #include "../inc/minishell.h"
 
-
 t_token *create_mini_list(t_token **lst_token)
 {
 	t_token *mini_lst;
@@ -9,7 +8,6 @@ t_token *create_mini_list(t_token **lst_token)
 	go_to_next_pipe(lst_token);
 	return (mini_lst);
 }
-//dup2(old_fd, new_fd);
 
 void handle_first_cmd(t_token *lst, t_shell *shell, int pipefd[][2], int n_pipes)
 {
@@ -39,8 +37,6 @@ void handle_middle_cmd(t_token *lst, t_shell *shell, int pipefd[][2], int i, int
 	close(pipefd[i - 1][0]);
 	dup2(pipefd[i][1], STDOUT_FILENO);
 	close(pipefd[i][1]);
-
-
 	close(pipefd[i][0]);
 	close(pipefd[i - 1][1]);
 	close_all_pipes_except(pipefd, i, n_pipes);

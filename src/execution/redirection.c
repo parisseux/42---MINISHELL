@@ -80,20 +80,6 @@ int	look_for_fd_input(t_token *token, int *fd, t_shell *shell)
 	return (0);
 }
 
-
-void change_fd(int fd_out, int fd_in)
-{
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
-	if (fd_in != -1)
-	{
-		dup2(fd_in, STDIN_FILENO);
-		close (fd_in);
-	}
-}
 //handle the redirection in the case of non builtin cmd
 //look for the fd of the input and output
 //file and send it to the function to eecute

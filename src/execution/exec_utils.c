@@ -1,9 +1,5 @@
 #include "../inc/minishell.h"
 
-//Cette fonction permet d'aller chercher dans
-//la copie de notre environnement (char **)
-//le contenue d'une variable 
-//exemple si key = PATH alors la fonction retourne /usr/bin....
 char	*get_env_value(char **env, char *key)
 {
 	int	i;
@@ -22,7 +18,6 @@ char	*get_env_value(char **env, char *key)
 	return (NULL);
 }
 
-//cherche la presence de pipe dans lst de token
 int	is_pipe(t_token *lst_token)
 {
 	t_token	*temp;
@@ -53,7 +48,6 @@ int	is_def(t_token *lst_token)
 	return (0);
 }
 
-//cherche la presence de builtin dans la lst de token
 int	is_builtin(t_token *lst_token)
 {
 	t_token	*temp;
@@ -83,7 +77,6 @@ int	is_builtin(t_token *lst_token)
 	return (0);
 }
 
-//cherche la presence de redirection dans la lst de token
 int	is_redir(t_token *lst_token)
 {
 	t_token	*temp;

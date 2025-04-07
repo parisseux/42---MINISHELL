@@ -97,8 +97,8 @@ void	exit_command(t_token *exit, t_shell *shell)
 		shell->exit &= 255;
 	if (shell->exit == 2)
 	{
-		write(STDOUT_FILENO, "minishell: exit: ", 17);
-		write(STDOUT_FILENO, exit->value, ft_strlen(exit->value));
+		write(STDERR_FILENO, "minishell: exit: ", 17);
+		write(STDERR_FILENO, exit->value, ft_strlen(exit->value));
 		write(STDERR_FILENO, ": numeric argument required\n", 28);
 	}
 	clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);

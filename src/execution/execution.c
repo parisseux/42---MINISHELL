@@ -5,7 +5,6 @@
 void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 {
 	int		pipefd[n_pipes + 1][2];
-	int		status;
 	int		pids[n_pipes + 1];
 	int		i;
 	t_token	*cmds[n_pipes + 2];
@@ -41,8 +40,7 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 		i++;
 	}
 	close_all_pipes(pipefd, n_pipes);
-	wait_all_pids(pids, &status, n_pipes + 1);
-	extract_exit_status(status, shell);
+	wait_all_pids(pids, shell , n_pipes + 1);
 }
 
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell)

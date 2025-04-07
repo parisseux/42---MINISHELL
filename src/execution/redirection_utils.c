@@ -29,3 +29,17 @@ void	handle_heredoc_prompt(int fd_write, char *stop, t_shell *shell)
 	close(fd_write);
 	init_signals();
 }
+
+void change_fd(int fd_out, int fd_in)
+{
+	if (fd_out != -1)
+	{
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
+	}
+	if (fd_in != -1)
+	{
+		dup2(fd_in, STDIN_FILENO);
+		close (fd_in);
+	}
+}

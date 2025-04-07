@@ -22,7 +22,11 @@ void	execve_non_builtin(t_token *lst_token,
 				cmd_not_found(lst_token);
 			break ;
 		}
+			
+
 	}
+	
+	
 	cmd_args = find_cmd_args(lst_token);
 	if (!cmd_args)
 		exit(EXIT_FAILURE);
@@ -89,23 +93,34 @@ char	**find_cmd_args(t_token *lst_token)
 
 	temp = lst_token;
 	n = 0;
-	while (temp && (temp->type == BIN || temp->type == WORD
-			|| temp->type == SQUOTE || temp->type == DQUOTE))
+
+	while(temp->type != END && temp->type != PIPE)
 	{
-		n++;
-		temp = temp->next;
+		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
+			|| temp->type == APPEND || temp->type == HEREDOC)
+			temp = temp->next->next;
+		else
+		{
+			n++;
+			temp = temp->next;
+		}
 	}
 	cmd_args = (char **)malloc(sizeof(char *) * (n + 1));
 	if (!cmd_args)
 		return (NULL);
 	i = 0;
-	temp = lst_token;
 	while (i < n)
 	{
-		cmd_args[i] = ft_strdup(temp->value);
-		i++;
-		temp = temp->next;
+		if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
+			|| lst_token->type == APPEND || lst_token->type == HEREDOC)
+			lst_token = lst_token->next->next;
+		else
+		{
+			cmd_args[i] = ft_strdup(lst_token->value);
+			i++;
+			lst_token = lst_token->next;
+		}
 	}
-	cmd_args[n] = '\0';
+	cmd_args[i] = NULL;
 	return (cmd_args);
 }
