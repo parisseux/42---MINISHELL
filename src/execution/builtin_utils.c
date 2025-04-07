@@ -28,7 +28,7 @@ void	builtin_parent_process(t_token *lst_token,
 			}
 			else if (!ft_strncmp(temp->value, "exit", 5))
 			{
-				exit_command(lst_token, shell);
+				exit_command(lst_token->next, shell);
 				break ;
 			}	
 		}
