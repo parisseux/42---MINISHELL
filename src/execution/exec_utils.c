@@ -61,7 +61,7 @@ int	is_builtin(t_token *lst_token)
 	temp = lst_token;
 	while (temp->type != END)
 	{
-		if (temp->type == WORD && temp->next->space == 1)
+		if (temp->type == WORD && (temp->next->space == 1 || temp->next->type == END))
 		{
 			if (!ft_strncmp(temp->value, "echo", 5))
 				return (1);
@@ -75,7 +75,7 @@ int	is_builtin(t_token *lst_token)
 				return (1);
 			else if (!ft_strncmp(temp->value, "env", 4))
 				return (1);
-			else if (!ft_strncmp(temp->value, "exit", 6))
+			else if (!ft_strncmp(temp->value, "exit", 5))
 				return (1);
 		}
 		temp = temp->next;

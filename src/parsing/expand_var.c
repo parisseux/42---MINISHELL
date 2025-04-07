@@ -12,13 +12,12 @@ char	*dolar_sign(char **line)
 	name = NULL;
 	if (**line == '?' || **line == '$' || **line == '0')
 		return (name);
-	while (i <= ft_strlen(*line))
-	{
-		if ((!ft_isalnum(**line)))
-			return (name);
-		i++;
-	}
-	name = ft_strdup(*line);
+	while (ft_isalnum((*line)[i]) || (*line)[i] == '_')
+        i++;
+    if (i == 0)
+        return (NULL);
+	else
+		name = ft_substr(*line, 0, i);
 	return (name);
 }
 
@@ -76,8 +75,7 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 			i++;
 		}
 	}
-	else
-		tmp = rm_var(value2);
+	tmp = rm_var(value2);
 	return (tmp);
 }
 

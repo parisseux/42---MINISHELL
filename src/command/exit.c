@@ -78,6 +78,8 @@ int	numeric_arg(t_token *lst_token)
 void	exit_command(t_token *exit, t_shell *shell)
 {
 	write(STDOUT_FILENO, "exit\n", 5);
+	if (exit->type == END)
+		clean_exit(0, exit, shell->var_env, shell->shell_env);
 	if (exit->next->type == WORD || exit->next->type == SQUOTE || exit->next->type == DQUOTE)
 	{
 		if (exit->next->space == 1 && arg_ok(exit->value))
