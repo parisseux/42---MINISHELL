@@ -153,7 +153,8 @@ void	export_command(t_token *lst_token, t_shell *shell);
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
 char	*find_var(t_shell *shell, char *name, char *value2);
 char	*dolar_sign(char **line);
-char	*dolar_special_cases(char **line, char *linee, t_shell *shell);
+char	*dol_spec_cases(char **line, char *linee, t_shell *shell);
+void	export_message_error(char *value, t_shell *shell);
 
 //expand_var_utils
 char	*add_special_case(char *name, char *line);

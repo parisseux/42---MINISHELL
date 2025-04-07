@@ -12,13 +12,13 @@ int	look_for_fd_heredoc(t_token *token, int *fd, t_shell *shell)
 		perror("pipe");
 		return (1);
 	}
-	pid  = fork();
+	pid = fork();
 	if (pid < 0)
 	{
 		perror("fork");
 		return (1);
 	}
-	else if (pid  == 0)
+	else if (pid == 0)
 	{
 		restore_signals();
 		close(fd_pipe[0]);
@@ -80,23 +80,6 @@ int	look_for_fd_input(t_token *token, int *fd, t_shell *shell)
 	return (0);
 }
 
-
-void change_fd(int fd_out, int fd_in)
-{
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
-	if (fd_in != -1)
-	{
-		dup2(fd_in, STDIN_FILENO);
-		close (fd_in);
-	}
-}
-//handle the redirection in the case of non builtin cmd
-//look for the fd of the input and output
-//file and send it to the function to eecute
 int	handle_redir(t_token *lst_token, t_shell *shell)
 {
 	t_token	*temp;
@@ -121,7 +104,7 @@ int	handle_redir(t_token *lst_token, t_shell *shell)
 		else if (temp->type == HEREDOC)
 		{
 			if (look_for_fd_heredoc(temp->next, &fd_in, shell) == 1)
-			return (1);
+				return (1);
 		}
 		else if (temp->type == REDIR_IN)
 		{

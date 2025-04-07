@@ -14,7 +14,7 @@ t_token	*extract_in(char **input)
 		new_token = create_token("<", REDIR_IN);
 	return (new_token);
 }
-//test
+
 t_token	*extract_out(char **input)
 {
 	t_token	*new_token;

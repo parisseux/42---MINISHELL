@@ -40,7 +40,7 @@ t_token	*tokenisation(char *input)
 			}
 		}
 		else if (*input == '/')
-			new_token = bin_path(&input);	
+			new_token = bin_path(&input);
 		else if (*input == '>')
 			new_token = extract_out(&input);
 		else if (*input == '<')

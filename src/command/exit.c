@@ -2,13 +2,14 @@
 
 int	count_args(t_token *lst_token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 	int		count;
 
 	tmp = lst_token;
 	count = 0;
 	while (tmp->type != END && tmp->type != PIPE && tmp->type != REDIR_IN
-		&& tmp->type != REDIR_OUT && tmp->type != HEREDOC && tmp->type != APPEND)
+		&& tmp->type != REDIR_OUT && tmp->type != HEREDOC
+		&& tmp->type != APPEND)
 	{
 		count++;
 		tmp = tmp->next;
@@ -74,11 +75,11 @@ int	numeric_arg(t_token *lst_token)
 	return (2);
 }
 
-
 void	exit_command(t_token *exit, t_shell *shell)
 {
 	write(STDOUT_FILENO, "exit\n", 5);
-	if (exit->next->type == WORD || exit->next->type == SQUOTE || exit->next->type == DQUOTE)
+	if (exit->next->type == WORD || exit->next->type == SQUOTE
+		|| exit->next->type == DQUOTE)
 	{
 		if (exit->next->space == 1 && arg_ok(exit->value))
 		{
@@ -97,23 +98,9 @@ void	exit_command(t_token *exit, t_shell *shell)
 		shell->exit &= 255;
 	if (shell->exit == 2)
 	{
-		write(STDOUT_FILENO, "minishell: exit: ", 17);
-		write(STDOUT_FILENO, exit->value, ft_strlen(exit->value));
+		write(STDERR_FILENO, "minishell: exit: ", 17);
+		write(STDERR_FILENO, exit->value, ft_strlen(exit->value));
 		write(STDERR_FILENO, ": numeric argument required\n", 28);
 	}
 	clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
-}
-
-int extract_exit_status(int status, t_shell *shell)
-{
-	if (WIFEXITED(status))
-		shell->exit = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		shell->exit = 128 + WTERMSIG(status);
-	else
-		shell->exit = 0;
-	if (shell->exit == 0)
-		return (0);
-	else 
-		return (1);
 }

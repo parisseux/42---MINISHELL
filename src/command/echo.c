@@ -22,8 +22,8 @@ void	echo_command(t_token *lst_token, int n_flag)
 					echo_double_quote(&line);
 				else
 					echo_no_quote(&line);
-				if (lst_token->next->space == 1 && 
-						lst_token->next->type != END && lst_token->next->type != PIPE)
+				if (lst_token->next->space == 1 && lst_token->next->type != END
+					&& lst_token->next->type != PIPE)
 					write(STDOUT_FILENO, " ", 1);
 			}
 			lst_token = lst_token->next;

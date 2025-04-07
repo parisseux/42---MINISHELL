@@ -1,14 +1,10 @@
 #include "../inc/minishell.h"
 
-// a revoir
-//meme chose il faut introduire fd_out et corriger les prints pour des write
-// ATTETION SI SHELL VIDE
 void	print_export(t_shell *shell)
 {
 	int	i;
 
 	i = 0;
-
 	while (shell->var_env[i])
 	{
 		write(STDERR_FILENO, "declare -x ", 11);
@@ -18,7 +14,7 @@ void	print_export(t_shell *shell)
 	}
 }
 
-char **new_tab(char **var_env, char *value, char **new_env, int add)
+char	**new_tab(char **var_env, char *value, char **new_env, int add)
 {
 	int		j;
 
@@ -50,9 +46,9 @@ char **new_tab(char **var_env, char *value, char **new_env, int add)
 
 char	**add_var_to_env(char **var_env, char *value, int shell)
 {
-	int	i;
-	int	j;
-	int check;
+	int		i;
+	int		j;
+	int		check;
 	char	**tmp;
 
 	i = 0;
@@ -74,7 +70,7 @@ char	**add_var_to_env(char **var_env, char *value, int shell)
 	{
 		tmp = ft_calloc(sizeof(char *), i + 1);
 		new_tab(var_env, value, tmp, 0);
-		return (tmp);		
+		return (tmp);
 	}
 	if (shell == 0)
 	{
@@ -84,7 +80,6 @@ char	**add_var_to_env(char **var_env, char *value, int shell)
 	}		
 	return (NULL);
 }
-
 
 int	good_varname(char *name, char until)
 {
@@ -104,26 +99,6 @@ int	good_varname(char *name, char until)
 	return (0);
 }
 
-void	export_message_error(char *value, t_shell *shell)
-{
-	if (!ft_strncmp(value, "-", 1))
-	{
-		write(STDERR_FILENO, "minishell: export: -", 20);
-		write(STDERR_FILENO, &value[1], 1);
-		write(STDERR_FILENO, ": invalid option\n", 17);
-		write(STDERR_FILENO, "export: usage: export [-fn] [name[=value] ...] or export -p\n", 60);
-		shell->exit = 2;	
-	}
-	else
-	{
-		write(STDERR_FILENO, "minishell: export: `", 20);
-		write(STDERR_FILENO, value, ft_strlen(value));
-		write(STDERR_FILENO, "': not a valid identifier\n", 26);
-		shell->exit = 1;		
-	}
-	
-}
-
 void	export_command(t_token *lst_token, t_shell *shell)
 {
 	t_token	*tmp;
@@ -137,17 +112,18 @@ void	export_command(t_token *lst_token, t_shell *shell)
 	}
 	while (tmp->type != END)
 	{
-		if (tmp->type == DEF || (ft_strchr(tmp->value, '=') && !good_varname(tmp->value, '=')))
+		if (tmp->type == DEF || (ft_strchr(tmp->value, '=')
+				&& !good_varname(tmp->value, '=')))
 		{
 			tab = add_var_to_env(shell->var_env, tmp->value, 0);
 			ft_free_char_tab(shell->var_env);
 			shell->var_env = tab;
 		}
-		else if ((ft_strchr(tmp->value, '=') && good_varname(tmp->value, '=')) || good_varname(tmp->value, '\0'))
+		else if ((ft_strchr(tmp->value, '=') && good_varname(tmp->value, '='))
+			|| good_varname(tmp->value, '\0'))
 			return (export_message_error(tmp->value, shell));
 		else
 			return ;
 		tmp = tmp->next;
 	}
 }
-

@@ -18,20 +18,20 @@ int	check_first_last_token(t_token *lst_token)
 	temp = lst_token;
 	if (temp->type == PIPE)
 	{
-		write(STDERR_FILENO, "bash: syntax error near unexpected token `|'\n", 45);
+		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
 		return (2);
 	}
 	while (temp->next->type != END)
 		temp = temp->next;
 	if (temp->type == PIPE)
 	{
-		write(STDERR_FILENO, "bash: syntax error: unexpected end of file\n", 44);
+		ft_putstr_fd("bash: syntax error: unexpected end of file\n", 2);
 		return (2);
 	}
 	else if (temp->type == REDIR_IN || temp->type == REDIR_OUT
 		|| temp->type == HEREDOC || temp->type == APPEND)
 	{
-		write(STDERR_FILENO, "bash: syntax error near unexpected token `newline'\n", 51);
+		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", 2);
 		return (2);
 	}
 	return (0);
@@ -47,7 +47,7 @@ int	check_synthax_pipe(t_token *lst_token)
 		if (temp->type == PIPE)
 		{
 			if (temp->next->type == REDIR_IN || temp->next->type == REDIR_OUT
-					|| temp->next->type == HEREDOC || temp->next->type == APPEND)
+				|| temp->next->type == HEREDOC || temp->next->type == APPEND)
 				perror("lala");
 		}
 		temp = temp->next;

@@ -7,7 +7,8 @@ int	invalid_option(char *line, t_shell *shell)
 		write(STDERR_FILENO, "minishell: unset: -", 20);
 		write(STDERR_FILENO, &line[1], 1);
 		write(STDERR_FILENO, ": invalid option\n", 17);
-		write(STDERR_FILENO, "export: usage: export [-fn] [name[=value] ...] or export -p\n", 60);
+		write(STDERR_FILENO, "export: usage: export [-fn]", 27);
+		write(STDERR_FILENO, " [name[=value] ...] or export -p\n", 33);
 		shell->exit = 2;
 		return (1);
 	}

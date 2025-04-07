@@ -65,7 +65,7 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 			return ;
 		if (is_bin_path(lst_token))
 			execve_bin_token(lst_token, shell);
-		else 
+		else
 			execve_non_builtin(lst_token, shell);
 	}	
 	else
