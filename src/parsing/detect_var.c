@@ -106,7 +106,8 @@ t_token	*token_var(char **input)
 
 	len = 0;
 	copy = ft_strdup(*input);
-	while ((**input != ' ' || in_quote(**input, copy)) && (!ft_strchr("|<>", **input)
+	while ((**input != ' ' || in_quote(**input, copy))
+		&& (!ft_strchr("|<>", **input)
 			|| in_quote(**input, copy)) && **input != '\0')
 	{
 		len++;

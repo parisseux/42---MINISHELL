@@ -36,7 +36,8 @@ void	execve_bin_token(t_token *lst_token, t_shell *shell)
 		if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
 			|| lst_token->type == HEREDOC || lst_token->type == APPEND)
 			lst_token = lst_token->next->next;
-		if (lst_token->next->space == 1 || lst_token->next->type == PIPE || lst_token->next->type == END)
+		if (lst_token->next->space == 1 || lst_token->next->type == PIPE
+			|| lst_token->next->type == END)
 		{
 			cmd = lst_token->value;
 			if (!cmd)

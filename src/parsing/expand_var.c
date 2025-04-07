@@ -22,7 +22,8 @@ char	*dolar_sign(char **line)
 	return (name);
 }
 
-char	*dolar_special_cases(char **line, char *linee, t_shell *shell)
+char	*dol_spec_cases(char **line,
+	char *linee, t_shell *shell)
 {
 	char	*name;
 	char	*token;
@@ -94,7 +95,8 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 		value2 = ft_strdup(lst_token->value);
 		while (*value)
 		{
-			if (lst_token->type != WORD && lst_token->type != DQUOTE && lst_token->type != DEF)
+			if (lst_token->type != WORD
+				&& lst_token->type != DQUOTE && lst_token->type != DEF)
 				break ;
 			if (*value == '$')
 			{
@@ -108,7 +110,7 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 				else
 				{
 					free(lst_token->value);
-					lst_token->value = dolar_special_cases(&value, value2, shell);
+					lst_token->value = dol_spec_cases(&value, value2, shell);
 				}
 				value2 = ft_strdup(lst_token->value);
 			}

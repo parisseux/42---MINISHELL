@@ -1,9 +1,7 @@
 #include "../inc/minishell.h"
 
-int g_stop = 0;
+int	g_stop = 0;
 
-//parsing de l'input, separation en token, expansion
-//variable, synthax error, et lancement de l'execution
 int	start_minishell(t_shell *shell, char *input)
 {
 	t_token	*lst_token;
@@ -13,25 +11,24 @@ int	start_minishell(t_shell *shell, char *input)
 	if (!lst_token)
 	{
 		free(input);
-		return 1;
+		return (1);
 	}
 	if (lst_token->type == END)
 		return (0);
 	look_for_dolls(lst_token, shell);
-	if (ft_strncmp(lst_token->value, "export", 7)) // seulement si c'est le premier 
+	if (ft_strncmp(lst_token->value, "export", 7))
 		shell_var(lst_token, shell);
 	expand_home(shell, lst_token);
 	if (check_syntax_error(lst_token))
 	{
 		shell->exit = 2;
-		return -1;
+		return (1);
 	}
 	execution(lst_token, shell);
 	free_token_list(lst_token);
 	return (0);
 }
 
-//faire une copie de env dans une structure appeler shell
 char	**setup_minishell(char **env)
 {
 	char	**var_env;

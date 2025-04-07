@@ -14,8 +14,8 @@ void	execve_non_builtin(t_token *lst_token,
 		if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
 			|| lst_token->type == HEREDOC || lst_token->type == APPEND)
 			lst_token = lst_token->next->next;
-		
-		if (lst_token->next->space == 1 || lst_token->next->type == PIPE || lst_token->next->type == END)
+		if (lst_token->next->space == 1 || lst_token->next->type == PIPE
+			|| lst_token->next->type == END)
 		{
 			cmd = find_cmd_path(lst_token->value, shell->var_env);
 			if (!cmd)
