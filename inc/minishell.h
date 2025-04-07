@@ -64,6 +64,7 @@ t_token *create_mini_list_token(t_token *lst_token);
 t_token *create_mini_list(t_token **lst_token);
 void handle_middle_cmd(t_token *lst, t_shell *shell, int pipefd[][2], int i, int n_pipes);
 void close_all_pipes_except(int pipefd[][2], int i, int n_pipes);
+
 //signals 
 void    init_signals(void);
 void	sigint_handler(int sig);
@@ -183,5 +184,7 @@ void	cmd_not_found(t_token *lst_token);
 
 //expand_home
 void    expand_home(t_shell *shell, t_token *lst_token);
+
+void change_fd(int fd_out, int fd_in);
 
 #endif

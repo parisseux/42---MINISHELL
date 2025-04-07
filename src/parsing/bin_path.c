@@ -5,8 +5,11 @@ int	is_bin_path(t_token *lst_token)
 	t_token	*tmp;
 
 	tmp = lst_token;
-	while (tmp->type != END)
+	while (tmp->type != END && tmp->type != PIPE)
 	{
+		if (tmp->type == REDIR_IN || tmp->type == REDIR_OUT
+			|| tmp->type == APPEND || tmp->type == HEREDOC)
+			tmp = tmp->next->next ;
 		if (tmp->type == BIN)
 			return (1);
 		tmp = tmp->next;
