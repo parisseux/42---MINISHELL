@@ -34,7 +34,24 @@ int	num_arg(char *arg)
 	if (arg[0] == '-')
 		return (156);
 	return (ft_atoi(arg + 1));
+}
 
+int	arg_ok(char *arg)
+{
+	int	i;
+
+	i = 1;
+	if (ft_str_digit(arg))
+		return (1);
+	if (arg[0] != '+' && arg[0] != '-' && !ft_isdigit(arg[0]))
+		return (0);
+	while (arg[i] != '\0')
+	{
+		if (!ft_isdigit(arg[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	numeric_arg(t_token *lst_token)
@@ -42,8 +59,8 @@ int	numeric_arg(t_token *lst_token)
 	int	space;
 
 	space = lst_token->next->space;
-	if (space == 1)
-		return (130);
+	if (space == 1 && ft_str_digit(lst_token->next->value))
+		return (2);
 	if (!ft_strncmp(lst_token->value, "+", ft_strlen(lst_token->value)))
 	{
 		if (ft_str_digit(lst_token->next->value))
@@ -57,35 +74,34 @@ int	numeric_arg(t_token *lst_token)
 	return (2);
 }
 
-void	exit_command(t_token *lst_token, t_shell *shell)
+
+void	exit_command(t_token *exit, t_shell *shell)
 {
 	write(STDOUT_FILENO, "exit\n", 5);
-	if (lst_token->next->type == WORD || lst_token->next->type == SQUOTE
-		|| lst_token->next->type == DQUOTE)
+	if (exit->next->type == WORD || exit->next->type == SQUOTE || exit->next->type == DQUOTE)
 	{
-		if (count_args(lst_token) == 2)
-			shell->exit = num_arg(lst_token->next->value);
-		else if (count_args(lst_token) == 3)
-			shell->exit = numeric_arg(lst_token->next);
+		if (exit->next->space == 1 && arg_ok(exit->value))
+		{
+			write(STDERR_FILENO, "minishell: exit: too many arguments\n", 36);
+			shell->exit = 1;
+			return ;
+		}
+		else
+			shell->exit = numeric_arg(exit);
 	}
+	else if (exit->type == WORD || exit->type == SQUOTE || exit->type == DQUOTE)
+		shell->exit = num_arg(exit->value);
 	else
 		shell->exit = 0;
-	if (shell->exit == 298)
-		shell->exit = 42;
+	if (shell->exit > 255)
+		shell->exit &= 255;
 	if (shell->exit == 2)
 	{
-		write(STDERR_FILENO, "minishell: exit: ", 17);
-		write(STDERR_FILENO, lst_token->next->value, ft_strlen(lst_token->next->value));
+		write(STDOUT_FILENO, "minishell: exit: ", 17);
+		write(STDOUT_FILENO, exit->value, ft_strlen(exit->value));
 		write(STDERR_FILENO, ": numeric argument required\n", 28);
 	}
-	if (shell->exit == 130)
-	{
-		write(STDERR_FILENO, "minishell: exit: too many arguments\n", 36);
-		return ;
-	}
-	free_token_list(lst_token);
-	ft_free_char_tab(shell->var_env);
-	exit (shell->exit);
+	clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
 }
 
 int extract_exit_status(int status, t_shell *shell)
