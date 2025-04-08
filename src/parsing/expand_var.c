@@ -21,6 +21,24 @@ char	*dolar_sign(char **line)
 	return (name);
 }
 
+char	*find_pid()
+{
+	int		 fd;
+	char	*name;
+	char	**tab;
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd <= 0)
+		return (NULL);
+	name = get_next_line(fd);
+	if (!name)
+		return (NULL);
+	tab = ft_split(name, ' ');
+	if (!tab)
+		return (NULL);
+	return (ft_strdup(tab[4]));
+}
+
 char	*dolar_special_cases(char **line, char *linee, t_shell *shell)
 {
 	char	*name;
@@ -33,14 +51,16 @@ char	*dolar_special_cases(char **line, char *linee, t_shell *shell)
 	if (**line == '?')
 		name = ft_itoa(shell->exit);
 	else if (**line == '$')
-		name = ft_itoa(getpid());
+		name = find_pid();
 	else if (**line == '0')
 		name = ft_strdup("minishell");
-	if (name)
+	if (name != NULL)
 	{
 		token = add_special_case(name, linee);
 		return (token);
 	}
+	else
+		return (NULL);
 	return (name);
 }
 
@@ -94,7 +114,7 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 		{
 			if (lst_token->type != WORD && lst_token->type != DQUOTE && lst_token->type != DEF)
 				break ;
-			if (*value == '$')
+			if (*value == '$' && *value + 1 != ' ')
 			{
 				name = dolar_sign(&value);
 				if (name)

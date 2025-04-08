@@ -57,10 +57,11 @@ char	*add(char *new_value, char *value, int name_len, char symbol)
 {
 	char	*tmp;
 	int		i;
+	int		j;
 	int		size;
 
 	i = 0;
-	size = ft_strlen(value) - name_len + ft_strlen(new_value);
+	size = ft_strlen(value) - name_len + ft_strlen(new_value) + 1;
 	tmp = malloc(size + 1 * sizeof(char));
 	if (!tmp)
 		return (NULL);
@@ -69,17 +70,16 @@ char	*add(char *new_value, char *value, int name_len, char symbol)
 		tmp[i] = value[i];
 		i++;
 	}
-	ft_strlcpy(tmp + i, new_value + name_len, ft_strlen(new_value) + 1);
-	i += ft_strlen(new_value);
-    while (value[i + name_len + 1] != '\0')
+	ft_strlcpy(tmp + i, new_value + name_len, ft_strlen(new_value));
+	j = ft_strlen(tmp);
+    while (value[i + name_len] != '\0')
     {
-        tmp[i] = value[i + name_len + 1];
+        tmp[j] = value[i + name_len];
+		j++;
         i++;
     }
-	tmp[i] = '\0';
+	tmp[j] = '\0';
 	free(value);
-	write (1, tmp, ft_strlen(tmp));
-	write (1, "\n", 1);
 	return (tmp);
 }
 

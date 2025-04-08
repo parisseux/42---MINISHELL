@@ -111,7 +111,7 @@ void	export_message_error(char *value, t_shell *shell)
 		write(STDERR_FILENO, "minishell: export: -", 20);
 		write(STDERR_FILENO, &value[1], 1);
 		write(STDERR_FILENO, ": invalid option\n", 17);
-		write(STDERR_FILENO, "export: usage: export [-fn] [name[=value] ...] or export -p\n", 60);
+		write(STDERR_FILENO, "export: usage: export [name[=value] ...] or export -p\n", 55);
 		shell->exit = 2;	
 	}
 	else
