@@ -78,45 +78,43 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 void	builtin_cmd(t_token *lst_token, t_shell *shell)
 {
 	t_token	*temp;
-	int		saved_stdout;
-	int		saved_stdin;
 
 	temp = lst_token;
-	saved_stdout = dup(STDOUT_FILENO);
-	saved_stdin = dup(STDIN_FILENO);
-	if (handle_redir(lst_token, shell) == 1)
-		return ;
 	while (temp->type != END)
 	{
-		if (temp->type == WORD || temp->type == DEF)
+		if (temp->type == WORD && (!ft_strncmp(temp->value, "cd", 3)
+			|| !ft_strncmp(temp->value, "export", 7)
+			|| !ft_strncmp(temp->value, "unset", 6)
+			|| !ft_strncmp(temp->value, "exit", 5)))
 		{
-			if (!ft_strncmp(temp->value, "cd", 3)
-				|| !ft_strncmp(temp->value, "export", 7)
-				|| !ft_strncmp(temp->value, "unset", 6)
-				|| !ft_strncmp(temp->value, "exit", 5))
-			{
-				builtin_parent_process(lst_token, shell);
-				restore_and_close_fd(saved_stdout, saved_stdin);
-				return ;
-			}
-			else if (!ft_strncmp(temp->value, "echo", 5)
-				|| !ft_strncmp(temp->value, "pwd", 4)
-				|| !ft_strncmp(temp->value, "env", 4))
-			{
-				builtin_child_process(lst_token, shell);
-				restore_and_close_fd(saved_stdout, saved_stdin);
-				return ;
-			}
+			builtin_parent_process(lst_token, shell);
+			return ;
+		}
+		else if (temp->type == WORD && (!ft_strncmp(temp->value, "echo", 5)
+			|| !ft_strncmp(temp->value, "pwd", 4)
+			|| !ft_strncmp(temp->value, "env", 4)))
+		{
+			builtin_child_process(lst_token, shell);
+			return ;
 		}
 		temp = temp->next;
 	}
-	restore_and_close_fd(saved_stdout, saved_stdin);
 }
 
 void	exec_one_cmd(t_token *lst_token, t_shell *shell)
 {
+	int		saved_stdout;
+	int		saved_stdin;
+
 	if (is_builtin(lst_token))
+	{
+		saved_stdout = dup(STDOUT_FILENO);
+		saved_stdin = dup(STDIN_FILENO);
+		if (handle_redir(lst_token, shell) == 1)
+			return ;
 		builtin_cmd(lst_token, shell);
+		restore_and_close_fd(saved_stdout, saved_stdin);
+	}	
 	else
 		non_builtin_cmd(lst_token, shell);
 }

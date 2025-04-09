@@ -1,8 +1,1 @@
-inc
-libft
-lol
-Makefile
-minishell
-obj
-README.md
-src
+salu ca va 
