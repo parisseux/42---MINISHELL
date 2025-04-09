@@ -75,7 +75,7 @@ int	numeric_arg(t_token *lst_token)
 	return (2);
 }
 
-void	exit_command(t_token *exit, t_shell *shell)
+int	exit_command(t_token *exit, t_shell *shell)
 {
 	write(STDOUT_FILENO, "exit\n", 5);
 	if (exit->next->type == WORD || exit->next->type == SQUOTE
@@ -85,7 +85,7 @@ void	exit_command(t_token *exit, t_shell *shell)
 		{
 			write(STDERR_FILENO, "minishell: exit: too many arguments\n", 36);
 			shell->exit = 1;
-			return ;
+			return (1);
 		}
 		else
 			shell->exit = numeric_arg(exit);
@@ -103,4 +103,5 @@ void	exit_command(t_token *exit, t_shell *shell)
 		write(STDERR_FILENO, ": numeric argument required\n", 28);
 	}
 	clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
+	return (1);
 }

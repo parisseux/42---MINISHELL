@@ -88,10 +88,10 @@ void	restore_and_close_fd(int saved_stdout, int saved_stdin);
 void	exec_one_cmd(t_token *lst_token, t_shell *shell);
 
 //command
-void	cd_command(t_token *lst_token, t_shell *shell);
+int	cd_command(t_token *lst_token, t_shell *shell);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
-void	env_command(t_shell *shell, t_token *lst_token);
-void	pwd_command(void);
+int	env_command(t_shell *shell, t_token *lst_token);
+int	pwd_command(void);
 int		extract_exit_status(int status, t_shell *shell);
 
 //echo_command
@@ -100,6 +100,7 @@ void	echo_single_quote(char **line);
 void	echo_double_quote(char **line);
 void	echo_no_quote(char **line);
 int		echo_check_n_flag(char **line);
+int start_echo(t_token *lst_token);
 
 //command/utils
 int		print_or_file(t_token *lst_token);
@@ -131,13 +132,13 @@ int		check_synthax_pipe(t_token *lst_token);
 int		check_synthax_redirection(t_token *lst_token);
 
 //exit
-void	exit_command(t_token *lst_token, t_shell *shell);
+int	exit_command(t_token *lst_token, t_shell *shell);
 
 //exports
 void	print_export(t_shell *shell);
 char	**add_var_to_env(char **var_env, char *value, int shell);
 int		good_varname(char *name, char unitl);
-void	export_command(t_token *lst_token, t_shell *shell);
+int	export_command(t_token *lst_token, t_shell *shell);
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
@@ -154,7 +155,7 @@ int		alphanum_len(char *value);
 int		malloc_size(char *new_value, char *value, int name_len, char symbol);
 
 //unset
-void	unset_command(char *line, t_shell *shell);
+int	unset_command(char *line, t_shell *shell);
 
 //shell_var
 void	shell_var(t_token *lst_token, t_shell *shell);
@@ -178,4 +179,4 @@ void	expand_home(t_shell *shell, t_token *lst_token);
 
 void	change_fd(int fd_out, int fd_in);
 
-#endif
+#endif 

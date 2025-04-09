@@ -1,9 +1,5 @@
 #include "../inc/minishell.h"
 
-//Cette fonction permet d'aller chercher dans
-//la copie de notre environnement (char **)
-//le contenue d'une variable 
-//exemple si key = PATH alors la fonction retourne /usr/bin....
 char	*get_env_value(char **env, char *key)
 {
 	int	i;
@@ -22,7 +18,6 @@ char	*get_env_value(char **env, char *key)
 	return (NULL);
 }
 
-//cherche la presence de pipe dans lst de token
 int	is_pipe(t_token *lst_token)
 {
 	t_token	*temp;
@@ -53,7 +48,6 @@ int	is_def(t_token *lst_token)
 	return (0);
 }
 
-//cherche la presence de builtin dans la lst de token
 int	is_builtin(t_token *lst_token)
 {
 	t_token	*temp;
@@ -61,21 +55,13 @@ int	is_builtin(t_token *lst_token)
 	temp = lst_token;
 	while (temp->type != END)
 	{
-		if (temp->type == WORD && temp->next->space == 1)
+		if (temp->type == WORD && (temp->next->space == 1 || temp->next->type == END
+			|| temp->next->type == PIPE))
 		{
-			if (!ft_strncmp(temp->value, "echo", 5))
-				return (1);
-			else if (!ft_strncmp(temp->value, "cd", 3))
-				return (1);
-			else if (!ft_strncmp(temp->value, "pwd", 4))
-				return (1);
-			else if (!ft_strncmp(temp->value, "export", 7))
-				return (1);
-			else if (!ft_strncmp(temp->value, "unset", 5))
-				return (1);
-			else if (!ft_strncmp(temp->value, "env", 4))
-				return (1);
-			else if (!ft_strncmp(temp->value, "exit", 6))
+			if (!ft_strncmp(temp->value, "echo", 5) || !ft_strncmp(temp->value, "cd", 3)
+				|| !ft_strncmp(temp->value, "pwd", 4) || !ft_strncmp(temp->value, "export", 7)
+				|| !ft_strncmp(temp->value, "unset", 5) || !ft_strncmp(temp->value, "env", 4)
+				|| !ft_strncmp(temp->value, "exit", 6))
 				return (1);
 		}
 		temp = temp->next;
@@ -83,7 +69,6 @@ int	is_builtin(t_token *lst_token)
 	return (0);
 }
 
-//cherche la presence de redirection dans la lst de token
 int	is_redir(t_token *lst_token)
 {
 	t_token	*temp;

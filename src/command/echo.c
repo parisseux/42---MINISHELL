@@ -1,5 +1,15 @@
 #include "../inc/minishell.h"
 
+int start_echo(t_token *lst_token)
+{
+	if (lst_token->next->type == END)
+		write(STDOUT_FILENO, "\n", 1);
+	else if (!ft_strncmp(lst_token->next->value, "-n", 2))
+		echo_command(lst_token->next->next, 1);
+	else
+		echo_command(lst_token->next, 0);
+	return (1);
+}
 void	echo_command(t_token *lst_token, int n_flag)
 {
 	char	*line;

@@ -99,7 +99,7 @@ int	good_varname(char *name, char until)
 	return (0);
 }
 
-void	export_command(t_token *lst_token, t_shell *shell)
+int	export_command(t_token *lst_token, t_shell *shell)
 {
 	t_token	*tmp;
 	char	**tab;
@@ -108,7 +108,7 @@ void	export_command(t_token *lst_token, t_shell *shell)
 	if (tmp->type == END)
 	{
 		print_export(shell);
-		return ;
+		return (1);
 	}
 	while (tmp->type != END)
 	{
@@ -121,9 +121,14 @@ void	export_command(t_token *lst_token, t_shell *shell)
 		}
 		else if ((ft_strchr(tmp->value, '=') && good_varname(tmp->value, '='))
 			|| good_varname(tmp->value, '\0'))
-			return (export_message_error(tmp->value, shell));
+		{
+			export_message_error(tmp->value, shell);
+			return (1);
+		}
 		else
-			return ;
+			return (1);
 		tmp = tmp->next;
 	}
+	return (1);
+
 }
