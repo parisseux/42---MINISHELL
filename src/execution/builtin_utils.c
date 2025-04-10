@@ -20,6 +20,7 @@ void	builtin_parent_process(t_token *lst_token,
 			stop = exit_command(lst_token, shell);
 		temp = temp->next;
 	}
+	shell->exit = stop;
 }
 
 void	builtin_child_action(t_token *lst_token, t_shell *shell)
@@ -40,7 +41,7 @@ void	builtin_child_action(t_token *lst_token, t_shell *shell)
 			stop = start_echo(lst_token);
 		temp = temp->next;
 	}
-	exit(0);
+	exit(stop);
 }
 
 void	builtin_child_process(t_token *lst_token, t_shell *shell)

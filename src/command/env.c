@@ -20,12 +20,14 @@ int	env_command(t_shell *shell, t_token *lst_token)
 			write(STDOUT_FILENO, "\n", 1);
 			i++;
 		}
+		return (0);
 	}
 	else
 	{
 		ft_putstr_fd("env ", 2);
 		ft_putstr_fd(lst_token->next->value, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
+		return (127);
 	}
 	return (1);
 }

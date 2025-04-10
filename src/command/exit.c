@@ -14,33 +14,7 @@ int	minus_exit(char *arg)
 	else if ((ft_atoi(arg)) == 3)
 		return (3);
 	else
-	{
-		write(1, "pas min", 7);
 		return (sign * ft_atoi(arg));
-	}
-		
-}
-int	count_args(t_token *lst_token)
-{
-	t_token	*tmp;
-	int		count;
-
-	tmp = lst_token;
-	count = 0;
-	while (tmp->type != END && tmp->type != PIPE && tmp->type != REDIR_IN
-		&& tmp->type != REDIR_OUT && tmp->type != HEREDOC
-		&& tmp->type != APPEND)
-	{
-		count++;
-		tmp = tmp->next;
-	}
-	return (count);
-}
-
-void exit_message(t_shell *shell, t_token *exit)
-{
-	write(STDERR_FILENO, "minishell: exit: numeric argument required\n", 43);
-	clean_exit(2, exit, shell->var_env, shell->shell_env);
 }
 
 int	num_arg(char *arg, t_shell *shell, t_token *lst_token)
@@ -84,8 +58,6 @@ int	arg_ok(char *arg)
 	}
 	return (1);
 }
-
-
 
 int	numeric_arg(t_token *lst_token, t_shell *shell)
 {
@@ -133,7 +105,6 @@ int	exit_command(t_token *exit, t_shell *shell)
 		shell->exit = num_arg(exit->next->value, shell, exit);
 	else
 		shell->exit = 0;
-
 	if (shell->exit > 255 || shell->exit < 0)
 		shell->exit &= 255;
 	clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
