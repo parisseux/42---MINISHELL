@@ -130,5 +130,4 @@ int	export_command(t_token *lst_token, t_shell *shell)
 		tmp = tmp->next;
 	}
 	return (1);
-
 }
