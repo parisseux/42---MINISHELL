@@ -112,7 +112,7 @@ int	numeric_arg(t_token *lst_token, t_shell *shell)
 	return (0);
 }
 
-void	exit_command(t_token *exit, t_shell *shell)
+int	exit_command(t_token *exit, t_shell *shell)
 {
 	write(STDOUT_FILENO, "exit\n", 5);
 	if (exit->next->type == END || exit->type == PIPE)
@@ -124,7 +124,7 @@ void	exit_command(t_token *exit, t_shell *shell)
 		{
 			write(STDERR_FILENO, "minishell: exit: too many arguments\n", 36);
 			shell->exit = 1;
-			return ;
+			return (1);
 		}
 		else
 			shell->exit = numeric_arg(exit, shell);
@@ -137,4 +137,5 @@ void	exit_command(t_token *exit, t_shell *shell)
 	if (shell->exit > 255 || shell->exit < 0)
 		shell->exit &= 255;
 	clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
+	return (1);
 }

@@ -69,11 +69,10 @@ int	main(int ac, char **av, char **env)
 		input = readline("minishell$ ");
 		if (!input)
 			break ;
-		else
-			add_history(input);
+		add_history(input);
 		start_minishell(&shell, input);
 		free(input);
 	}
-	clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
+	//clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
 	return (0);
 }

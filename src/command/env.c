@@ -2,7 +2,7 @@
 
 //exit stauts grace a waitpid
 
-void	env_command(t_shell *shell, t_token *lst_token)
+int	env_command(t_shell *shell, t_token *lst_token)
 {
 	int	i;
 	int	len;
@@ -27,4 +27,5 @@ void	env_command(t_shell *shell, t_token *lst_token)
 		ft_putstr_fd(lst_token->next->value, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 	}
+	return (1);
 }

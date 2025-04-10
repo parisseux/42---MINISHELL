@@ -15,13 +15,13 @@ int	invalid_option(char *line, t_shell *shell)
 	return (0);
 }
 
-void	unset_command(char *line, t_shell *shell)
+int	unset_command(char *line, t_shell *shell)
 {
 	int	i;
 
 	i = 0;
 	if (invalid_option(line, shell))
-		return ;
+		return (1) ;
 	while (shell->var_env[i])
 	{
 		if (!ft_varcmp(shell->var_env[i], line, ft_strlen(line)))
@@ -32,7 +32,7 @@ void	unset_command(char *line, t_shell *shell)
 				shell->var_env[i] = shell->var_env[i + 1];
 				i++;
 			}
-			return ;
+			return (1);
 		}
 		i++;
 	}
@@ -49,9 +49,10 @@ void	unset_command(char *line, t_shell *shell)
 					shell->shell_env[i] = shell->shell_env[i + 1];
 					i++;
 				}
-				return ;
+				return (1);
 			}
 			i++;
 		}
 	}
+	return (1);
 }

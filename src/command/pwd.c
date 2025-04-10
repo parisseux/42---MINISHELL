@@ -2,7 +2,7 @@
 
 //exit status grace a waitpid
 
-void	pwd_command(void)
+int	pwd_command(void)
 {
 	char	*pwd;
 
@@ -10,4 +10,5 @@ void	pwd_command(void)
 	write(STDOUT_FILENO, pwd, ft_strlen(pwd));
 	write(STDOUT_FILENO, "\n", 1);
 	free(pwd);
+	return (1);
 }
