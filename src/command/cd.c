@@ -7,7 +7,7 @@ int	cd_command(t_token *lst_token, t_shell *shell)
 
 	path = NULL;
 	if (lst_token && (lst_token->type == WORD || lst_token->type == SQUOTE
-			|| lst_token->type == DQUOTE))
+			|| lst_token->type == DQUOTE || lst_token->type == BIN))
 		path = lst_token->value;
 	if (!path)
 	{
