@@ -93,6 +93,7 @@ void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 int	env_command(t_shell *shell, t_token *lst_token);
 int	pwd_command(void);
 int		extract_exit_status(int status, t_shell *shell);
+void	exit_message(t_shell *shell, t_token *exit);
 
 //echo_command
 void	echo_command(t_token *lst_token, int n_flag);
