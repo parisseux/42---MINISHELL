@@ -58,9 +58,8 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	}
 	else if (pid == 0)
 	{
-		restore_signals();
-		if (handle_redir(lst_token, shell) == 1)
-			return ;
+		// restore_signals();
+		handle_redir(lst_token, shell);
 		if (is_def(lst_token))
 			return ;
 		if (is_bin_path(lst_token))
@@ -114,9 +113,17 @@ void	exec_one_cmd(t_token *lst_token, t_shell *shell)
 			return ;
 		builtin_cmd(lst_token, shell);
 		restore_and_close_fd(saved_stdout, saved_stdin);
-	}	
+	}
 	else
+	{
+		// saved_stdout = dup(STDOUT_FILENO);
+		// saved_stdin = dup(STDIN_FILENO);
+		// if (handle_redir(lst_token, shell) == 1)
+		// 	return ;
 		non_builtin_cmd(lst_token, shell);
+		// restore_and_close_fd(saved_stdout, saved_stdin);
+	}
+		
 }
 
 void	execution(t_token *lst_token, t_shell *shell)

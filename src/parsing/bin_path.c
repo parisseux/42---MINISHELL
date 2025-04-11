@@ -9,7 +9,7 @@ int	is_bin_path(t_token *lst_token)
 	{
 		if (tmp->type == REDIR_IN || tmp->type == REDIR_OUT
 			|| tmp->type == APPEND || tmp->type == HEREDOC)
-			tmp = tmp->next->next ;
+			tmp = tmp->next ;
 		if (tmp->type == BIN)
 			return (1);
 		tmp = tmp->next;
