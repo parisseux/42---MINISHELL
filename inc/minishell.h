@@ -12,6 +12,7 @@
 # include "../libft/libft.h"
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <stdio.h>
 
 extern int	g_stop;
 
@@ -61,10 +62,13 @@ void	handle_middle_cmd(t_token *lst, t_shell *shell,
 void	close_all_pipes_except(int pipefd[][2], int i, int n_pipes);
 
 //signals
-void	init_signals(void);
-void	sigint_handler(int sig);
-void	restore_signals(void);
-void	signals_heredoc(void);
+void non_builtin_signal(void);
+ void sigquit_handler_nb(int sig);
+ void sigint_handler_nb(int sig);
+void restore_signals(void);
+void init_signals(void);
+ void set_signal_handler(int signo, void (*handler)(int), int flags);
+ void sigint_handler(int sig);
 
 int		start_minishell(t_shell *shell, char *input);
 
