@@ -66,7 +66,15 @@ int	main(int ac, char **av, char **env)
 	input = NULL;
 	while (1)
 	{
-		input = readline("minishell$ ");
+		if (isatty(fileno(stdin)))
+			input = readline("minishell$ ");
+		else
+		{
+			char *line;
+			line = get_next_line(fileno(stdin));
+			input = ft_strtrim(line, "\n");
+			free(line);
+		}
 		if (!input)
 			break ;
 		add_history(input);
