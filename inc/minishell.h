@@ -44,7 +44,7 @@ typedef struct s_token
 	t_token_type	type;
 	struct s_token	*next;
 }	t_token;
-
+void	exit_message(t_shell *shell, t_token *exit);
 // pipe
 void	close_all_pipes(int pipefd[][2], int n_pipes);
 void	wait_all_pids(int *pids, int *status, int n_cmd);
