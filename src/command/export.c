@@ -58,7 +58,7 @@ char	**add_var_to_env(char **var_env, char *value, int shell)
 		j++;
 	while (var_env && var_env[i] != NULL)
 	{
-		if (!ft_varcmp(var_env[i], value, j))
+		if (!ft_varcmp(var_env[i], value, j) || ft_strlen(var_env[i]) == 0)
 		{
 			free(var_env[i]);
 			var_env[i] = ft_strdup(value);
@@ -96,6 +96,8 @@ int	good_varname(char *name, char until)
 	}
 	if (i == 0)
 		return (1);
+	else if (i == 1 && name[0] == '_')
+		return (1);
 	return (0);
 }
 
@@ -112,6 +114,9 @@ int	export_command(t_token *lst_token, t_shell *shell)
 	}
 	while (tmp->type != END)
 	{
+		if (tmp->type == REDIR_IN || tmp->type == REDIR_OUT
+			|| tmp->type == HEREDOC || tmp->type == APPEND)
+			tmp = tmp->next;
 		if (tmp->type == DEF || (ft_strchr(tmp->value, '=')
 				&& !good_varname(tmp->value, '=')))
 		{
@@ -120,13 +125,8 @@ int	export_command(t_token *lst_token, t_shell *shell)
 			shell->var_env = tab;
 		}
 		else if ((ft_strchr(tmp->value, '=') && good_varname(tmp->value, '='))
-			|| good_varname(tmp->value, '\0'))
-		{
+				|| good_varname(tmp->value, '\0'))
 			export_message_error(tmp->value, shell);
-			return (1);
-		}
-		else
-			return (0);
 		tmp = tmp->next;
 	}
 	return (0);

@@ -50,7 +50,8 @@ void	execve_bin_token(t_token *lst_token, t_shell *shell)
 		exit(EXIT_FAILURE);
 	if (execve(cmd, cmd_args, shell->var_env) == -1)
 	{
-		perror("execve");
+		write(STDERR_FILENO, "minishell: ", 11);
+		perror(cmd);
 		exit(EXIT_FAILURE);
 	}
 }

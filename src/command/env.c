@@ -16,6 +16,8 @@ int	env_command(t_shell *shell, t_token *lst_token)
 		while (shell->var_env[i])
 		{
 			len = ft_strlen(shell->var_env[i]);
+			if (len == 0)
+				return (0);
 			write(STDOUT_FILENO, shell->var_env[i], len);
 			write(STDOUT_FILENO, "\n", 1);
 			i++;
