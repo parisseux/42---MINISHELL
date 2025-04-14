@@ -29,7 +29,7 @@ void	builtin_child_action(t_token *lst_token, t_shell *shell)
 	int stop;
 
 	stop = -1;
-	restore_signals();
+	//restore_signals();
 	temp = lst_token;
 	while (temp->type != END && stop == -1)
 	{

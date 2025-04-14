@@ -58,10 +58,11 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	}
 	else if (pid == 0)
 	{
-		// restore_signals();
-		handle_redir(lst_token, shell);
+		if (handle_redir(lst_token, shell) == 1)
+			return ;
 		if (is_def(lst_token))
 			return ;
+		signal(SIGQUIT, siguit_handler);
 		if (is_bin_path(lst_token))
 			execve_bin_token(lst_token, shell);
 		else
@@ -69,8 +70,11 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	}	
 	else
 	{
+		signal(SIGINT, sigint_handler_exec);
+		signal(SIGQUIT, siguit_handler);
 		waitpid(pid, &status, 0);
 		extract_exit_status(status, shell);
+		init_signals();
 	}
 }
 

@@ -64,7 +64,9 @@ void	close_all_pipes_except(int pipefd[][2], int i, int n_pipes);
 void	init_signals(void);
 void	sigint_handler(int sig);
 void	restore_signals(void);
-void	signals_heredoc(void);
+void 	sigint_handler_exec(int sig);
+void	sigint_handler_heredoc(int sig);
+void siguit_handler(int sig);
 
 int		start_minishell(t_shell *shell, char *input);
 
@@ -80,7 +82,7 @@ char	**find_cmd_args(t_token *lst_token);
 int		is_redir(t_token *lst_token);
 int		is_def(t_token *lst_token);
 int		handle_redir(t_token *lst_token, t_shell *shell);
-void	handle_heredoc_prompt( int fd_write, char *stop, t_shell *shell);
+void 	heredoc_child(int *pipefd, t_token *lst_token);
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell);
 void	builtin_child_process(t_token *lst_token, t_shell *shell);
 void	builtin_parent_process(t_token *lst_token, t_shell *shell);
