@@ -14,7 +14,7 @@ char	*dolar_sign(char **line)
 		return (name);
 	while (i <= ft_strlen(*line))
 	{
-		if ((!ft_isalnum(**line)))
+		if ((!ft_isalnum(**line)) && **line != '_')
 			return (name);
 		i++;
 	}

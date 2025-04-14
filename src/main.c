@@ -75,8 +75,12 @@ int	main(int ac, char **av, char **env)
 		{
 			char *line;
 			line = get_next_line(fileno(stdin));
+			if (!line)
+				break;
 			input = ft_strtrim(line, "\n");
 			free(line);
+			if (!input)
+            	break;
 		}
 		if (!input)
 			break ;
