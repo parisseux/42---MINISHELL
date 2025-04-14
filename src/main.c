@@ -58,7 +58,10 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	init_signals();
-	shell.var_env = setup_minishell(env);
+	if (*env == NULL)
+		prep_var_shell(&shell.var_env);
+	else
+		shell.var_env = setup_minishell(env);
 	if (!shell.var_env)
 		return (1);
 	shell.shell_env = NULL;
