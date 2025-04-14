@@ -2,9 +2,9 @@
 
 void	cmd_err(char *msg, char *cmd, int exit, t_shell *shell)
 {
-	write (STDOUT_FILENO, "minishell: ", 11);
-	write (STDOUT_FILENO, cmd, ft_strlen(cmd));
-	write (STDOUT_FILENO, msg, ft_strlen(msg));
+	write (STDERR_FILENO, "minishell: ", 11);
+	write (STDERR_FILENO, cmd, ft_strlen(cmd));
+	write (STDERR_FILENO, msg, ft_strlen(msg));
 	write (STDERR_FILENO, "\n", 1);
 	shell->exit = exit;
 }
