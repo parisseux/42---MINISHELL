@@ -28,10 +28,10 @@ void	builtin_child_action(t_token *lst_token, t_shell *shell)
 	t_token	*temp;
 	int stop;
 
-	stop = 0;
+	stop = -1;
 	restore_signals();
 	temp = lst_token;
-	while (temp->type != END && stop == 0)
+	while (temp->type != END && stop == -1)
 	{
 		if (temp->type == WORD && !ft_strncmp(temp->value, "env", 4))
 			stop = env_command(shell, lst_token);

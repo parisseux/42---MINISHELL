@@ -158,7 +158,7 @@ int		malloc_size(char *new_value, char *value, int name_len, char symbol);
 int	unset_command(char *line, t_shell *shell);
 
 //shell_var
-void	shell_var(t_token *lst_token, t_shell *shell);
+int	shell_var(t_token *lst_token, t_shell *shell);
 void	prep_var_shell(char ***var);
 
 // detect_var

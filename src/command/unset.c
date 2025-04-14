@@ -32,7 +32,7 @@ int	unset_command(char *line, t_shell *shell)
 				shell->var_env[i] = shell->var_env[i + 1];
 				i++;
 			}
-			return (1);
+			return (0);
 		}
 		i++;
 	}
@@ -49,10 +49,10 @@ int	unset_command(char *line, t_shell *shell)
 					shell->shell_env[i] = shell->shell_env[i + 1];
 					i++;
 				}
-				return (1);
+				return (0);
 			}
 			i++;
 		}
 	}
-	return (1);
+	return (0);
 }
