@@ -16,20 +16,20 @@ void	prep_var_shell(char ***var)
 	(*var)[1] = NULL;
 }
 
-void	shell_var(t_token *lst_token, t_shell *shell)
+int	shell_var(t_token *lst_token, t_shell *shell)
 {
 	t_token	*tmp;
 	char	**tab;
 
 	tmp = lst_token;
 	if (is_pipe(lst_token))
-		return ;
+		return (0);
 	while (tmp->type != END)
 	{
 		if (tmp->type == DEF)
 		{
 			if (good_varname(tmp->value, '='))
-				return ;
+				return (0);
 			if (add_var_to_env(shell->var_env, tmp->value, 1) == NULL)
 			{
 				if (shell->shell_env == NULL)
@@ -40,4 +40,5 @@ void	shell_var(t_token *lst_token, t_shell *shell)
 		}
 		tmp = tmp->next;
 	}
+	return (0);
 }

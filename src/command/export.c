@@ -108,7 +108,7 @@ int	export_command(t_token *lst_token, t_shell *shell)
 	if (tmp->type == END)
 	{
 		print_export(shell);
-		return (1);
+		return (0);
 	}
 	while (tmp->type != END)
 	{
@@ -126,8 +126,8 @@ int	export_command(t_token *lst_token, t_shell *shell)
 			return (1);
 		}
 		else
-			return (1);
+			return (0);
 		tmp = tmp->next;
 	}
-	return (1);
+	return (0);
 }

@@ -28,5 +28,5 @@ int	start_echo(t_token *lst_token)
 		echo_command(lst_token->next->next, 1);
 	else
 		echo_command(lst_token->next, 0);
-	return (1);
+	return (0);
 }
