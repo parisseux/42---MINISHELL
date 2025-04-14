@@ -39,7 +39,7 @@ t_token	*tokenisation(char *input)
 				return (NULL);
 			}
 		}
-		else if (*input == '/' || (*input == '.' && *input + 1 == '/'))
+		else if (*input == '/' || (*input == '.' && *(input + 1) == '/'))
 			new_token = bin_path(&input);
 		else if (*input == '>')
 			new_token = extract_out(&input);

@@ -82,39 +82,57 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 	return (tmp);
 }
 
-void	look_for_dolls(t_token *lst_token, t_shell *shell)
+char	*which_doll(char *value, t_shell *shell)
 {
 	char	*name;
-	char	*value;
-	char	*value2;
+	char	*new;
+	char	*dup;
 
 	name = NULL;
+	dup = ft_strdup(value);
+	while (*value)
+	{
+		if (*value == '$')
+		{
+			name = dolar_sign(&value);
+			if (name)
+			{
+				write (1, name, ft_strlen(name));
+				new = find_var(shell, name, dup);
+				free(name);
+				write (1, "found\n", 6);
+			}
+			else
+				new = dol_spec_cases(&value, dup, shell);
+			free(dup);
+			dup = ft_strdup(new);
+		}
+		value++;
+	}
+	
+	free(dup);
+	return (new);
+}
+
+void	look_for_dolls(t_token *lst_token, t_shell *shell)
+{
+	char	*value;
+	char	*temp;
+
 	while (lst_token != NULL && lst_token->type != END)
 	{
-		value = ft_strdup(lst_token->value);
-		value2 = ft_strdup(lst_token->value);
-		while (*value)
+		if (lst_token->type != WORD && lst_token->type != DQUOTE 
+			&& lst_token->type != DEF)
+			break ;
+		if (ft_strchr(lst_token->value, '$'))
 		{
-			if (lst_token->type != WORD
-				&& lst_token->type != DQUOTE && lst_token->type != DEF)
-				break ;
-			if (*value == '$')
-			{
-				name = dolar_sign(&value);
-				if (name)
-				{
-					free(lst_token->value);
-					lst_token->value = find_var(shell, name, value2);
-					free(name);
-				}
-				else
-				{
-					free(lst_token->value);
-					lst_token->value = dol_spec_cases(&value, value2, shell);
-				}
-				value2 = ft_strdup(lst_token->value);
-			}
-			value++;
+			
+			value = ft_strdup(lst_token->value);
+			temp = which_doll(value, shell);
+			
+			free(lst_token->value);
+			lst_token->value = ft_strdup(temp);
+			free(value);			
 		}
 		lst_token = lst_token->next;
 	}
