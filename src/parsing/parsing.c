@@ -51,7 +51,7 @@ t_token	*tokenisation(char *input)
 	}
 	new_token = create_token("", END);
 	add_token_to_lst(&lst_token, new_token, space);
-	// print_token_list(lst_token);
+	//print_token_list(lst_token);
 	return (lst_token);
 }
 

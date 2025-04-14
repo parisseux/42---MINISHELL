@@ -1,42 +1,37 @@
 #include "../inc/minishell.h"
 
-int	look_for_fd_heredoc(t_token *token, int fd, t_shell *shell)
+int look_for_fd_heredoc(t_token *token, int fd, t_shell *shell)
 {
-	int		fd_pipe[2];
-	char	*stop;
-	int		pid;
-	int		status;
+	int pipefd[2];
+	int pid;
+	int status;
 
-	if (pipe(fd_pipe) == -1)
+	status = 0;
+	if (pipe(pipefd) == -1)
 	{
 		perror("pipe");
-		return (1);
+		shell->exit = 1;
+		return (-1);
 	}
 	pid = fork();
-	if (pid < 0)
+	if (pid == 0)
+		heredoc_child(pipefd, token);
+	else
 	{
-		perror("fork");
-		return (1);
+		close(pipefd[1]);
+		signal(SIGINT, SIG_IGN);
+		waitpid(pid, &status, 0);
+		signal(SIGINT, sigint_handler);
+		if (WEXITSTATUS(status) == 130)
+		{
+			close(pipefd[0]);
+			return (-2);
+		}
 	}
-	else if (pid == 0)
-	{
-		restore_signals();
-		close(fd_pipe[0]);
-		stop = ft_strdup(token->value);
-		handle_heredoc_prompt(fd_pipe[1], stop, shell);
-		free(stop);
-		close(fd_pipe[1]);
-		exit(0);
-	}
-	close(fd_pipe[1]);
-	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &status, 0);
-	extract_exit_status(status, shell);
-	init_signals();
-	if (fd != -1)
+	if (fd == -1)
 		close(fd);
-	fd = fd_pipe[0];
-	return (fd);
+	fd = pipefd[0];
+	return(fd);
 }
 
 int	look_for_fd_append(t_token *token, int fd, t_shell *shell)
@@ -98,7 +93,11 @@ int	handle_redir(t_token *lst_token, t_shell *shell)
 		else if (temp->type == APPEND)
 			fd_out =look_for_fd_append(temp->next, fd_out, shell);
 		else if (temp->type == HEREDOC)
+		{
 			fd_in = look_for_fd_heredoc(temp->next, fd_in, shell);
+			if (fd_in == -2)
+				return (1);
+		}
 		else if (temp->type == REDIR_IN)
 			fd_in = look_for_fd_input(temp->next, fd_in, shell);
 		temp = temp->next;

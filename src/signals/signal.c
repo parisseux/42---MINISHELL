@@ -7,19 +7,33 @@ void	init_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
+void siguit_handler(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+}
 //permet de gerer CTR -C dans le parent
 void	sigint_handler(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
 	rl_replace_line("", 0);
+	rl_on_new_line();
 	rl_redisplay();
 }
 
-//revert to deaultfs signales 
-void	restore_signals(void)
+void sigint_handler_exec(int sig)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+}
+
+void	sigint_handler_heredoc(int sig)
+{
+	(void)sig;
+	exit(130);
 }

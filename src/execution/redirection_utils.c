@@ -1,33 +1,31 @@
 #include "../inc/minishell.h"
 
-//introduire expansion variable
-//doit introduire plusieurs HEREDOC succesif 
-void	handle_heredoc_prompt(int fd_write, char *stop, t_shell *shell)
+void heredoc_child(int *pipefd, t_token *lst_token)
 {
-	char	*line;
+	char *stop;
+	char *line;
 
-	restore_signals();
-	signals_heredoc();
+	signal(SIGINT, sigint_handler_heredoc);
+	signal(SIGQUIT, SIG_IGN);
+	stop = ft_strdup(lst_token->value);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
+			break ;
+		if (ft_strncmp(line, stop, ft_strlen(stop) + 1) == 0)
 		{
-			ft_putstr_fd("warning: here-document delimited by EOF\n", 2);
-			shell->exit = 0;
+			free(line);
 			break ;
 		}
-		if (!line || !ft_strncmp(line, stop, ft_strlen(stop) + 1))
-		{
-			free (line);
-			break ;
-		}
-		write(fd_write, line, ft_strlen(line));
-		write(fd_write, "\n", 1);
+		line = ft_strjoin(line, "\n");
+		ft_putstr_fd(line, pipefd[1]);
 		free(line);
 	}
-	close(fd_write);
-	init_signals();
+	free(stop);
+	close(pipefd[0]);
+	close(pipefd[1]);
+	exit(0);
 }
 
 void	change_fd(int fd_out, int fd_in)
