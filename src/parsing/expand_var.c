@@ -46,7 +46,7 @@ char	*dol_spec_cases(char **line,
 	return (name);
 }
 
-char	*find_var(t_shell *shell, char *name, char *value2)
+char	*find_var(t_shell *shell, char *name, char *value)
 {
 	int		i;
 	int		len;
@@ -59,7 +59,7 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 	{
 		if (!ft_varcmp(shell->var_env[i], name, len))
 		{
-			tmp = add(shell->var_env[i], value2, len + 1, '$');
+			tmp = add(shell->var_env[i], value, len + 1);
 			return (tmp);
 		}
 		i++;
@@ -71,20 +71,21 @@ char	*find_var(t_shell *shell, char *name, char *value2)
 		{
 			if (!ft_varcmp(shell->shell_env[i], name, len))
 			{
-				tmp = add(shell->shell_env[i], value2, len + 1, '$');
+				add(shell->shell_env[i], value, len + 1);
 				return (tmp);
 			}
 			i++;
 		}
 	}
 	else
-		tmp = rm_var(value2);
+		tmp = rm_var(value, len + 1);
 	return (tmp);
 }
 
 char	*which_doll(char *value, t_shell *shell)
 {
 	char	*name;
+	char	*temp;
 	char	*new;
 	char	*dup;
 
@@ -97,21 +98,27 @@ char	*which_doll(char *value, t_shell *shell)
 			name = dolar_sign(&value);
 			if (name)
 			{
-				write (1, name, ft_strlen(name));
 				new = find_var(shell, name, dup);
 				free(name);
-				write (1, "found\n", 6);
 			}
 			else
 				new = dol_spec_cases(&value, dup, shell);
-			free(dup);
+			ft_putstr_fd(new, 1);
+			temp = dup;
 			dup = ft_strdup(new);
+			free(temp);
+			free(new);
 		}
 		value++;
 	}
-	
-	free(dup);
-	return (new);
+	return (dup);
+}
+
+int	isvalid(int type)
+{
+	if (type == WORD || type == DQUOTE || type == DEF)
+		return (1);
+	return (0);
 }
 
 void	look_for_dolls(t_token *lst_token, t_shell *shell)
@@ -119,21 +126,22 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 	char	*value;
 	char	*temp;
 
+	value = NULL;
+	temp = NULL;
 	while (lst_token != NULL && lst_token->type != END)
 	{
-		if (lst_token->type != WORD && lst_token->type != DQUOTE 
-			&& lst_token->type != DEF)
-			break ;
-		if (ft_strchr(lst_token->value, '$'))
+		if (ft_strchr(lst_token->value, '$') && isvalid(lst_token->type))
 		{
-			
+
 			value = ft_strdup(lst_token->value);
 			temp = which_doll(value, shell);
-			
+			ft_putstr_fd(temp, 1);
 			free(lst_token->value);
-			lst_token->value = ft_strdup(temp);
+			lst_token->value = temp;
+
 			free(value);			
 		}
-		lst_token = lst_token->next;
+		else
+			lst_token = lst_token->next;
 	}
 }

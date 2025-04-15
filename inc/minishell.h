@@ -151,10 +151,10 @@ void	export_message_error(char *value, t_shell *shell);
 
 //expand_var_utils
 char	*add_special_case(char *name, char *line);
-char	*rm_var(char *value);
-char	*add(char *new_value, char *value, int name_len, char symbol);
+char	*rm_var(char *value, int name_len);
+char	*add(char *new_value, char *value, int name_len);
 int		alphanum_len(char *value);
-int		malloc_size(char *new_value, char *value, int name_len, char symbol);
+int		malloc_size(char *new_value, char *value, int name_len);
 
 //unset
 int	unset_command(char *line, t_shell *shell);
