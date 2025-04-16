@@ -12,7 +12,7 @@ void	handle_first_cmd(t_pipe *p, t_shell *shell)
 
 void	handle_last_cmd(t_pipe *p, t_shell *shell)
 {
-	int last;
+	int	last;
 
 	last = p->n_pipes -1;
 	dup2(p->pipefd[last][0], STDIN_FILENO);

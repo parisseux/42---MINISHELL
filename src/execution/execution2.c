@@ -36,9 +36,9 @@ int	non_builtin_child(t_token *lst_token, t_shell *shell)
 	return (0);
 }
 
-void fork_and_exec_pipe(t_pipe *p, t_shell *shell)
+void	fork_and_exec_pipe(t_pipe *p, t_shell *shell)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < p->n_pipes + 1)

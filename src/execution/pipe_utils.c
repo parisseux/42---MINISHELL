@@ -3,7 +3,7 @@
 void	wait_all_pids(t_pipe *p, t_shell *shell)
 {
 	int	i;
-	int status;
+	int	status;
 
 	i = 0;
 	status = 0;

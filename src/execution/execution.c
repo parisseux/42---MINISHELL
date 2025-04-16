@@ -2,7 +2,7 @@
 
 void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 {
-	t_pipe pipe_data;
+	t_pipe	pipe_data;
 
 	if (init_pipe_data(&pipe_data, n_pipes) != 0)
 		return ;
