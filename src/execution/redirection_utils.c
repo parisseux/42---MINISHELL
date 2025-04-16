@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-int heredoc_parent(int *pipefd, int *status, int pid)
+int	heredoc_parent(int *pipefd, int *status, int pid)
 {
 	close(pipefd[1]);
 	signal(SIGINT, SIG_IGN);
@@ -13,10 +13,11 @@ int heredoc_parent(int *pipefd, int *status, int pid)
 	}
 	return (0);
 }
-void heredoc_child(int *pipefd, t_token *lst_token)
+
+void	heredoc_child(int *pipefd, t_token *lst_token)
 {
-	char *stop;
-	char *line;
+	char	*stop;
+	char	*line;
 
 	signal(SIGINT, sigint_handler_heredoc);
 	signal(SIGQUIT, SIG_IGN);

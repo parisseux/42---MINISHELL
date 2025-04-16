@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-char *look_for_cmd(t_token *temp, t_shell *shell)
+char	*look_for_cmd(t_token *temp, t_shell *shell)
 {
 	char	*cmd;
 
@@ -19,55 +19,6 @@ char *look_for_cmd(t_token *temp, t_shell *shell)
 	return (cmd);
 }
 
-void	execve_non_builtin(t_token *lst_token,
-	t_shell *shell)
-{
-	char	*cmd;
-	char	**cmd_args;
-
-	cmd = NULL;
-	t_token	*temp;
-	temp = lst_token;
-	cmd = look_for_cmd(temp, shell);
-	if (!cmd)
-		cmd_not_found(temp);
-	cmd_args = find_cmd_args(temp);
-	if (!cmd_args)
-		exit(EXIT_FAILURE);
-	if (execve(cmd, cmd_args, shell->var_env) == -1)
-	{
-		perror("execve");
-		exit(EXIT_FAILURE);
-	}
-}
-
-char	*find_cmd_path(char *cmd, char **env)
-{
-	char	*path;
-	char	**paths;
-	int		i;
-	char	*final_path;
-
-	path = get_env_value(env, "PATH");
-	if (!path)
-		return (NULL);
-	paths = ft_split(path, ':');
-	i = 0;
-	while (paths[i])
-	{
-		final_path = ft_strjoin_paths(paths[i], cmd);
-		if (access(final_path, X_OK) == 0)
-		{
-			ft_free_char_tab(paths);
-			return (final_path);
-		}
-		free(final_path);
-		i++;
-	}
-	ft_free_char_tab(paths);
-	return (NULL);
-}
-
 char	*ft_strjoin_paths(char *dir, char *cmd)
 {
 	char	*final_path;
@@ -83,10 +34,10 @@ char	*ft_strjoin_paths(char *dir, char *cmd)
 	return (final_path);
 }
 
-int number_arguments(t_token * lst_token)
+int	number_arguments(t_token *lst_token)
 {
-	t_token *temp;
-	int n;
+	t_token	*temp;
+	int		n;
 
 	n = 0;
 	temp = lst_token;
@@ -122,7 +73,7 @@ char	**find_cmd_args(t_token *lst_token)
 		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
 			|| temp->type == APPEND || temp->type == HEREDOC)
 			temp = temp->next->next;
-		else 
+		else
 		{
 			cmd_args[i] = ft_strdup(temp->value);
 			i++;
@@ -131,4 +82,31 @@ char	**find_cmd_args(t_token *lst_token)
 	}
 	cmd_args[n] = '\0';
 	return (cmd_args);
+}
+
+char	*find_cmd_path(char *cmd, char **env)
+{
+	char	*path;
+	char	**paths;
+	int		i;
+	char	*final_path;
+
+	path = get_env_value(env, "PATH");
+	if (!path)
+		return (NULL);
+	paths = ft_split(path, ':');
+	i = 0;
+	while (paths[i])
+	{
+		final_path = ft_strjoin_paths(paths[i], cmd);
+		if (access(final_path, X_OK) == 0)
+		{
+			ft_free_char_tab(paths);
+			return (final_path);
+		}
+		free(final_path);
+		i++;
+	}
+	ft_free_char_tab(paths);
+	return (NULL);
 }

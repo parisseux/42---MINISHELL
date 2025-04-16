@@ -1,23 +1,5 @@
 #include "../inc/minishell.h"
 
-char	*get_env_value(char **env, char *key)
-{
-	int	i;
-	int	len;
-
-	len = ft_strlen(key);
-	i = 0;
-	while (env[i])
-	{
-		if ((ft_strncmp(env[i], key, len) == 0 && env[i][len] == '='))
-		{
-			return (env[i] + len + 1);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
 int	is_pipe(t_token *lst_token)
 {
 	t_token	*temp;
@@ -48,9 +30,9 @@ int	is_def(t_token *lst_token)
 	return (0);
 }
 
-int is_cmd_before_builtin(t_token *builtin, t_token *lst_token)
+int	is_cmd_before_builtin(t_token *builtin, t_token *lst_token)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	temp = lst_token;
 	while (temp != builtin && temp->type != END && temp->type != PIPE)
@@ -62,36 +44,39 @@ int is_cmd_before_builtin(t_token *builtin, t_token *lst_token)
 			if (temp)
 				temp = temp->next;
 		}
-		else if (temp->type == WORD || temp->type == SQUOTE || temp->type == DQUOTE
+		else if (temp->type == WORD || temp->type == SQUOTE
+			|| temp->type == DQUOTE
 			|| temp->type == DEF || temp->type == BIN)
 			return (1);
-		else 
+		else
 			temp = temp->next;
-	}
-			
+	}	
 	return (0);
 }
 
 int	is_builtin(t_token *lst_token)
 {
-	t_token	*temp;
+	t_token	*t;
 
-	temp = lst_token;
-	while (temp->type != END && temp->type != PIPE)
+	t = lst_token;
+	while (t->type != END && t->type != PIPE)
 	{
-		if (temp->type == WORD && (temp->next->space == 1 || temp->next->type == END
-			|| temp->next->type == PIPE))
+		if (t->type == WORD && (t->next->space == 1
+				|| t->next->type == END || t->next->type == PIPE))
 		{
-			if (!ft_strncmp(temp->value, "echo", 5) || !ft_strncmp(temp->value, "cd", 3)
-				|| !ft_strncmp(temp->value, "pwd", 4) || !ft_strncmp(temp->value, "export", 7)
-				|| !ft_strncmp(temp->value, "unset", 5) || !ft_strncmp(temp->value, "env", 4)
-				|| !ft_strncmp(temp->value, "exit", 6))
-				{
-					if (is_cmd_before_builtin(temp, lst_token) == 0)
-						return (1);
-				}
+			if (!ft_strncmp(t->value, "echo", 5)
+				|| !ft_strncmp(t->value, "cd", 3)
+				|| !ft_strncmp(t->value, "pwd", 4)
+				|| !ft_strncmp(t->value, "export", 7)
+				|| !ft_strncmp(t->value, "unset", 5)
+				|| !ft_strncmp(t->value, "env", 4)
+				|| !ft_strncmp(t->value, "exit", 6))
+			{
+				if (is_cmd_before_builtin(t, lst_token) == 0)
+					return (1);
+			}
 		}
-		temp = temp->next;
+		t = t->next;
 	}
 	return (0);
 }
