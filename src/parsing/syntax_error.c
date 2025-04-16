@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-int	check_syntax_error(t_token *lst_token)
-{
-	if (check_first_last_token(lst_token))
-		return (1);
-	else if (check_synthax_pipe(lst_token))
-		return (1);
-	else if (check_synthax_redirection(lst_token))
-		return (1);
-	return (0);
-}
-
 int	check_first_last_token(t_token *lst_token)
 {
 	t_token	*temp;
@@ -44,11 +33,18 @@ int	check_synthax_pipe(t_token *lst_token)
 	temp = lst_token;
 	while (temp->type != END)
 	{
-		if (temp->type == PIPE)
+		if (temp->type == PIPE && (temp->next->type == REDIR_IN
+				|| temp->next->type == REDIR_OUT
+				|| temp->next->type == HEREDOC || temp->next->type == APPEND))
 		{
-			if (temp->next->type == REDIR_IN || temp->next->type == REDIR_OUT
-				|| temp->next->type == HEREDOC || temp->next->type == APPEND)
-				ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+			ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+			return (1);
+		}
+		else if (temp->type == REDIR_OUT && (temp->next->type == REDIR_IN
+				|| temp->next->type == HEREDOC))
+		{
+			ft_putstr_fd("bash: syntax error near unexpected token `<'\n", 2);
+			return (1);
 		}
 		temp = temp->next;
 	}
@@ -68,10 +64,30 @@ int	check_synthax_redirection(t_token *lst_token)
 			ft_putstr_fd("bash: syntax error near unexpected token `>'\n", 2);
 			return (1);
 		}
-		else if (temp->type == REDIR_OUT && (temp->next->type == REDIR_IN
+		else if ((temp->type == REDIR_IN || temp->type == APPEND
+				|| temp->type == HEREDOC || temp->type == REDIR_OUT)
+			&& temp->next->type == PIPE)
+		{
+			ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+			return (1);
+		}
+		temp = temp->next;
+	}
+	return (0);
+}
+
+int	check_synthax_redirection2(t_token *lst_token)
+{
+	t_token	*temp;
+
+	temp = lst_token;
+	while (temp->type != END)
+	{
+		if (temp->type == APPEND && (temp->next->type == REDIR_IN
+				|| temp->next->type == APPEND || temp->next->type == REDIR_OUT
 				|| temp->next->type == HEREDOC))
 		{
-			ft_putstr_fd("bash: syntax error near unexpected token `<'\n", 2);
+			ft_putstr_fd("bash: syntax error near unexpected token `>>'\n", 2);
 			return (1);
 		}
 		else if (temp->type == HEREDOC && (temp->next->type == REDIR_IN
@@ -81,20 +97,20 @@ int	check_synthax_redirection(t_token *lst_token)
 			ft_putstr_fd("bash: syntax error near unexpected token `<<'\n", 2);
 			return (1);
 		}
-		else if (temp->type == APPEND && (temp->next->type == REDIR_IN
-				|| temp->next->type == APPEND || temp->next->type == REDIR_OUT
-				|| temp->next->type == HEREDOC))
-		{
-			ft_putstr_fd("bash: syntax error near unexpected token `>>'\n", 2);
-			return (1);
-		}
-		else if ((temp->type == REDIR_IN || temp->type == APPEND
-				|| temp->type == HEREDOC || temp->type == REDIR_OUT) && temp->next->type == PIPE)
-		{
-			ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
-			return (1);
-		}
 		temp = temp->next;
 	}
+	return (0);
+}
+
+int	check_syntax_error(t_token *lst_token)
+{
+	if (check_first_last_token(lst_token))
+		return (1);
+	else if (check_synthax_pipe(lst_token))
+		return (1);
+	else if (check_synthax_redirection(lst_token))
+		return (1);
+	else if (check_synthax_redirection2(lst_token))
+		return (1);
 	return (0);
 }
