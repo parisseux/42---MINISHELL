@@ -48,12 +48,36 @@ int	is_def(t_token *lst_token)
 	return (0);
 }
 
+int is_cmd_before_builtin(t_token *builtin, t_token *lst_token)
+{
+	t_token *temp;
+
+	temp = lst_token;
+	while (temp != builtin && temp->type != END && temp->type != PIPE)
+	{
+		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
+			|| temp->type == APPEND || temp->type == HEREDOC)
+		{
+			temp = temp->next;
+			if (temp)
+				temp = temp->next;
+		}
+		else if (temp->type == WORD || temp->type == SQUOTE || temp->type == DQUOTE
+			|| temp->type == DEF || temp->type == BIN)
+			return (1);
+		else 
+			temp = temp->next;
+	}
+			
+	return (0);
+}
+
 int	is_builtin(t_token *lst_token)
 {
 	t_token	*temp;
 
 	temp = lst_token;
-	while (temp->type != END)
+	while (temp->type != END && temp->type != PIPE)
 	{
 		if (temp->type == WORD && (temp->next->space == 1 || temp->next->type == END
 			|| temp->next->type == PIPE))
@@ -62,7 +86,10 @@ int	is_builtin(t_token *lst_token)
 				|| !ft_strncmp(temp->value, "pwd", 4) || !ft_strncmp(temp->value, "export", 7)
 				|| !ft_strncmp(temp->value, "unset", 5) || !ft_strncmp(temp->value, "env", 4)
 				|| !ft_strncmp(temp->value, "exit", 6))
-				return (1);
+				{
+					if (is_cmd_before_builtin(temp, lst_token) == 0)
+						return (1);
+				}
 		}
 		temp = temp->next;
 	}

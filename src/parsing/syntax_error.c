@@ -8,20 +8,20 @@ int	check_first_last_token(t_token *lst_token)
 	if (temp->type == PIPE)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
-		return (2);
+		return (1);
 	}
 	while (temp->next->type != END)
 		temp = temp->next;
 	if (temp->type == PIPE)
 	{
 		ft_putstr_fd("bash: syntax error: unexpected end of file\n", 2);
-		return (2);
+		return (1);
 	}
 	else if (temp->type == REDIR_IN || temp->type == REDIR_OUT
 		|| temp->type == HEREDOC || temp->type == APPEND)
 	{
 		ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", 2);
-		return (2);
+		return (1);
 	}
 	return (0);
 }
