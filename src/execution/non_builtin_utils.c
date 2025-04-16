@@ -16,8 +16,6 @@ void	execve_non_builtin(t_token *lst_token,
 		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
 			|| temp->type == HEREDOC || temp->type == APPEND)
 			temp = temp->next->next;
-		// else if (temp->next->space == 1 || temp->next->type == PIPE
-		// 	|| temp->next->type == END)
 		else
 		{
 			cmd = find_cmd_path(temp->value, shell->var_env);
@@ -93,11 +91,16 @@ char	**find_cmd_args(t_token *lst_token)
 
 	temp = lst_token;
 	n = 0;
-	while (temp && (temp->type == BIN || temp->type == WORD
-			|| temp->type == SQUOTE || temp->type == DQUOTE))
+	while (temp->type != END && temp->type != PIPE)
 	{
-		n++;
-		temp = temp->next;
+		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
+			|| temp->type == APPEND || temp->type == HEREDOC)
+			temp = temp->next->next;
+		else
+		{
+			n++;
+			temp = temp->next;
+		}
 	}
 	cmd_args = (char **)malloc(sizeof(char *) * (n + 1));
 	if (!cmd_args)
@@ -106,9 +109,15 @@ char	**find_cmd_args(t_token *lst_token)
 	temp = lst_token;
 	while (i < n)
 	{
-		cmd_args[i] = ft_strdup(temp->value);
-		i++;
-		temp = temp->next;
+		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
+			|| temp->type == APPEND || temp->type == HEREDOC)
+			temp = temp->next->next;
+		else 
+		{
+			cmd_args[i] = ft_strdup(temp->value);
+			i++;
+			temp = temp->next;
+		}
 	}
 	cmd_args[n] = '\0';
 	return (cmd_args);
