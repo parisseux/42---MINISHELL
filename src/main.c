@@ -53,6 +53,7 @@ char	**setup_minishell(char **env)
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
+	char *line;
 	t_shell	shell;
 
 	(void)ac;
@@ -69,11 +70,10 @@ int	main(int ac, char **av, char **env)
 	input = NULL;
 	while (1)
 	{
-		if (isatty(fileno(stdin)))
+		if (isatty(STDIN_FILENO))
 			input = readline("minishell$ ");
 		else
 		{
-			char *line;
 			line = get_next_line(fileno(stdin));
 			if (!line)
 				break;
@@ -84,7 +84,8 @@ int	main(int ac, char **av, char **env)
 		}
 		if (!input)
 			break ;
-		add_history(input);
+		if (*input)
+			add_history(input);
 		start_minishell(&shell, input);
 		free(input);
 	}
