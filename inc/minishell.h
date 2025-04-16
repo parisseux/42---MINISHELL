@@ -129,9 +129,6 @@ t_token	*ext_word(char **input);
 t_token	*extract_out(char **input);
 t_token	*extract_in(char **input);
 int		check_syntax_error(t_token *lst_token);
-int		check_first_last_token(t_token *lst_token);
-int		check_synthax_pipe(t_token *lst_token);
-int		check_synthax_redirection(t_token *lst_token);
 
 //exit
 int	exit_command(t_token *lst_token, t_shell *shell);
