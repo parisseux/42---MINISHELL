@@ -1,10 +1,10 @@
 #include "../inc/minishell.h"
 
-int look_for_fd_heredoc(t_token *token, int fd, t_shell *shell)
+int	look_for_fd_heredoc(t_token *token, int fd, t_shell *shell)
 {
-	int pipefd[2];
-	int pid;
-	int status;
+	int	pipefd[2];
+	int	pid;
+	int	status;
 
 	status = 0;
 	if (pipe(pipefd) == -1)
@@ -24,7 +24,7 @@ int look_for_fd_heredoc(t_token *token, int fd, t_shell *shell)
 	if (fd == -1)
 		close(fd);
 	fd = pipefd[0];
-	return(fd);
+	return (fd);
 }
 
 int	look_for_fd_append(t_token *token, int fd, t_shell *shell)
@@ -72,8 +72,8 @@ int	look_for_fd_input(t_token *token, int fd, t_shell *shell)
 int	handle_redir(t_token *lst_token, t_shell *shell)
 {
 	t_token	*temp;
-	int	fd_in;
-	int	fd_out;
+	int		fd_in;
+	int		fd_out;
 
 	fd_in = -1;
 	fd_out = -1;
@@ -83,7 +83,7 @@ int	handle_redir(t_token *lst_token, t_shell *shell)
 		if (temp->type == REDIR_OUT)
 			fd_out = look_for_fd_output(temp->next, fd_out, shell);
 		else if (temp->type == APPEND)
-			fd_out =look_for_fd_append(temp->next, fd_out, shell);
+			fd_out = look_for_fd_append(temp->next, fd_out, shell);
 		else if (temp->type == HEREDOC)
 		{
 			fd_in = look_for_fd_heredoc(temp->next, fd_in, shell);

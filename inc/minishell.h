@@ -44,21 +44,32 @@ typedef struct s_token
 	t_token_type	type;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct s_pipe
+{
+	int **pipefd;
+	int *pids;
+	int n_pipes;
+	t_token **cmds;
+}	t_pipe;
+
 void	exit_message(t_shell *shell, t_token *exit);
 // pipe
-void	close_all_pipes(int pipefd[][2], int n_pipes);
-void	wait_all_pids(int *pids, int *status, int n_cmd);
-void	create_all_pipes(int pipefd[][2], int n_pipes);
-void	handle_first_cmd(t_token *mini_lst, t_shell *shell,
-			int pipefd[][2], int n_pipes);
-void	handle_last_cmd(t_token *mini_lst, t_shell *shell,
-			int pipefd[][2], int n_pipes);
+void	close_all_pipe(t_pipe *p);
+void	wait_all_pids(t_pipe *p, t_shell *shell);
+void	create_all_pipes(int **pipefd, int n_pipes);
+void	handle_last_cmd(t_pipe *p, t_shell *shell);
+void	handle_first_cmd(t_pipe *p, t_shell *shell);
 void	go_to_next_pipe(t_token **lst_token);
 t_token	*create_mini_list_token(t_token *lst_token);
 t_token	*create_mini_list(t_token **lst_token);
-void	handle_middle_cmd(t_token *lst, t_shell *shell,
-			int pipefd[][2], int i, int n_pipes);
-void	close_all_pipes_except(int pipefd[][2], int i, int n_pipes);
+void	handle_middle_cmd(t_pipe *p, t_shell *shell, int i);
+void	close_all_pipes_except(int **pipefd, int i, int n_pipes);
+void free_cmds_lst(t_pipe *p);
+void fork_and_exec_pipe(t_pipe *p, t_shell *shell);
+void create_pipe_and_mini_lst(t_pipe *p, t_token *lst_token);
+int init_pipe_data(t_pipe *p, int n_pipes);
+
 
 //signals
 void	init_signals(void);
@@ -178,5 +189,7 @@ int heredoc_parent(int *pipefd, int *status, int pid);
 void	expand_home(t_shell *shell, t_token *lst_token);
 
 void	change_fd(int fd_out, int fd_in);
+char	*look_for_cmd(t_token *temp, t_shell *shell);
 
+int non_builtin_child(t_token *lst_token, t_shell *shell);
 #endif 

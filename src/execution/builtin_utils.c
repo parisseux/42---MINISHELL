@@ -4,7 +4,7 @@ void	builtin_parent_process(t_token *lst_token,
 	t_shell *shell)
 {
 	t_token	*temp;
-	int stop;
+	int		stop;
 
 	stop = 0;
 	temp = lst_token;
@@ -26,10 +26,9 @@ void	builtin_parent_process(t_token *lst_token,
 void	builtin_child_action(t_token *lst_token, t_shell *shell)
 {
 	t_token	*temp;
-	int stop;
+	int		stop;
 
 	stop = -1;
-	//restore_signals();
 	temp = lst_token;
 	while (temp->type != END && stop == -1)
 	{
