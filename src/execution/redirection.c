@@ -18,15 +18,8 @@ int look_for_fd_heredoc(t_token *token, int fd, t_shell *shell)
 		heredoc_child(pipefd, token);
 	else
 	{
-		close(pipefd[1]);
-		signal(SIGINT, SIG_IGN);
-		waitpid(pid, &status, 0);
-		signal(SIGINT, sigint_handler);
-		if (WEXITSTATUS(status) == 130)
-		{
-			close(pipefd[0]);
+		if (heredoc_parent(pipefd, &status, pid) == -1)
 			return (-2);
-		}
 	}
 	if (fd == -1)
 		close(fd);
@@ -62,7 +55,6 @@ int	look_for_fd_output(t_token *token, int fd, t_shell *shell)
 	return (fd);
 }
 
-//if < will recoer the fd and send it so the execve know
 int	look_for_fd_input(t_token *token, int fd, t_shell *shell)
 {
 	if (fd != -1)

@@ -119,15 +119,7 @@ void	exec_one_cmd(t_token *lst_token, t_shell *shell)
 		restore_and_close_fd(saved_stdout, saved_stdin);
 	}
 	else
-	{
-		// saved_stdout = dup(STDOUT_FILENO);
-		// saved_stdin = dup(STDIN_FILENO);
-		// if (handle_redir(lst_token, shell) == 1)
-		// 	return ;
 		non_builtin_cmd(lst_token, shell);
-		// restore_and_close_fd(saved_stdout, saved_stdin);
-	}
-		
 }
 
 void	execution(t_token *lst_token, t_shell *shell)

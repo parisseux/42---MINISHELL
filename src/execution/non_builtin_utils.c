@@ -1,7 +1,24 @@
 #include "../inc/minishell.h"
 
-//Cette commmand a pour but d'executer une non builtin cmd
-//creation d'un child process pour execution de execve 
+char *look_for_cmd(t_token *temp, t_shell *shell)
+{
+	char	*cmd;
+
+	cmd = NULL;
+	while (temp->type != PIPE && temp->type != END)
+	{
+		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
+			|| temp->type == HEREDOC || temp->type == APPEND)
+			temp = temp->next->next;
+		else
+		{
+			cmd = find_cmd_path(temp->value, shell->var_env);
+			break ;
+		}		
+	}
+	return (cmd);
+}
+
 void	execve_non_builtin(t_token *lst_token,
 	t_shell *shell)
 {
@@ -11,20 +28,9 @@ void	execve_non_builtin(t_token *lst_token,
 	cmd = NULL;
 	t_token	*temp;
 	temp = lst_token;
-	while (temp->type != PIPE && temp->type != END)
-	{
-		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
-			|| temp->type == HEREDOC || temp->type == APPEND)
-			temp = temp->next->next;
-		else
-		{
-			cmd = find_cmd_path(temp->value, shell->var_env);
-			if (!cmd)
-				cmd_not_found(temp);
-			break ;
-		}
-
-	}
+	cmd = look_for_cmd(temp, shell);
+	if (!cmd)
+		cmd_not_found(temp);
 	cmd_args = find_cmd_args(temp);
 	if (!cmd_args)
 		exit(EXIT_FAILURE);
@@ -35,8 +41,6 @@ void	execve_non_builtin(t_token *lst_token,
 	}
 }
 
-//Cette fonction permet de trouver le path d'un executable (non builtin cmd)
-// dans notre copie de l'environnement
 char	*find_cmd_path(char *cmd, char **env)
 {
 	char	*path;
@@ -64,7 +68,6 @@ char	*find_cmd_path(char *cmd, char **env)
 	return (NULL);
 }
 
-//Cette fonction a pour but de join les differents dir d'une path
 char	*ft_strjoin_paths(char *dir, char *cmd)
 {
 	char	*final_path;
@@ -80,17 +83,13 @@ char	*ft_strjoin_paths(char *dir, char *cmd)
 	return (final_path);
 }
 
-//je parse les tokens pour prendre les arguments des commandes
-//par exemple ls -la
-char	**find_cmd_args(t_token *lst_token)
+int number_arguments(t_token * lst_token)
 {
-	char	**cmd_args;
-	t_token	*temp;
-	int		n;
-	int		i;
+	t_token *temp;
+	int n;
 
-	temp = lst_token;
 	n = 0;
+	temp = lst_token;
 	while (temp->type != END && temp->type != PIPE)
 	{
 		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
@@ -102,6 +101,17 @@ char	**find_cmd_args(t_token *lst_token)
 			temp = temp->next;
 		}
 	}
+	return (n);
+}
+
+char	**find_cmd_args(t_token *lst_token)
+{
+	char	**cmd_args;
+	t_token	*temp;
+	int		n;
+	int		i;
+
+	n = number_arguments(lst_token);
 	cmd_args = (char **)malloc(sizeof(char *) * (n + 1));
 	if (!cmd_args)
 		return (NULL);

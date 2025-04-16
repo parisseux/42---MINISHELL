@@ -1,5 +1,18 @@
 #include "../inc/minishell.h"
 
+int heredoc_parent(int *pipefd, int *status, int pid)
+{
+	close(pipefd[1]);
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, status, 0);
+	signal(SIGINT, sigint_handler);
+	if (WEXITSTATUS(*status) == 130)
+	{
+		close(pipefd[0]);
+		return (-1);
+	}
+	return (0);
+}
 void heredoc_child(int *pipefd, t_token *lst_token)
 {
 	char *stop;
