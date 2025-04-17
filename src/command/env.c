@@ -1,31 +1,34 @@
 #include "../inc/minishell.h"
 
-int	env_command(t_shell *shell, t_token *lst_token)
+int	print_env(t_shell *shell)
 {
 	int	i;
 	int	len;
 
 	i = 0;
 	len = 0;
-	if (lst_token->next->type == END || lst_token->next->type == PIPE
-		|| lst_token->next->type == APPEND
-		|| lst_token->next->type == REDIR_OUT)
+	while (shell->var_env[i])
 	{
-		while (shell->var_env[i])
-		{
-			len = ft_strlen(shell->var_env[i]);
-			if (len == 0)
-				return (0);
-			write(STDOUT_FILENO, shell->var_env[i], len);
-			write(STDOUT_FILENO, "\n", 1);
-			i++;
-		}
-		return (0);
+		len = ft_strlen(shell->var_env[i]);
+		if (len == 0)
+			return (0);
+		write(STDOUT_FILENO, shell->var_env[i], len);
+		write(STDOUT_FILENO, "\n", 1);
+		i++;
 	}
+	return (0);
+}
+
+int	env_command(t_shell *shell, t_token *lst)
+{
+	if (lst->next->type == END || lst->next->type == PIPE
+		|| lst->next->type == APPEND || lst->next->type == REDIR_IN
+		|| lst->next->type == REDIR_OUT || lst->next->type == HEREDOC)
+		return (print_env(shell));
 	else
 	{
 		ft_putstr_fd("env ", 2);
-		ft_putstr_fd(lst_token->next->value, 2);
+		ft_putstr_fd(lst->next->value, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		return (127);
 	}
