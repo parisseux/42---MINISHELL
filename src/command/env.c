@@ -1,7 +1,5 @@
 #include "../inc/minishell.h"
 
-//exit stauts grace a waitpid
-
 int	env_command(t_shell *shell, t_token *lst_token)
 {
 	int	i;

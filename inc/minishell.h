@@ -108,11 +108,10 @@ int	pwd_command(void);
 int		extract_exit_status(int status, t_shell *shell);
 
 //echo_command
-void	echo_command(t_token *lst_token, int n_flag);
+void	echo_command(t_token *lst_token);
 void	echo_single_quote(char **line);
 void	echo_double_quote(char **line);
 void	echo_no_quote(char **line);
-int		echo_check_n_flag(char **line);
 int start_echo(t_token *lst_token);
 
 //command/utils
