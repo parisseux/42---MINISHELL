@@ -62,13 +62,11 @@ char	*add(char *new_value, char *value, int name_len)
 	i = 0;
 	size = malloc_size(new_value, value, name_len);
 	tmp = malloc(size + 1 * sizeof(char));
-	if (tmp == NULL)
-		return (NULL);
 	while (value[i] != '$' && value[i] != '\0')
 		i++;
 	ft_strlcpy(tmp, value, i + 1);
 	j = name_len + i;
-	while (new_value[name_len] != '\0' && tmp[i] != '\0') 
+	while (new_value[name_len] != '\0') 
 	{
 		tmp[i] = new_value[name_len];
 		i++;
@@ -77,7 +75,6 @@ char	*add(char *new_value, char *value, int name_len)
 	if (j >= ft_strlen(value))
 	{
 		tmp[i] = '\0';
-		ft_putstr_fd(tmp, 1);
 		return (tmp);
 	}
 	ft_strcat(tmp, value + j);

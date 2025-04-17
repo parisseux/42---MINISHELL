@@ -1,66 +1,71 @@
 #include "../inc/minishell.h"
 
-char	*dolar_sign(char **line)
+char	*dolar_sign(char *line, int index)
 {
 	char		*name;
 	size_t		i;
 
 	i = 0;
-	(*line)++;
-	if (ft_strlen(*line) == 0)
-		return (NULL);
 	name = NULL;
-	if (**line == '?' || **line == '$' || **line == '0')
-		return (name);
-	while (i <= ft_strlen(*line))
-	{
-		if ((!ft_isalnum(**line)) && **line != '_')
-			return (name);
-		i++;
-	}
-	name = ft_strdup(*line);
+	if (line[index] == '?' || line[index] == '$'
+		|| line[index] == '0' || line[index] == '\0')
+		return (NULL);
+	i = alphanum_len(line + index);
+	if (i > 0)
+		name = ft_substr(line, index, i);
+	else
+		return (NULL);
 	return (name);
 }
 
-char	*dol_spec_cases(char **line,
-	char *linee, t_shell *shell)
+void	dol_spec_cases(char **value, int index,
+	char *line, t_shell *shell)
 {
 	char	*name;
-	char	*token;
+	char	*tmp;
+	char	*cpy;
 
 	name = NULL;
-	token = NULL;
-	if (**line != '?' && **line != '$' && **line != '0')
-		return (linee);
-	if (**line == '?')
+	tmp = NULL;
+	if (line[index] != '?' && line[index] != '$' && line[index] != '0')
+		return ;
+	cpy = ft_strdup(*value);
+	if (!cpy)
+		return ;
+	if (line[index] == '?')
 		name = ft_itoa(shell->exit);
-	else if (**line == '$')
+	else if (line[index] == '$')
 		name = ft_itoa(getpid());
-	else if (**line == '0')
+	else if (line[index] == '0')
 		name = ft_strdup("minishell");
 	if (name)
 	{
-		token = add_special_case(name, linee);
-		return (token);
+		free(*value);
+		tmp = add_special_case(name, cpy);
+		*value = tmp;
+		free(cpy);
 	}
-	return (name);
 }
 
-char	*find_var(t_shell *shell, char *name, char *value)
+void	find_var(t_shell *shell, char *name, char **value, int len)
 {
 	int		i;
-	int		len;
 	char	*tmp;
+	char	*tmp2;
 
 	i = 0;
-	tmp = NULL;
-	len = alphanum_len(name);
+	tmp = ft_strdup(*value);
+	if (!tmp)
+		return ;
 	while (shell->var_env[i])
 	{
 		if (!ft_varcmp(shell->var_env[i], name, len))
 		{
-			tmp = add(shell->var_env[i], value, len + 1);
-			return (tmp);
+			free(value);
+			tmp2 = add(shell->var_env[i], tmp, len + 1);
+			*value = ft_strdup(tmp2);
+			free(tmp);
+			return ;
 		}
 		i++;
 	}
@@ -71,75 +76,83 @@ char	*find_var(t_shell *shell, char *name, char *value)
 		{
 			if (!ft_varcmp(shell->shell_env[i], name, len))
 			{
-				add(shell->shell_env[i], value, len + 1);
-				return (tmp);
+				free(*value);
+				tmp2 = add(shell->shell_env[i], tmp, len + 1);
+				*value = tmp2;
+				free(tmp);
 			}
 			i++;
 		}
 	}
 	else
-		tmp = rm_var(value, len + 1);
-	return (tmp);
+	{
+		free(*value);
+		tmp2 = rm_var(tmp, len + 1);
+		*value = tmp2;
+		free(tmp);
+	}
 }
 
-char	*which_doll(char *value, t_shell *shell)
+void	which(char **value, t_shell *shell)
 {
 	char	*name;
-	char	*temp;
-	char	*new;
 	char	*dup;
+	int		i;
 
+	i = 0;
 	name = NULL;
-	dup = ft_strdup(value);
-	while (*value)
+	dup = *value;
+	while (dup[i] != '\0')
 	{
-		if (*value == '$')
+		if (dup[i] == '$')
 		{
-			name = dolar_sign(&value);
+			name = dolar_sign(dup, i + 1);
 			if (name)
 			{
-				new = find_var(shell, name, dup);
+				find_var(shell, name, value, ft_strlen(name));
 				free(name);
+				dup = *value;
+				i = 0;
 			}
 			else
-				new = dol_spec_cases(&value, dup, shell);
-			ft_putstr_fd(new, 1);
-			temp = dup;
-			dup = ft_strdup(new);
-			free(temp);
-			free(new);
+				dol_spec_cases(value, i + 1, dup, shell);
 		}
-		value++;
+		i++;
 	}
-	return (dup);
 }
 
-int	isvalid(int type)
+int	isvalid(int type, char *str)
 {
-	if (type == WORD || type == DQUOTE || type == DEF)
-		return (1);
-	return (0);
+	if (type != WORD || type != DQUOTE || type != DEF)
+		return (0);
+
+	while (*str != '\0')
+	{
+		if (*str == '$' && (*(str + 1) == '\0' || *(str + 1) == ' '))
+		{
+			ft_putstr_fd ("ok", 1);
+			return (0);
+		}			
+	}
+	return (1);
 }
 
 void	look_for_dolls(t_token *lst_token, t_shell *shell)
 {
-	char	*value;
-	char	*temp;
+	int		type;
+	int		space;
 
-	value = NULL;
-	temp = NULL;
+	type = 0;
+	space = 0;
 	while (lst_token != NULL && lst_token->type != END)
 	{
-		if (ft_strchr(lst_token->value, '$') && isvalid(lst_token->type))
+		if (ft_strchr(lst_token->value, '$') && isvalid(lst_token->type, lst_token->value))
 		{
-
-			value = ft_strdup(lst_token->value);
-			temp = which_doll(value, shell);
-			ft_putstr_fd(temp, 1);
-			free(lst_token->value);
-			lst_token->value = temp;
-
-			free(value);			
+			type = lst_token->type;
+			space = lst_token->space;
+			which(&lst_token->value, shell);
+			lst_token->type = type;
+			lst_token->space = space;			
 		}
 		else
 			lst_token = lst_token->next;

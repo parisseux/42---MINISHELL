@@ -144,9 +144,9 @@ int	export_command(t_token *lst_token, t_shell *shell);
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
-char	*find_var(t_shell *shell, char *name, char *value2);
-char	*dolar_sign(char **line);
-char	*dol_spec_cases(char **line, char *linee, t_shell *shell);
+void	find_var(t_shell *shell, char *name, char **value, int len);
+char	*dolar_sign(char *line, int index);
+void	dol_spec_cases(char **value, int index, char *line, t_shell *shell);
 void	export_message_error(char *value, t_shell *shell);
 
 //expand_var_utils
