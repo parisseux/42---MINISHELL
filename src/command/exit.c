@@ -87,7 +87,7 @@ int	numeric_arg(t_token *lst_token, t_shell *shell)
 int	exit_command(t_token *exit, t_shell *shell)
 {
 	if (isatty(STDIN_FILENO))
-    	write(STDERR_FILENO, "exit\n", 5);
+		write(STDERR_FILENO, "exit\n", 5);
 	if (exit->next->type == END || exit->type == PIPE)
 		clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
 	else if (exit->next->next->type == WORD || exit->next->next->type == SQUOTE
