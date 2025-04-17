@@ -46,7 +46,8 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell)
 	temp = lst_token;
 	while (temp->type != END)
 	{
-		if (temp->type == WORD && (!ft_strncmp(temp->value, "cd", 3)
+		if ((temp->type == WORD || temp->type == SQUOTE
+				|| temp->type == DQUOTE) && (!ft_strncmp(temp->value, "cd", 3)
 				|| !ft_strncmp(temp->value, "export", 7)
 				|| !ft_strncmp(temp->value, "unset", 6)
 				|| !ft_strncmp(temp->value, "exit", 5)))
@@ -54,7 +55,8 @@ void	builtin_cmd(t_token *lst_token, t_shell *shell)
 			builtin_parent_process(lst_token, shell);
 			return ;
 		}
-		else if (temp->type == WORD && (!ft_strncmp(temp->value, "echo", 5)
+		else if ((temp->type == WORD || temp->type == SQUOTE
+				|| temp->type == DQUOTE) && (!ft_strncmp(temp->value, "echo", 5)
 				|| !ft_strncmp(temp->value, "pwd", 4)
 				|| !ft_strncmp(temp->value, "env", 4)))
 		{

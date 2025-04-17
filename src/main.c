@@ -9,10 +9,7 @@ int	start_minishell(t_shell *shell, char *input)
 	lst_token = NULL;
 	lst_token = tokenisation(input);
 	if (!lst_token)
-	{
-		free(input);
 		return (1);
-	}
 	if (lst_token->type == END)
 		return (0);
 	look_for_dolls(lst_token, shell);
