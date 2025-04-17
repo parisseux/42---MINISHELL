@@ -20,9 +20,15 @@ int	is_bin_path(t_token *lst_token)
 
 void	cmd_not_found(t_token *lst_token)
 {
-	write(STDERR_FILENO, "minishell: ", 11);
-	write(STDERR_FILENO, lst_token->value, ft_strlen(lst_token->value));
-	write(STDERR_FILENO, " command not found\n", 19);
+	if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
+		|| lst_token->type == APPEND || lst_token->type == HEREDOC)
+		lst_token = lst_token->next->next;
+	if (lst_token->value[0] != '\0')
+	{
+		write(STDERR_FILENO, "minishell: ", 11);
+		write(STDERR_FILENO, lst_token->value, ft_strlen(lst_token->value));
+		write(STDERR_FILENO, " command not found\n", 19);
+	}
 	exit(127);
 }
 

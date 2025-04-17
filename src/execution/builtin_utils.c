@@ -15,7 +15,7 @@ void	builtin_parent_process(t_token *lst_token,
 		else if (temp->type == WORD && !ft_strncmp(temp->value, "export", 7))
 			stop = export_command(temp, shell);
 		else if (temp->type == WORD && !ft_strncmp(temp->value, "unset", 6))
-			stop = unset_command(temp->next->value, shell);
+			stop = unset_command(temp->next, shell);
 		else if (temp->type == WORD && !ft_strncmp(temp->value, "exit", 5))
 			stop = exit_command(lst_token, shell);
 		temp = temp->next;
