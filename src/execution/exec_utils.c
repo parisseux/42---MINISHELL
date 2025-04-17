@@ -61,7 +61,8 @@ int	is_builtin(t_token *lst_token)
 	t = lst_token;
 	while (t->type != END && t->type != PIPE)
 	{
-		if (t->type == WORD && (t->next->space == 1
+		if ((t->type == WORD || t->type == SQUOTE
+				|| t->type == DQUOTE) && (t->next->space == 1
 				|| t->next->type == END || t->next->type == PIPE))
 		{
 			if (!ft_strncmp(t->value, "echo", 5)
