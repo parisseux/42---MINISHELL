@@ -26,7 +26,7 @@ int	num_arg(char *arg, t_shell *shell, t_token *lst_token)
 		return (ft_atoi(arg));
 	if (arg[0] != '+' && arg[0] != '-' && !ft_isdigit(arg[0]))
 		exit_message(shell, lst_token);
-	if (arg[1] == '\0')
+	if (arg[1] == '\0' || arg[0] == '\0')
 		exit_message(shell, lst_token);
 	while (arg[i] != '\0')
 	{
@@ -91,7 +91,8 @@ int	exit_command(t_token *exit, t_shell *shell)
 	if (exit->next->type == END || exit->type == PIPE)
 		clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
 	else if (exit->next->next->type == WORD || exit->next->next->type == SQUOTE
-		|| exit->next->next->type == DQUOTE)
+		|| exit->next->next->type == DQUOTE || exit->next->next->type == BIN
+		|| exit->next->next->type == DEF )
 	{
 		if (exit->next->next->space == 1 && arg_ok(exit->next->value))
 		{

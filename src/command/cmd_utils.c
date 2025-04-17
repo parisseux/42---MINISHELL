@@ -17,5 +17,5 @@ int	extract_exit_status(int status, t_shell *shell)
 void	exit_message(t_shell *shell, t_token *exit)
 {
 	write(STDERR_FILENO, "minishell: exit: numeric argument required\n", 43);
-	clean_exit(2, exit, shell->var_env, shell->shell_env);
+	clean_exit(1, exit, shell->var_env, shell->shell_env);
 }

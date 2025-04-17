@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ninisse <ninisse@student.42.fr>            +#+  +:+       +#+         #
+#    By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/10 10:09:01 by avarrett          #+#    #+#              #
-#    Updated: 2025/02/05 11:56:16 by ninisse          ###   ########.fr        #
+#    Updated: 2025/04/17 14:46:07 by pchatagn         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CFLAGS= -Wall -Werror -Wextra
 CC= gcc 
 
 FILES= ft_atoi.c\
+		ft_atol.c \
 		ft_bzero.c\
 		ft_calloc.c\
 		ft_isalnum.c\

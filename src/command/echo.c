@@ -11,11 +11,14 @@ int	start_echo(t_token *lst_token)
 
 int	is_valid_n_flag(char *line)
 {
+	int i;
+
+	i = 1;
 	if (!line || line[0] != '-')
 		return (0);
-	if (line[1] != 'n')
-		return (0);
-	if (line[2] != '\0')
+	while (line[i] == 'n')
+		i++;
+	if (line[i] != '\0')
 		return (0);
 	return (1);
 }

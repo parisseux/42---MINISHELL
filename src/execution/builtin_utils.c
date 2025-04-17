@@ -1,5 +1,6 @@
 #include "../inc/minishell.h"
 
+//ajjouter quote
 void	builtin_parent_process(t_token *lst_token,
 	t_shell *shell)
 {
@@ -32,11 +33,14 @@ void	builtin_child_action(t_token *lst_token, t_shell *shell)
 	temp = lst_token;
 	while (temp->type != END && stop == -1)
 	{
-		if (temp->type == WORD && !ft_strncmp(temp->value, "env", 4))
+		if ((temp->type == WORD|| temp->type == SQUOTE
+			|| temp->type == DQUOTE) && !ft_strncmp(temp->value, "env", 4))
 			stop = env_command(shell, lst_token);
-		else if (temp->type == WORD && !ft_strncmp(temp->value, "pwd", 4))
+		else if ((temp->type == WORD|| temp->type == SQUOTE
+			|| temp->type == DQUOTE) && !ft_strncmp(temp->value, "pwd", 4))
 			stop = pwd_command();
-		else if (temp->type == WORD && !ft_strncmp(lst_token->value, "echo", 5))
+		else if ((temp->type == WORD|| temp->type == SQUOTE
+			|| temp->type == DQUOTE) && !ft_strncmp(lst_token->value, "echo", 5))
 			stop = start_echo(lst_token);
 		temp = temp->next;
 	}
