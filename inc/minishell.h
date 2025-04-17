@@ -165,7 +165,7 @@ int		alphanum_len(char *value);
 int		malloc_size(char *new_value, char *value, int name_len, char symbol);
 
 //unset
-int	unset_command(char *line, t_shell *shell);
+int	unset_command(t_token *lst, t_shell *shell);
 
 //shell_var
 int	shell_var(t_token *lst_token, t_shell *shell);
@@ -192,4 +192,4 @@ void	change_fd(int fd_out, int fd_in);
 char	*look_for_cmd(t_token *temp, t_shell *shell);
 
 int non_builtin_child(t_token *lst_token, t_shell *shell);
-#endif 
+#endif
