@@ -1,7 +1,5 @@
 #include "../inc/minishell.h"
 
-//exit status grace a waitpid
-
 int	pwd_command(void)
 {
 	char	*pwd;
