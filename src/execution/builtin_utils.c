@@ -11,13 +11,17 @@ void	builtin_parent_process(t_token *lst_token,
 	temp = lst_token;
 	while (temp->type != END && stop == 0)
 	{
-		if (temp->type == WORD && !ft_strncmp(temp->value, "cd", 3))
+		if ((temp->type == WORD|| temp->type == SQUOTE
+			|| temp->type == DQUOTE) && !ft_strncmp(temp->value, "cd", 3))
 			stop = cd_command(temp->next, shell);
-		else if (temp->type == WORD && !ft_strncmp(temp->value, "export", 7))
+		else if ((temp->type == WORD|| temp->type == SQUOTE
+			|| temp->type == DQUOTE) && !ft_strncmp(temp->value, "export", 7))
 			stop = export_command(temp, shell);
-		else if (temp->type == WORD && !ft_strncmp(temp->value, "unset", 6))
+		else if ((temp->type == WORD|| temp->type == SQUOTE
+			|| temp->type == DQUOTE) && !ft_strncmp(temp->value, "unset", 6))
 			stop = unset_command(temp->next, shell);
-		else if (temp->type == WORD && !ft_strncmp(temp->value, "exit", 5))
+		else if ((temp->type == WORD|| temp->type == SQUOTE
+			|| temp->type == DQUOTE) && !ft_strncmp(temp->value, "exit", 5))
 			stop = exit_command(lst_token, shell);
 		temp = temp->next;
 	}

@@ -43,6 +43,7 @@ void	free_cmds_lst(t_pipe *p)
 		free_token_list(p->cmds[i]);
 		i++;
 	}
+	free(p->cmds);
 }
 
 void	create_pipe_and_mini_lst(t_pipe *p, t_token *lst_token)
