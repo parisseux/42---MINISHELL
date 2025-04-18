@@ -18,17 +18,19 @@ int	is_valid_n_flag(char *line)
 		return (0);
 	while (line[i] == 'n')
 		i++;
-	if (line[i] != '\0')
+	if (line[i] != '\0' || i == 1)
 		return (0);
 	return (1);
 }
 
 void	write_echo(t_token *lst)
 {
-	write(STDOUT_FILENO, lst->value, ft_strlen(lst->value));
+	if (ft_strlen(lst->value) > 0)
+		write(STDOUT_FILENO, lst->value, ft_strlen(lst->value));
 	if (lst->next->space == 1 && lst->next->type != END
 		&& lst->next->type != PIPE)
 		write(STDOUT_FILENO, " ", 1);
+	
 }
 
 void	echo_command(t_token *lst)
@@ -44,10 +46,8 @@ void	echo_command(t_token *lst)
 			|| lst->type == HEREDOC || lst->type == APPEND)
 			lst = lst->next;
 		else if (is_valid_n_flag(lst->value) && stop_skip == 0)
-		{
 			n_flag = 1;
-		}
-		else if (*lst->value)
+		else
 		{
 			stop_skip = 1;
 			write_echo(lst);
