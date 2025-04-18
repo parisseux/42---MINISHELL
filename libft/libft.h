@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 16:18:02 by avarrett          #+#    #+#             */
-/*   Updated: 2025/04/17 14:45:13 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:35:57 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdio.h>
 
 int		ft_atoi(const char *str);
-long 	ft_atol(const char *str);
+long	ft_atol(const char *str);
 int		ft_tolower(int a);
 int		ft_toupper(int a);
 int		ft_isalnum(int a);

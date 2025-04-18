@@ -15,7 +15,7 @@ int	start_minishell(t_shell *shell, char *input)
 		free_token_list(lst_token);
 		return (0);
 	}
-	//look_for_dolls(lst_token, shell);
+	look_for_dolls(lst_token, shell);
 	if (ft_strncmp(lst_token->value, "export", 7))
 		shell->exit = shell_var(lst_token, shell);
 	expand_home(shell, lst_token);
@@ -54,7 +54,7 @@ char	**setup_minishell(char **env)
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
-	char *line;
+	char	*line;
 	t_shell	shell;
 
 	(void)ac;
@@ -77,11 +77,11 @@ int	main(int ac, char **av, char **env)
 		{
 			line = get_next_line(fileno(stdin));
 			if (!line)
-				break;
+				break ;
 			input = ft_strtrim(line, "\n");
 			free(line);
 			if (!input)
-            	break;
+				break ;
 		}
 		if (!input)
 			break ;
@@ -90,8 +90,6 @@ int	main(int ac, char **av, char **env)
 		start_minishell(&shell, input);
 		free(input);
 	}
-	// if (input)
-	// 	free(input);
 	clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
 	return (0);
 }

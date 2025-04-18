@@ -92,7 +92,7 @@ int	exit_command(t_token *exit, t_shell *shell)
 		clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
 	else if (exit->next->next->type == WORD || exit->next->next->type == SQUOTE
 		|| exit->next->next->type == DQUOTE || exit->next->next->type == BIN
-		|| exit->next->next->type == DEF )
+		|| exit->next->next->type == DEF)
 	{
 		if (exit->next->next->space == 1 && arg_ok(exit->next->value))
 		{
@@ -104,7 +104,7 @@ int	exit_command(t_token *exit, t_shell *shell)
 			shell->exit = numeric_arg(exit, shell);
 	}
 	else if (exit->type == WORD || exit->type == SQUOTE || exit->type == DQUOTE
-			|| exit->type ==  BIN || exit->type == DEF)
+		|| exit->type == BIN || exit->type == DEF)
 		shell->exit = num_arg(exit->next->value, shell, exit);
 	else
 		shell->exit = 0;
