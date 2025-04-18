@@ -14,6 +14,12 @@ int	skip_space(char **input)
 	return (i);
 }
 
+t_token	*parse_pipe(char **input)
+{
+	(*input)++;
+	return (create_token("|", PIPE));
+}
+
 int	spaces(char input)
 {
 	if (input == ' ' || input == '\t' || input == '\v'
