@@ -44,6 +44,7 @@ void	dol_spec_cases(char **value, int index,
 		tmp = add_special_case(name, cpy);
 		*value = tmp;
 		free(cpy);
+		free(name);
 	}
 }
 
@@ -61,10 +62,9 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 	{
 		if (!ft_varcmp(shell->var_env[i], name, len))
 		{
-			free(value);
 			tmp2 = add(shell->var_env[i], tmp, len + 1);
-			*value = ft_strdup(tmp2);
-			free(tmp);
+			free(*value);
+			*value = tmp2;
 			return ;
 		}
 		i++;
@@ -76,10 +76,9 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 		{
 			if (!ft_varcmp(shell->shell_env[i], name, len))
 			{
-				free(*value);
 				tmp2 = add(shell->shell_env[i], tmp, len + 1);
+				free(*value);
 				*value = tmp2;
-				free(tmp);
 				return ;
 			}
 			i++;
@@ -87,8 +86,8 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 	}
 	else
 	{
-		free(*value);
 		tmp2 = rm_var(tmp, len + 1);
+		free(*value);
 		*value = tmp2;
 		free(tmp);
 		return ;

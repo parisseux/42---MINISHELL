@@ -53,6 +53,7 @@ char	*rm_quotes(char *input)
 			if (size == -1)
 			{
 				free(cleaned);
+				free(input);
 				return (NULL);
 			}
 			i++;
@@ -69,6 +70,7 @@ char	*rm_quotes(char *input)
 			cleaned[j++] = input[i++];
 	}
 	cleaned[j] = '\0';
+	free(input);
 	return (cleaned);
 }
 
