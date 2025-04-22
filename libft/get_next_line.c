@@ -6,13 +6,13 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 12:03:56 by avarrett          #+#    #+#             */
-/*   Updated: 2025/01/28 11:28:53 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:22:58 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr_gnl(char const *s, unsigned int start, size_t len)
 {
 	char	*new_s;
 	size_t	i;
@@ -76,7 +76,7 @@ static char	*line_cleaner(char *line)
 		i++;
 	if (line[i] == 0)
 		return (0);
-	new_reste = ft_substr(line, i + 1, ft_strlen(line) - i);
+	new_reste = ft_substr_gnl(line, i + 1, ft_strlen(line) - i);
 	if (*new_reste == 0)
 	{
 		free(new_reste);

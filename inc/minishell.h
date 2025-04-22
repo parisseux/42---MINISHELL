@@ -151,17 +151,17 @@ int		export_command(t_token *lst_token, t_shell *shell);
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
-char	*find_var(t_shell *shell, char *name, char *value2);
-char	*dolar_sign(char **line);
-char	*dol_spec_cases(char **line, char *linee, t_shell *shell);
+void	find_var(t_shell *shell, char *name, char **value, int len);
+char	*dolar_sign(char *line, int index);
+void	dol_spec_cases(char **value, int index, char *line, t_shell *shell);
 void	export_message_error(char *value, t_shell *shell);
 
 //expand_var_utils
 char	*add_special_case(char *name, char *line);
-char	*rm_var(char *value);
-char	*add(char *new_value, char *value, int name_len, char symbol);
+char	*rm_var(char *value, int name_len);
+char	*add(char *new_value, char *value, int name_len);
 int		alphanum_len(char *value);
-int		malloc_size(char *new_value, char *value, int name_len, char symbol);
+int		malloc_size(char *new_value, char *value, int name_len);
 
 //unset
 int		unset_command(t_token *lst, t_shell *shell);

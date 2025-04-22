@@ -26,89 +26,67 @@ char	*add_special_case(char *name, char *line)
 	return (tmp);
 }
 
-int	malloc_size(char *new_value, char *value, int name_len, char symbol)
+int	malloc_size(char *new_value, char *value, int name_len)
 {
+	int	size;
 	int	i;
-	int	j;
 
 	i = 0;
-	while (value[i] != symbol && value[i] != '\0')
+	size = 0;
+	while (value[i] != '$' && value[i] != '\0')
 		i++;
-	j = name_len + i;
-	if (value[i] == symbol)
-	{
-		name_len++;
-		while (new_value[name_len] != '\0')
-		{
-			i++;
-			name_len++;
-		}
-	}
-	j++;
-	while (value[j] != '\0')
-	{
-		i++;
-		j++;
-	}
-	return (i);
+	size += i;
+	size += ft_strlen(new_value + name_len);
+	size += ft_strlen(value + i + name_len);
+	return (size);
 }
 
-char	*add(char *new_value, char *value, int name_len, char symbol)
+char	*add(char *new, char *value, int len)
 {
+	int		size;
 	char	*tmp;
 	int		i;
 	size_t	j;
-	int		size;
 
 	i = 0;
-	size = malloc_size(new_value, value, name_len, symbol);
+	if (!value)
+		return (NULL);
+	size = malloc_size(new, value, len);
 	tmp = malloc(size + 1 * sizeof(char));
 	if (!tmp)
 		return (NULL);
-	while (value[i] != symbol && value[i] != '\0')
+	while (value[i] != '$' && value[i] != '\0')
 		i++;
 	ft_strlcpy(tmp, value, i + 1);
-	j = name_len + i;
-	while (new_value[name_len] != '\0')
-	{
-		tmp[i] = new_value[name_len];
-		i++;
-		name_len++;
-	}
-	if (j >= ft_strlen(value))
-	{
-		tmp[i] = '\0';
-		return (tmp);
-	}
-	ft_strcat(tmp, value + j);
-	free(value);
+	j = len + i;
+	while (new[len] != '\0')
+		tmp[i++] = new[len++];
+	if (j < ft_strlen(value))
+		ft_strlcat(tmp, value + j, size + 1);
+	tmp[size + 1] = '\0';
 	return (tmp);
 }
 
-char	*rm_var(char *value)
+char	*rm_var(char *value, int name_len)
 {
 	int		i;
-	int		j;
+	size_t	j;
+	int		size;
 	char	*new_value;
 
 	i = 0;
-	new_value = ft_strdup("");
-	while (value[i] != '$')
-	{
-		new_value[i] = value[i];
+	size = ft_strlen(value) - name_len;
+	if (size <= 0)
+		return (ft_strdup(""));
+	new_value = malloc(size + 1 * sizeof(char));
+	if (!new_value)
+		return (NULL);
+	while (value[i] != '$' && value[i] != '\0')
 		i++;
-	}
-	j = i + 1;
-	while (ft_isalnum(value[j]) || value[j] == '_')
-		j++;
-	while (value[j] != '\0')
-	{
-		new_value[i] = value[j];
-		i++;
-		j++;
-	}
-	new_value[i + 1] = '\0';
-	free(value);
+	ft_strlcpy(new_value, value, i + 1);
+	j = name_len + i;
+	if (j < ft_strlen(value))
+		ft_strlcat(new_value, value + j, size + 1);
 	return (new_value);
 }
 
