@@ -31,11 +31,10 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	}	
 	else
 	{
-		signal(SIGINT, sigint_handler_exec);
-		signal(SIGQUIT, siguit_handler);
+		mute_parent_signals(1);
 		waitpid(pid, &status, 0);
+		mute_parent_signals(0);
 		extract_exit_status(status, shell);
-		init_signals();
 	}
 }
 

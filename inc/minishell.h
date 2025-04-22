@@ -1,6 +1,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
+# define _POSIX_C_SOURCE 200809L
 # include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
@@ -13,7 +13,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
-extern int	g_stop;
+extern volatile sig_atomic_t	g_last_signal;
 
 typedef struct s_shell
 {
@@ -71,12 +71,12 @@ void	create_pipe_and_mini_lst(t_pipe *p, t_token *lst_token);
 int		init_pipe_data(t_pipe *p, int n_pipes);
 
 //signals
-void	init_signals(void);
-void	sigint_handler(int sig);
-void	restore_signals(void);
-void	sigint_handler_exec(int sig);
-void	sigint_handler_heredoc(int sig);
-void	siguit_handler(int sig);
+void init_parent_signals(void);
+void	init_exec_child_signals(void);
+void	mute_parent_signals(int on);
+void	init_heredoc_child_signals(void);
+void    cleanup_readline(void);
+void	parent_sigint(int signo);
 
 int		start_minishell(t_shell *shell, char *input);
 

@@ -21,7 +21,7 @@ int	look_for_fd_heredoc(t_token *token, int fd, t_shell *shell)
 		if (heredoc_parent(pipefd, &status, pid) == -1)
 			return (-2);
 	}
-	if (fd == -1)
+	if (fd != -1)
 		close(fd);
 	fd = pipefd[0];
 	return (fd);

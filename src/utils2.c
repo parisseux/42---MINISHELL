@@ -36,3 +36,10 @@ char	*get_env_value(char **env, char *key)
 	}
 	return (NULL);
 }
+
+void    cleanup_readline(void)
+{
+    rl_free_line_state();   /* libère les buffers de la ligne courante      */
+    rl_clear_history();     /* vide la liste d’historique                   */
+    rl_deprep_terminal();   /* libère les structures propres au terminal    */
+}

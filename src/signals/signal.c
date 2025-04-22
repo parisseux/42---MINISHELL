@@ -1,39 +1,50 @@
 #include "../inc/minishell.h"
 
-//CTR -C remet le prompt minishell et CTR -\ ne fait rien
-void	init_signals(void)
+void	init_parent_signals(void)
 {
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sa.sa_handler = parent_sigint;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
-void	siguit_handler(int sig)
+void	init_exec_child_signals(void)
 {
-	(void)sig;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void	mute_parent_signals(int on)
+{
+	if (on)
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else
+		init_parent_signals();
+}
+
+void	sigint_heredoc(int signum)
+{
+	(void)signum;
 	write(STDOUT_FILENO, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
+	rl_free_line_state();
+	rl_cleanup_after_signal();
+	_exit(130);
 }
 
-void	sigint_handler(int sig)
+void	init_heredoc_child_signals(void)
 {
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
+	struct sigaction	sa;
 
-void	sigint_handler_exec(int sig)
-{
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-}
-
-void	sigint_handler_heredoc(int sig)
-{
-	(void)sig;
-	exit(130);
+	sa.sa_handler = sigint_heredoc;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }

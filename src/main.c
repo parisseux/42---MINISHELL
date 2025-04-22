@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-int	g_stop = 0;
+volatile sig_atomic_t	g_last_signal = 0;
 
 int	start_minishell(t_shell *shell, char *input)
 {
@@ -15,7 +15,7 @@ int	start_minishell(t_shell *shell, char *input)
 		free_token_list(lst_token);
 		return (0);
 	}
-	look_for_dolls(lst_token, shell);
+	//look_for_dolls(lst_token, shell);
 	if (ft_strncmp(lst_token->value, "export", 7))
 		shell->exit = shell_var(lst_token, shell);
 	expand_home(shell, lst_token);
@@ -59,7 +59,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	init_signals();
+	init_parent_signals();
 	if (*env == NULL)
 		prep_var_shell(&shell.var_env);
 	else
@@ -90,6 +90,7 @@ int	main(int ac, char **av, char **env)
 		start_minishell(&shell, input);
 		free(input);
 	}
+	cleanup_readline();
 	clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
 	return (0);
 }
