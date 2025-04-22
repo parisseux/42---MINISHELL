@@ -125,7 +125,7 @@ int	export_command(t_token *lst_token, t_shell *shell)
 			shell->var_env = tab;
 		}
 		else if ((ft_strchr(tmp->value, '=') && good_varname(tmp->value, '='))
-				|| good_varname(tmp->value, '\0'))
+			|| good_varname(tmp->value, '\0'))
 			export_message_error(tmp->value, shell);
 		tmp = tmp->next;
 	}

@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-int	g_stop = 0;
+volatile sig_atomic_t	g_last_signal = 0;
 
 int	start_minishell(t_shell *shell, char *input)
 {
@@ -9,12 +9,12 @@ int	start_minishell(t_shell *shell, char *input)
 	lst_token = NULL;
 	lst_token = tokenisation(input);
 	if (!lst_token)
-	{
-		free(input);
 		return (1);
-	}
 	if (lst_token->type == END)
+	{
+		free_token_list(lst_token);
 		return (0);
+	}
 	look_for_dolls(lst_token, shell);
 	print_token_list(lst_token);
 	if (ft_strncmp(lst_token->value, "export", 7))
@@ -23,6 +23,7 @@ int	start_minishell(t_shell *shell, char *input)
 	if (check_syntax_error(lst_token))
 	{
 		shell->exit = 2;
+		free_token_list(lst_token);
 		return (1);
 	}
 	execution(lst_token, shell);
@@ -54,11 +55,12 @@ char	**setup_minishell(char **env)
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
+	char	*line;
 	t_shell	shell;
 
 	(void)ac;
 	(void)av;
-	init_signals();
+	init_parent_signals();
 	if (*env == NULL)
 		prep_var_shell(&shell.var_env);
 	else
@@ -70,25 +72,26 @@ int	main(int ac, char **av, char **env)
 	input = NULL;
 	while (1)
 	{
-		if (isatty(fileno(stdin)))
+		if (isatty(STDIN_FILENO))
 			input = readline("minishell$ ");
 		else
 		{
-			char *line;
 			line = get_next_line(fileno(stdin));
 			if (!line)
-				break;
+				break ;
 			input = ft_strtrim(line, "\n");
 			free(line);
 			if (!input)
-            	break;
+				break ;
 		}
 		if (!input)
 			break ;
-		add_history(input);
+		if (*input)
+			add_history(input);
 		start_minishell(&shell, input);
 		free(input);
 	}
-	//clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
+	cleanup_readline();
+	clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
 	return (0);
 }

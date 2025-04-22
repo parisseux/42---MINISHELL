@@ -18,3 +18,28 @@ void	msg_error(char *msg, t_token *lst_token)
 	printf("Error: %s\n", msg);
 	free_token_list(lst_token);
 }
+
+char	*get_env_value(char **env, char *key)
+{
+	int	i;
+	int	len;
+
+	len = ft_strlen(key);
+	i = 0;
+	while (env[i])
+	{
+		if ((ft_strncmp(env[i], key, len) == 0 && env[i][len] == '='))
+		{
+			return (env[i] + len + 1);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+void	cleanup_readline(void)
+{
+	rl_free_line_state();
+	rl_clear_history();
+	rl_deprep_terminal();
+}

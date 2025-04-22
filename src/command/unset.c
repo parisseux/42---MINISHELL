@@ -15,44 +15,48 @@ int	invalid_option(char *line, t_shell *shell)
 	return (0);
 }
 
-int	unset_command(char *line, t_shell *shell)
+int	remove_var(char **env, char *line)
 {
 	int	i;
 
 	i = 0;
-	if (invalid_option(line, shell))
-		return (1);
-	while (shell->var_env[i])
+	while (env[i])
 	{
-		if (!ft_varcmp(shell->var_env[i], line, ft_strlen(line)))
+		if (!ft_varcmp(env[i], line, ft_strlen(line)))
 		{
-			free(shell->var_env[i]);
-			while (shell->var_env[i])
+			free(env[i]);
+			while (env[i])
 			{
-				shell->var_env[i] = shell->var_env[i + 1];
+				env[i] = env[i + 1];
 				i++;
 			}
-			return (0);
+			return (1);
 		}
 		i++;
 	}
-	i = 0;
-	if (shell->shell_env != NULL)
+	return (0);
+}
+
+int	unset_command(t_token *lst, t_shell *shell)
+{
+	while (lst->type != END && lst->type != PIPE)
 	{
-		while (shell->shell_env[i])
+		if (lst->type == REDIR_IN || lst->type == REDIR_OUT
+			|| lst->type == APPEND || lst->type == HEREDOC)
 		{
-			if (!ft_varcmp(shell->shell_env[i], line, ft_strlen(line)))
-			{
-				free(shell->shell_env[i]);
-				while (shell->shell_env[i])
-				{
-					shell->shell_env[i] = shell->shell_env[i + 1];
-					i++;
-				}
-				return (0);
-			}
-			i++;
+			lst = lst->next->next;
+			continue ;
 		}
+		if (lst->type == WORD || lst->type == SQUOTE
+			|| lst->type == DQUOTE || lst->type == BIN || lst->type == DEF)
+		{
+			if (invalid_option(lst->value, shell))
+				return (1);
+			remove_var(shell->var_env, lst->value);
+			if (shell->shell_env)
+				remove_var(shell->shell_env, lst->value);
+		}
+		lst = lst->next;
 	}
 	return (0);
 }

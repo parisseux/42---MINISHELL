@@ -1,44 +1,89 @@
 #include "../inc/minishell.h"
 
-//Cette commmand a pour but d'executer une non builtin cmd
-//creation d'un child process pour execution de execve 
-void	execve_non_builtin(t_token *lst_token,
-	t_shell *shell)
+char	*look_for_cmd(t_token *temp, t_shell *shell)
 {
 	char	*cmd;
-	char	**cmd_args;
 
 	cmd = NULL;
-	t_token	*temp;
-
-	temp = lst_token;
 	while (temp->type != PIPE && temp->type != END)
 	{
 		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
 			|| temp->type == HEREDOC || temp->type == APPEND)
 			temp = temp->next->next;
-		
-		else if (temp->next->space == 1 || temp->next->type == PIPE
-			|| temp->next->type == END)
+		else
 		{
 			cmd = find_cmd_path(temp->value, shell->var_env);
-			if (!cmd)
-				cmd_not_found(temp);
 			break ;
-		}
+		}		
 	}
-	cmd_args = find_cmd_args(temp);
-	if (!cmd_args)
-		exit(EXIT_FAILURE);
-	if (execve(cmd, cmd_args, shell->var_env) == -1)
-	{
-		perror("execve");
-		exit(EXIT_FAILURE);
-	}
+	return (cmd);
 }
 
-//Cette fonction permet de trouver le path d'un executable (non builtin cmd)
-// dans notre copie de l'environnement
+char	*ft_strjoin_paths(char *dir, char *cmd)
+{
+	char	*final_path;
+	char	*temp;
+
+	final_path = ft_strjoin(dir, "/");
+	if (!final_path)
+		return (NULL);
+	else
+		temp = final_path;
+	final_path = ft_strjoin(final_path, cmd);
+	free(temp);
+	return (final_path);
+}
+
+int	number_arguments(t_token *lst_token)
+{
+	t_token	*temp;
+	int		n;
+
+	n = 0;
+	temp = lst_token;
+	while (temp->type != END && temp->type != PIPE)
+	{
+		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
+			|| temp->type == APPEND || temp->type == HEREDOC)
+			temp = temp->next->next;
+		else
+		{
+			n++;
+			temp = temp->next;
+		}
+	}
+	return (n);
+}
+
+char	**find_cmd_args(t_token *lst_token)
+{
+	char	**cmd_args;
+	t_token	*temp;
+	int		n;
+	int		i;
+
+	n = number_arguments(lst_token);
+	cmd_args = (char **)malloc(sizeof(char *) * (n + 1));
+	if (!cmd_args)
+		return (NULL);
+	i = 0;
+	temp = lst_token;
+	while (i < n)
+	{
+		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
+			|| temp->type == APPEND || temp->type == HEREDOC)
+			temp = temp->next->next;
+		else
+		{
+			cmd_args[i] = ft_strdup(temp->value);
+			i++;
+			temp = temp->next;
+		}
+	}
+	cmd_args[n] = '\0';
+	return (cmd_args);
+}
+
 char	*find_cmd_path(char *cmd, char **env)
 {
 	char	*path;
@@ -64,52 +109,4 @@ char	*find_cmd_path(char *cmd, char **env)
 	}
 	ft_free_char_tab(paths);
 	return (NULL);
-}
-
-//Cette fonction a pour but de join les differents dir d'une path
-char	*ft_strjoin_paths(char *dir, char *cmd)
-{
-	char	*final_path;
-	char	*temp;
-
-	final_path = ft_strjoin(dir, "/");
-	if (!final_path)
-		return (NULL);
-	else
-		temp = final_path;
-	final_path = ft_strjoin(final_path, cmd);
-	free(temp);
-	return (final_path);
-}
-
-//je parse les tokens pour prendre les arguments des commandes
-//par exemple ls -la
-char	**find_cmd_args(t_token *lst_token)
-{
-	char	**cmd_args;
-	t_token	*temp;
-	int		n;
-	int		i;
-
-	temp = lst_token;
-	n = 0;
-	while (temp && (temp->type == BIN || temp->type == WORD
-			|| temp->type == SQUOTE || temp->type == DQUOTE))
-	{
-		n++;
-		temp = temp->next;
-	}
-	cmd_args = (char **)malloc(sizeof(char *) * (n + 1));
-	if (!cmd_args)
-		return (NULL);
-	i = 0;
-	temp = lst_token;
-	while (i < n)
-	{
-		cmd_args[i] = ft_strdup(temp->value);
-		i++;
-		temp = temp->next;
-	}
-	cmd_args[n] = '\0';
-	return (cmd_args);
 }

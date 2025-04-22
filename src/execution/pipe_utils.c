@@ -1,18 +1,22 @@
 #include "../inc/minishell.h"
 
-void	wait_all_pids(int *pids, int *status, int n_cmd)
+void	wait_all_pids(t_pipe *p, t_shell *shell)
 {
 	int	i;
+	int	status;
 
 	i = 0;
-	while (i < n_cmd)
+	status = 0;
+	while (i < (p->n_pipes + 1))
 	{
-		waitpid(pids[i], status, 0);
+		waitpid(p->pids[i], &status, 0);
 		i++;
 	}
+	free(p->pids);
+	extract_exit_status(status, shell);
 }
 
-void	create_all_pipes(int pipefd[][2], int n_pipes)
+void	create_all_pipes(int **pipefd, int n_pipes)
 {
 	int	i;
 
@@ -52,5 +56,14 @@ t_token	*create_mini_list_token(t_token *lst_token)
 	}
 	new_token = create_token("", END);
 	add_token_to_lst(&mini_lst, new_token, 0);
+	return (mini_lst);
+}
+
+t_token	*create_mini_list(t_token **lst_token)
+{
+	t_token	*mini_lst;
+
+	mini_lst = create_mini_list_token(*lst_token);
+	go_to_next_pipe(lst_token);
 	return (mini_lst);
 }
