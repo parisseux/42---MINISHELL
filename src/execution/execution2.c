@@ -28,7 +28,7 @@ int	non_builtin_child(t_token *lst_token, t_shell *shell)
 		return (1);
 	if (is_def(lst_token))
 		return (1);
-	signal(SIGQUIT, siguit_handler);
+	init_exec_child_signals();
 	if (is_bin_path(lst_token))
 		execve_bin_token(lst_token, shell);
 	else

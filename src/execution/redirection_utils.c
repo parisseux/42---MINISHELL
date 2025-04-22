@@ -2,10 +2,19 @@
 
 int	heredoc_parent(int *pipefd, int *status, int pid)
 {
+	struct sigaction old_int;
+    struct sigaction old_quit;
+    struct sigaction sa_ignore;
+
 	close(pipefd[1]);
-	signal(SIGINT, SIG_IGN);
+	sa_ignore.sa_handler = SIG_IGN;
+    sigemptyset(&sa_ignore.sa_mask);
+    sa_ignore.sa_flags = 0;
+    sigaction(SIGINT,  &sa_ignore, &old_int);
+    sigaction(SIGQUIT, &sa_ignore, &old_quit);
 	waitpid(pid, status, 0);
-	signal(SIGINT, sigint_handler);
+	sigaction(SIGINT,  &old_int,  NULL);
+    sigaction(SIGQUIT, &old_quit, NULL);
 	if (WEXITSTATUS(*status) == 130)
 	{
 		close(pipefd[0]);
@@ -19,8 +28,7 @@ void	heredoc_child(int *pipefd, t_token *lst_token)
 	char	*stop;
 	char	*line;
 
-	signal(SIGINT, sigint_handler_heredoc);
-	signal(SIGQUIT, SIG_IGN);
+	init_heredoc_child_signals();
 	stop = ft_strdup(lst_token->value);
 	while (1)
 	{
@@ -32,13 +40,15 @@ void	heredoc_child(int *pipefd, t_token *lst_token)
 			free(line);
 			break ;
 		}
-		line = ft_strjoin(line, "\n");
 		ft_putstr_fd(line, pipefd[1]);
+		ft_putchar_fd('\n', pipefd[1]);
 		free(line);
 	}
 	free(stop);
 	close(pipefd[0]);
 	close(pipefd[1]);
+	free_token_list(lst_token);
+	cleanup_readline();
 	exit(0);
 }
 
