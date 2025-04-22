@@ -80,6 +80,7 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 				tmp2 = add(shell->shell_env[i], tmp, len + 1);
 				*value = tmp2;
 				free(tmp);
+				return ;
 			}
 			i++;
 		}
@@ -90,6 +91,7 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 		tmp2 = rm_var(tmp, len + 1);
 		*value = tmp2;
 		free(tmp);
+		return ;
 	}
 }
 
@@ -104,7 +106,7 @@ void	which(char **value, t_shell *shell)
 	dup = *value;
 	while (dup[i] != '\0')
 	{
-		if (dup[i] == '$')
+		if (dup[i] == '$' && dup[i + 1] != ' ')
 		{
 			name = dolar_sign(dup, i + 1);
 			if (name)
@@ -123,17 +125,17 @@ void	which(char **value, t_shell *shell)
 
 int	isvalid(int type, char *str)
 {
-	if (type != WORD || type != DQUOTE || type != DEF)
-		return (0);
+	char	*after;
 
-	while (*str != '\0')
-	{
-		if (*str == '$' && (*(str + 1) == '\0' || *(str + 1) == ' '))
-		{
-			ft_putstr_fd ("ok", 1);
-			return (0);
-		}			
-	}
+	after = NULL;
+	if (type != WORD && type != DQUOTE && type != DEF)
+		return (0);
+	if (!ft_strchr(str, '$'))
+		return (0);
+	else
+		after = ft_strchr(str, '$');
+	if (after[1] == ' ' || after[1] == '\0')
+		return (0);
 	return (1);
 }
 
@@ -141,18 +143,21 @@ void	look_for_dolls(t_token *lst_token, t_shell *shell)
 {
 	int		type;
 	int		space;
+	t_token	*next;
 
 	type = 0;
 	space = 0;
 	while (lst_token != NULL && lst_token->type != END)
 	{
-		if (ft_strchr(lst_token->value, '$') && isvalid(lst_token->type, lst_token->value))
+		if (isvalid(lst_token->type, lst_token->value) > 0)
 		{
+			next = lst_token->next;
 			type = lst_token->type;
 			space = lst_token->space;
 			which(&lst_token->value, shell);
+			lst_token->next = next;
 			lst_token->type = type;
-			lst_token->space = space;			
+			lst_token->space = space;
 		}
 		else
 			lst_token = lst_token->next;
