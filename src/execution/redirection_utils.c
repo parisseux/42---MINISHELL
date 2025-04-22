@@ -2,19 +2,19 @@
 
 int	heredoc_parent(int *pipefd, int *status, int pid)
 {
-	struct sigaction old_int;
-    struct sigaction old_quit;
-    struct sigaction sa_ignore;
+	struct sigaction	old_int;
+	struct sigaction	old_quit;
+	struct sigaction	sa_ignore;
 
 	close(pipefd[1]);
 	sa_ignore.sa_handler = SIG_IGN;
-    sigemptyset(&sa_ignore.sa_mask);
-    sa_ignore.sa_flags = 0;
-    sigaction(SIGINT,  &sa_ignore, &old_int);
-    sigaction(SIGQUIT, &sa_ignore, &old_quit);
+	sigemptyset(&sa_ignore.sa_mask);
+	sa_ignore.sa_flags = 0;
+	sigaction(SIGINT, &sa_ignore, &old_int);
+	sigaction(SIGQUIT, &sa_ignore, &old_quit);
 	waitpid(pid, status, 0);
-	sigaction(SIGINT,  &old_int,  NULL);
-    sigaction(SIGQUIT, &old_quit, NULL);
+	sigaction(SIGINT, &old_int, NULL);
+	sigaction(SIGQUIT, &old_quit, NULL);
 	if (WEXITSTATUS(*status) == 130)
 	{
 		close(pipefd[0]);
