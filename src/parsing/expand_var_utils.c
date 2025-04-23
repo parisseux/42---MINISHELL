@@ -52,6 +52,7 @@ char	*add(char *new, char *value, int len)
 	tmp = malloc(size + 1 * sizeof(char));
 	if (!tmp)
 		return (NULL);
+	ft_memset(tmp, 0, size + 1);
 	while (value[i] != '$' && value[i] != '\0')
 		i++;
 	ft_strlcpy(tmp, value, i + 1);
@@ -60,7 +61,6 @@ char	*add(char *new, char *value, int len)
 		tmp[i++] = new[len++];
 	if (j < ft_strlen(value))
 		ft_strlcat(tmp, value + j, size + 1);
-	tmp[size] = '\0';
 	free(value);
 	return (tmp);
 }
@@ -78,14 +78,13 @@ char	*rm_var(char *value, int name_len)
 		return (ft_strdup(""));
 	new_value = malloc(size + 1 * sizeof(char));
 	if (!new_value)
-		return (NULL);
+		return (ft_strdup(""));
 	while (value[i] != '$' && value[i] != '\0')
 		i++;
 	ft_strlcpy(new_value, value, i + 1);
 	j = name_len + i;
 	if (j < ft_strlen(value))
 		ft_strlcat(new_value, value + j, size + 1);
-	free(value);
 	return (new_value);
 }
 
