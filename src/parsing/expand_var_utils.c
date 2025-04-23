@@ -8,12 +8,17 @@ char	*add_special_case(char *name, char *line)
 	int		j;
 
 	i = 0;
-	j = ft_strlen(name);
 	size = (ft_strlen(line) - 2) + ft_strlen(name);
-	tmp = malloc(size * sizeof(char));
+	tmp = malloc((size + 1) * sizeof(char));
 	while (line[i] != '$')
 		i++;
-	ft_strlcpy(tmp, name, i);
+	ft_strlcpy(tmp, line, i + 1);
+	j = 0;
+	while (name[j] != '\0')
+	{
+		tmp[j + i] = name[j];
+		j++;
+	}
 	while (line[i + 2] != '\0')
 	{
 		tmp[i + j] = line[i + 2];

@@ -16,6 +16,20 @@ void	prep_var_shell(char ***var)
 	(*var)[1] = NULL;
 }
 
+int	len_var(char *value)
+{
+	int i;
+
+	i = 0;
+	while (value[i] != '\0')
+	{
+		if (value[i] == '=')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 int	shell_var(t_token *lst_token, t_shell *shell)
 {
 	t_token	*tmp;
@@ -30,11 +44,11 @@ int	shell_var(t_token *lst_token, t_shell *shell)
 		{
 			if (good_varname(tmp->value, '='))
 				return (0);
-			if (add_var_to_env(shell->var_env, tmp->value, 1) == NULL)
+			if (found_in_tab(shell->var_env, tmp->value, len_var(tmp->value)))
 			{
 				if (shell->shell_env == NULL)
 					prep_var_shell(&shell->shell_env);
-				tab = add_var_to_env(shell->shell_env, tmp->value, 0);
+				tab = add_var_to_env(shell->shell_env, tmp->value);
 				shell->shell_env = tab;
 			}
 		}

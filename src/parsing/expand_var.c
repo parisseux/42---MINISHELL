@@ -116,11 +116,11 @@ void	which(char **value, t_shell *shell)
 				free(name);
 				if (!*value)
 					return ;
-				dup = *value;
-				i = 0;
 			}
 			else
 				dol_spec_cases(value, i + 1, dup, shell);
+			dup = *value;
+			i = 0;
 		}
 		if (dup[i] != '\0')
 			i++;

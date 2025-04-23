@@ -145,9 +145,12 @@ int		exit_command(t_token *lst_token, t_shell *shell);
 
 //exports
 void	print_export(t_shell *shell);
-char	**add_var_to_env(char **var_env, char *value, int shell);
+char	**add_var_to_env(char **var_env, char *value);
 int		good_varname(char *name, char unitl);
 int		export_command(t_token *lst_token, t_shell *shell);
+int		found_in_tab(char **var_env, char *value, int len);
+int		tab_len(char **tab);
+
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
