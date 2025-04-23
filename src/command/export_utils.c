@@ -19,3 +19,27 @@ void	export_message_error(char *value, t_shell *shell)
 		shell->exit = 1;
 	}
 }
+
+int	found_in_tab(char **var_env, char *value, int len)
+{
+	int	i;
+
+	i = 0;
+	while (var_env && var_env[i] != NULL)
+	{
+		if (!ft_varcmp(var_env[i], value, len))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+int	tab_len(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i] != NULL)
+		i++;
+	return (i);
+}

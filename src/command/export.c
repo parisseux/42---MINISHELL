@@ -14,68 +14,42 @@ void	print_export(t_shell *shell)
 	}
 }
 
-char	**new_tab(char **var_env, char *value, char **new_env, int add)
+void new_tab(char **var_env, char *value, char **new_env)
 {
-	int		j;
+	int	j;
 
 	j = 0;
-	if (add == 1)
+	while (var_env[j] != NULL)
 	{
-		while (var_env[j] != NULL)
-		{
-			if (var_env[j + 1] == NULL)
-			{
-				new_env[j] = ft_strdup(var_env[j]);
-				new_env[j + 1] = ft_strdup(value);
-			}
-			else
-				new_env[j] = ft_strdup(var_env[j]);
-			j++;
-		}		
+		new_env[j] = ft_strdup(var_env[j]);
+		j++;
 	}
-	else
-	{
-		while (var_env[j] != NULL)
-		{
-			new_env[j] = ft_strdup(var_env[j]);
-			j++;
-		}
-	}
-	return (new_env);
+	new_env[j] = ft_strdup(value);
 }
 
-char	**add_var_to_env(char **var_env, char *value, int shell)
+char	**add_var_to_env(char **var_env, char *value)
 {
 	int		i;
 	int		j;
-	int		check;
 	char	**tmp;
 
-	i = 0;
 	j = 0;
-	check = 0;
+	i = 0;
 	while (value[j] != '=')
 		j++;
-	while (var_env && var_env[i] != NULL)
+	tmp = var_env;
+	i = found_in_tab(tmp, value, j);
+	if (i >= 0)
 	{
-		if (!ft_varcmp(var_env[i], value, j) || ft_strlen(var_env[i]) == 0)
-		{
-			free(var_env[i]);
-			var_env[i] = ft_strdup(value);
-			check = 1;
-		}
-		i++;
+		free(var_env[i]);
+		var_env[i] = ft_strdup(value);
+		return (var_env);
 	}
-	if (check == 1)
+	else
 	{
-		tmp = ft_calloc(sizeof(char *), i + 1);
-		new_tab(var_env, value, tmp, 0);
-		return (tmp);
-	}
-	if (shell == 0)
-	{
-		tmp = ft_calloc(sizeof(char *), i + 2);
-		new_tab(var_env, value, tmp, 1);
+		tmp = ft_calloc(sizeof(char **), tab_len(tmp) + 2);
+		new_tab(var_env, value, tmp);
+		ft_free_char_tab(var_env);
 		return (tmp);
 	}		
 	return (NULL);
@@ -101,10 +75,26 @@ int	good_varname(char *name, char until)
 	return (0);
 }
 
+int	valid_export_type(int type)
+{
+	if (type == REDIR_IN || type == REDIR_OUT
+			|| type == HEREDOC || type == APPEND)
+			return (1);
+	return (0);
+}
+
+int bad_export(char	*value)
+{
+	if ((ft_strchr(value, '=') && good_varname(value, '='))
+			|| good_varname(value, '\0'))
+			return (1);
+	return (0);
+}
+
 int	export_command(t_token *lst_token, t_shell *shell)
 {
 	t_token	*tmp;
-	char	**tab;
+	// char	**tab;
 
 	tmp = lst_token->next;
 	if (tmp->type == END)
@@ -114,18 +104,12 @@ int	export_command(t_token *lst_token, t_shell *shell)
 	}
 	while (tmp->type != END)
 	{
-		if (tmp->type == REDIR_IN || tmp->type == REDIR_OUT
-			|| tmp->type == HEREDOC || tmp->type == APPEND)
+		if (valid_export_type(tmp->type))
 			tmp = tmp->next;
 		if (tmp->type == DEF || (ft_strchr(tmp->value, '=')
 				&& !good_varname(tmp->value, '=')))
-		{
-			tab = add_var_to_env(shell->var_env, tmp->value, 0);
-			ft_free_char_tab(shell->var_env);
-			shell->var_env = tab;
-		}
-		else if ((ft_strchr(tmp->value, '=') && good_varname(tmp->value, '='))
-			|| good_varname(tmp->value, '\0'))
+			shell->var_env = add_var_to_env(shell->var_env, tmp->value);
+		else if (bad_export(tmp->value))
 			export_message_error(tmp->value, shell);
 		tmp = tmp->next;
 	}
