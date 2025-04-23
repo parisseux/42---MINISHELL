@@ -84,15 +84,21 @@ int	numeric_arg(t_token *lst_token, t_shell *shell)
 	return (0);
 }
 
+int	valid_exit_type(int type)
+{
+	if (type == WORD || type == SQUOTE || type == DQUOTE
+		|| type == BIN || type == DEF)
+		return (1);
+	return (0);
+}
+
 int	exit_command(t_token *exit, t_shell *shell)
 {
 	if (isatty(STDIN_FILENO))
 		write(STDERR_FILENO, "exit\n", 5);
 	if (exit->next->type == END || exit->type == PIPE)
 		clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
-	else if (exit->next->next->type == WORD || exit->next->next->type == SQUOTE
-		|| exit->next->next->type == DQUOTE || exit->next->next->type == BIN
-		|| exit->next->next->type == DEF)
+	else if (valid_exit_type(exit->next->next->type))
 	{
 		if (exit->next->next->space == 1 && arg_ok(exit->next->value))
 		{
