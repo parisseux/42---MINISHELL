@@ -40,11 +40,12 @@ char	*rm_quotes(char *input)
 	int		j;
 
 	i = 0;
-	size = 0;
 	j = 0;
 	if (!ft_strchr(input, '\'') && !ft_strchr(input, '"'))
 		return (input);
-	cleaned = ft_strdup("");
+	cleaned = malloc((ft_strlen(input) + 1) * sizeof(char));
+	if (!cleaned)
+		return (NULL);
 	while (input[i] != '\0')
 	{
 		if (input[i] == '\'' || input[i] == '"')
@@ -53,14 +54,13 @@ char	*rm_quotes(char *input)
 			if (size == -1)
 			{
 				free(cleaned);
+				free(input);
 				return (NULL);
 			}
 			i++;
 			while (size > 0)
 			{
-				cleaned[j] = input[i];
-				j++;
-				i++;
+				cleaned[j++] = input[i++];
 				size--;
 			}
 			i++;
@@ -69,6 +69,7 @@ char	*rm_quotes(char *input)
 			cleaned[j++] = input[i++];
 	}
 	cleaned[j] = '\0';
+	free(input);
 	return (cleaned);
 }
 
@@ -121,6 +122,7 @@ t_token	*token_var(char **input)
 		new_token = create_token(new, DEF);
 	else
 		new_token = create_token(new, WORD);
+	free(new);
 	new = NULL;
 	if (!new_token)
 		return (NULL);

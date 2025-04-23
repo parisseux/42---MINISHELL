@@ -44,6 +44,7 @@ void	dol_spec_cases(char **value, int index,
 		tmp = add_special_case(name, cpy);
 		*value = tmp;
 		free(cpy);
+		free(name);
 	}
 }
 
@@ -54,6 +55,8 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 	char	*tmp2;
 
 	i = 0;
+	if (!*value)
+		return ;
 	tmp = ft_strdup(*value);
 	if (!tmp)
 		return ;
@@ -61,10 +64,9 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 	{
 		if (!ft_varcmp(shell->var_env[i], name, len))
 		{
-			free(value);
 			tmp2 = add(shell->var_env[i], tmp, len + 1);
-			*value = ft_strdup(tmp2);
-			free(tmp);
+			free(*value);
+			*value = tmp2;
 			return ;
 		}
 		i++;
@@ -76,10 +78,9 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 		{
 			if (!ft_varcmp(shell->shell_env[i], name, len))
 			{
-				free(*value);
 				tmp2 = add(shell->shell_env[i], tmp, len + 1);
+				free(*value);
 				*value = tmp2;
-				free(tmp);
 				return ;
 			}
 			i++;
@@ -87,8 +88,8 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 	}
 	else
 	{
-		free(*value);
 		tmp2 = rm_var(tmp, len + 1);
+		free(*value);
 		*value = tmp2;
 		free(tmp);
 		return ;
@@ -113,13 +114,16 @@ void	which(char **value, t_shell *shell)
 			{
 				find_var(shell, name, value, ft_strlen(name));
 				free(name);
+				if (!*value)
+					return ;
 				dup = *value;
 				i = 0;
 			}
 			else
 				dol_spec_cases(value, i + 1, dup, shell);
 		}
-		i++;
+		if (dup[i] != '\0')
+			i++;
 	}
 }
 
@@ -128,6 +132,8 @@ int	isvalid(int type, char *str)
 	char	*after;
 
 	after = NULL;
+	if (str == NULL)
+		return (0);
 	if (type != WORD && type != DQUOTE && type != DEF)
 		return (0);
 	if (!ft_strchr(str, '$'))

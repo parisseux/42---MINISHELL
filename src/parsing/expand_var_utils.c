@@ -12,11 +12,8 @@ char	*add_special_case(char *name, char *line)
 	size = (ft_strlen(line) - 2) + ft_strlen(name);
 	tmp = malloc(size * sizeof(char));
 	while (line[i] != '$')
-	{
-		tmp[i] = line[i];
 		i++;
-	}
-	ft_strcat(tmp, name);
+	ft_strlcpy(tmp, name, i);
 	while (line[i + 2] != '\0')
 	{
 		tmp[i + j] = line[i + 2];
@@ -55,6 +52,7 @@ char	*add(char *new, char *value, int len)
 	tmp = malloc(size + 1 * sizeof(char));
 	if (!tmp)
 		return (NULL);
+	ft_memset(tmp, 0, size + 1);
 	while (value[i] != '$' && value[i] != '\0')
 		i++;
 	ft_strlcpy(tmp, value, i + 1);
@@ -63,7 +61,7 @@ char	*add(char *new, char *value, int len)
 		tmp[i++] = new[len++];
 	if (j < ft_strlen(value))
 		ft_strlcat(tmp, value + j, size + 1);
-	tmp[size + 1] = '\0';
+	free(value);
 	return (tmp);
 }
 
@@ -80,7 +78,7 @@ char	*rm_var(char *value, int name_len)
 		return (ft_strdup(""));
 	new_value = malloc(size + 1 * sizeof(char));
 	if (!new_value)
-		return (NULL);
+		return (ft_strdup(""));
 	while (value[i] != '$' && value[i] != '\0')
 		i++;
 	ft_strlcpy(new_value, value, i + 1);
