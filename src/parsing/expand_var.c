@@ -127,24 +127,6 @@ void	which(char **value, t_shell *shell)
 	}
 }
 
-int	isvalid(int type, char *str)
-{
-	char	*after;
-
-	after = NULL;
-	if (str == NULL)
-		return (0);
-	if (type != WORD && type != DQUOTE && type != DEF)
-		return (0);
-	if (!ft_strchr(str, '$'))
-		return (0);
-	else
-		after = ft_strchr(str, '$');
-	if (after[1] == ' ' || after[1] == '\0')
-		return (0);
-	return (1);
-}
-
 void	look_for_dolls(t_token *lst_token, t_shell *shell)
 {
 	int		type;

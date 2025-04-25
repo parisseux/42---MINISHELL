@@ -26,7 +26,7 @@ int	is_valid_n_flag(char *line)
 void	write_echo(t_token *lst)
 {
 	if (!lst->value)
-		return;
+		return ;
 	write(STDOUT_FILENO, lst->value, ft_strlen(lst->value));
 	if (lst->next->space == 1 && lst->next->type != END
 		&& lst->next->type != PIPE)

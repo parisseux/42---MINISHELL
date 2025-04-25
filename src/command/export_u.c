@@ -36,10 +36,26 @@ int	found_in_tab(char **var_env, char *value, int len)
 
 int	tab_len(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i] != NULL)
 		i++;
 	return (i);
+}
+
+int	invalid_export_type(int type)
+{
+	if (type == REDIR_IN || type == REDIR_OUT
+		|| type == HEREDOC || type == APPEND)
+		return (1);
+	return (0);
+}
+
+int	bad_export(char	*value)
+{
+	if ((ft_strchr(value, '=') && good_varname(value, '='))
+		|| good_varname(value, '\0'))
+		return (1);
+	return (0);
 }

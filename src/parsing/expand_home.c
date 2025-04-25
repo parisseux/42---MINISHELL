@@ -1,22 +1,22 @@
 #include "../inc/minishell.h"
 
-int		space(t_token *lst_token)
+int	space(t_token *lst_token)
 {
 	int	type;
 
 	type = lst_token->next->type;
-	if (type == END || type == PIPE || type == APPEND || type == REDIR_OUT || type == HEREDOC || type == BIN || type == REDIR_IN)
+	if (type == END || type == PIPE || type == APPEND || type == REDIR_OUT
+		|| type == HEREDOC || type == BIN || type == REDIR_IN)
 		return (1);
 	if (lst_token->space == 1)
 		return (0);
-
 	return (0);
 }
 
 char	*add_home(char *home, char *str)
 {
 	char	*new;
-	int 	size;
+	int		size;
 	int		j;
 	int		i;
 
@@ -42,49 +42,35 @@ char	*add_home(char *home, char *str)
 	return (new);
 }
 
-int	ishome(char *str, int i)
+void	home_not_set(t_shell *shell)
 {
-	if (str[i - 1] != ' ' && i - 1 >= 0)
-		return (0);
-	if (str[i + 1] != ' ' && str[i + 1] != '/' && str[i + 1] != '\0')
-		return (0);
-	return (1);
+	write(STDOUT_FILENO, "cd: HOME not set\n", 17);
+	shell->exit = 1;
 }
 
-int	before(t_token *lst_token)
-{
-	if (lst_token->next->space == 0 && lst_token->type == SQUOTE)
-		return (0);
-	return (1);
-}
-
-void	expand_home(t_shell *shell, t_token *lst_token)
+void	expand_home(t_shell *shell, t_token *lst)
 {
 	int		i;
 	char	*home;
 	char	*tmp;
 
 	i = 0;
-	while (lst_token->type != END)
+	while (lst->type != END)
 	{
-		if (lst_token->next->type == WORD && before(lst_token) && space(lst_token->next))
+		if (lst->next->type == WORD && before(lst) && space(lst->next))
 		{
-			tmp = ft_strdup(lst_token->next->value);
+			tmp = ft_strdup(lst->next->value);
 			i = 0;
-			while (lst_token->next->value[i] != '\0')
+			while (lst->next->value[i] != '\0')
 			{
-				if (lst_token->next->value[i] == '~' && ishome(lst_token->next->value, i))
+				if (lst->next->value[i] == '~' && ishome(lst->next->value, i))
 				{
 					home = get_env_value(shell->var_env, "HOME");
 					if (!home)
-					{
-						write(STDOUT_FILENO, "cd: HOME not set\n", 17);
-						shell->exit = 1;
-						return ;
-					}
-					free(lst_token->next->value);
-					lst_token->next->value = add_home(home, tmp);
-					tmp = ft_strdup(lst_token->next->value);
+						return (home_not_set(shell));
+					free(lst->next->value);
+					lst->next->value = add_home(home, tmp);
+					tmp = ft_strdup(lst->next->value);
 					i = 0;
 				}
 				else
@@ -92,6 +78,6 @@ void	expand_home(t_shell *shell, t_token *lst_token)
 			}
 			free(tmp);
 		}
-		lst_token = lst_token->next;
+		lst = lst->next;
 	}
 }

@@ -28,7 +28,7 @@ void	non_builtin_cmd(t_token *lst_token, t_shell *shell)
 	{
 		if (non_builtin_child(lst_token, shell))
 			return ;
-	}	
+	}
 	else
 	{
 		mute_parent_signals(1);

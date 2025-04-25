@@ -18,7 +18,7 @@ void	prep_var_shell(char ***var)
 
 int	len_var(char *value)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (value[i] != '\0')

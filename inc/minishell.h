@@ -53,7 +53,6 @@ typedef struct s_pipe
 	t_token	**cmds;
 }	t_pipe;
 
-void	exit_message(t_shell *shell, t_token *exit);
 // pipe
 void	close_all_pipe(t_pipe *p);
 void	wait_all_pids(t_pipe *p, t_shell *shell);
@@ -99,20 +98,6 @@ void	builtin_parent_process(t_token *lst_token, t_shell *shell);
 void	restore_and_close_fd(int saved_stdout, int saved_stdin);
 void	exec_one_cmd(t_token *lst_token, t_shell *shell);
 
-//command
-int		cd_command(t_token *lst_token, t_shell *shell);
-void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
-int		env_command(t_shell *shell, t_token *lst_token);
-int		pwd_command(void);
-int		extract_exit_status(int status, t_shell *shell);
-
-//echo_command
-void	echo_command(t_token *lst_token);
-void	echo_single_quote(char **line);
-void	echo_double_quote(char **line);
-void	echo_no_quote(char **line);
-int		start_echo(t_token *lst_token);
-
 //command/utils
 int		print_or_file(t_token *lst_token);
 
@@ -140,24 +125,54 @@ t_token	*extract_in(char **input);
 int		check_syntax_error(t_token *lst_token);
 t_token *parse_pipe(char **input);
 
+/////////////////////////////////////// COMMAND ///////////////////////////////////////
+
+//echo
+void	echo_command(t_token *lst_token);
+void	echo_single_quote(char **line);
+void	echo_double_quote(char **line);
+void	echo_no_quote(char **line);
+int		start_echo(t_token *lst_token);
+
 //exit
 int		exit_command(t_token *lst_token, t_shell *shell);
+void	exit_message(t_shell *shell, t_token *exit);
+int		extract_exit_status(int status, t_shell *shell);
+int		valid_exit_type(int type);
 
-//exports
+//export
 void	print_export(t_shell *shell);
 char	**add_var_to_env(char **var_env, char *value);
 int		good_varname(char *name, char unitl);
 int		export_command(t_token *lst_token, t_shell *shell);
-int		found_in_tab(char **var_env, char *value, int len);
-int		tab_len(char **tab);
 
+//export_utils
+int		found_in_tab(char **var_env, char *value, int len);
+int		bad_export(char	*value);
+int		invalid_export_type(int type);
+int		tab_len(char **tab);
+void	export_message_error(char *value, t_shell *shell);
+
+//unset
+int		unset_command(t_token *lst, t_shell *shell);
+
+//cd
+int		cd_command(t_token *lst_token, t_shell *shell);
+
+//env
+int		env_command(t_shell *shell, t_token *lst_token);
+
+//pwd
+int		pwd_command(void);
+
+/////////////////////////////////////// PARSING ///////////////////////////////////////
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
 void	find_var(t_shell *shell, char *name, char **value, int len);
 char	*dolar_sign(char *line, int index);
+void	which(char **value, t_shell *shell);
 void	dol_spec_cases(char **value, int index, char *line, t_shell *shell);
-void	export_message_error(char *value, t_shell *shell);
 
 //expand_var_utils
 char	*add_special_case(char *name, char *line);
@@ -166,19 +181,18 @@ char	*add(char *new_value, char *value, int name_len);
 int		alphanum_len(char *value);
 int		malloc_size(char *new_value, char *value, int name_len);
 
-//unset
-int		unset_command(t_token *lst, t_shell *shell);
-
 //shell_var
 int		shell_var(t_token *lst_token, t_shell *shell);
 void	prep_var_shell(char ***var);
+int		len_var(char *value);
+int		shell_var(t_token *lst_token, t_shell *shell);
 
 // detect_var
 t_token	*token_var(char **input);
 int		detect_var(char *input);
 int		in_quote(char pipe_or_else, char *input);
-
-int		not_cmd(t_token *lst_token);
+int		closed_quotes(char *copy, char quote, int i);
+char	*rm_quotes(char *input);
 
 //bin_path
 void	execve_bin_token(t_token *lst_token, t_shell *shell);
@@ -186,12 +200,22 @@ t_token	*bin_path(char **input);
 int		is_bin_path(t_token *lst_token);
 void	cmd_not_found(t_token *lst_token);
 
-int		heredoc_parent(int *pipefd, int *status, int pid);
 //expand_home
+int		space(t_token *lst_token);
+char	*add_home(char *home, char *str);
+void	home_not_set(t_shell *shell);
 void	expand_home(t_shell *shell, t_token *lst_token);
 
+// expand_home_u
+int		ishome(char *str, int i);
+int		before(t_token *lst_token);
+int		isvalid(int type, char *str);
+
+// 
 void	change_fd(int fd_out, int fd_in);
 char	*look_for_cmd(t_token *temp, t_shell *shell);
-
 int		non_builtin_child(t_token *lst_token, t_shell *shell);
+int		heredoc_parent(int *pipefd, int *status, int pid);
+int		not_cmd(t_token *lst_token);
+void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 #endif
