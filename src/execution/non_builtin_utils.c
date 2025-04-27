@@ -14,7 +14,7 @@ char	*look_for_cmd(t_token *temp, t_shell *shell)
 		{
 			cmd = find_cmd_path(temp->value, shell->var_env);
 			break ;
-		}		
+		}
 	}
 	return (cmd);
 }

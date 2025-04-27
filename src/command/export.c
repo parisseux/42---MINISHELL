@@ -14,7 +14,7 @@ void	print_export(t_shell *shell)
 	}
 }
 
-void new_tab(char **var_env, char *value, char **new_env)
+void	new_tab(char **var_env, char *value, char **new_env)
 {
 	int	j;
 
@@ -51,7 +51,7 @@ char	**add_var_to_env(char **var_env, char *value)
 		new_tab(var_env, value, tmp);
 		ft_free_char_tab(var_env);
 		return (tmp);
-	}		
+	}
 	return (NULL);
 }
 
@@ -75,26 +75,9 @@ int	good_varname(char *name, char until)
 	return (0);
 }
 
-int	valid_export_type(int type)
-{
-	if (type == REDIR_IN || type == REDIR_OUT
-			|| type == HEREDOC || type == APPEND)
-			return (1);
-	return (0);
-}
-
-int bad_export(char	*value)
-{
-	if ((ft_strchr(value, '=') && good_varname(value, '='))
-			|| good_varname(value, '\0'))
-			return (1);
-	return (0);
-}
-
 int	export_command(t_token *lst_token, t_shell *shell)
 {
 	t_token	*tmp;
-	// char	**tab;
 
 	tmp = lst_token->next;
 	if (tmp->type == END)
@@ -104,7 +87,7 @@ int	export_command(t_token *lst_token, t_shell *shell)
 	}
 	while (tmp->type != END)
 	{
-		if (valid_export_type(tmp->type))
+		if (invalid_export_type(tmp->type))
 			tmp = tmp->next;
 		if (tmp->type == DEF || (ft_strchr(tmp->value, '=')
 				&& !good_varname(tmp->value, '=')))

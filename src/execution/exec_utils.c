@@ -50,7 +50,7 @@ int	is_cmd_before_builtin(t_token *builtin, t_token *lst_token)
 			return (1);
 		else
 			temp = temp->next;
-	}	
+	}
 	return (0);
 }
 

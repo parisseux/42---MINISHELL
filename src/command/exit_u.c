@@ -19,3 +19,11 @@ void	exit_message(t_shell *shell, t_token *exit)
 	write(STDERR_FILENO, "minishell: exit: numeric argument required\n", 43);
 	clean_exit(2, exit, shell->var_env, shell->shell_env);
 }
+
+int	valid_exit_type(int type)
+{
+	if (type == WORD || type == SQUOTE || type == DQUOTE
+		|| type == BIN || type == DEF)
+		return (1);
+	return (0);
+}

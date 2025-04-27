@@ -66,7 +66,6 @@ char	*add(char *new, char *value, int len)
 		tmp[i++] = new[len++];
 	if (j < ft_strlen(value))
 		ft_strlcat(tmp, value + j, size + 1);
-	free(value);
 	return (tmp);
 }
 

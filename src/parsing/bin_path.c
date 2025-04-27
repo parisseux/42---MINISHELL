@@ -32,6 +32,14 @@ void	cmd_not_found(t_token *lst_token)
 	exit(127);
 }
 
+int	redir_type(int type)
+{
+	if (type == REDIR_IN || type == REDIR_OUT
+		|| type == HEREDOC || type == APPEND)
+		return (1);
+	return (0);
+}
+
 void	execve_bin_token(t_token *lst_token, t_shell *shell)
 {
 	char	*cmd;
@@ -39,8 +47,7 @@ void	execve_bin_token(t_token *lst_token, t_shell *shell)
 
 	while (lst_token->type != PIPE && lst_token->type != END)
 	{
-		if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
-			|| lst_token->type == HEREDOC || lst_token->type == APPEND)
+		if (redir_type(lst_token->type))
 			lst_token = lst_token->next->next;
 		if (lst_token->next->space == 1 || lst_token->next->type == PIPE
 			|| lst_token->next->type == END)

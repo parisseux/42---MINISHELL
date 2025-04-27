@@ -84,14 +84,6 @@ int	numeric_arg(t_token *lst_token, t_shell *shell)
 	return (0);
 }
 
-int	valid_exit_type(int type)
-{
-	if (type == WORD || type == SQUOTE || type == DQUOTE
-		|| type == BIN || type == DEF)
-		return (1);
-	return (0);
-}
-
 int	exit_command(t_token *exit, t_shell *shell)
 {
 	if (isatty(STDIN_FILENO))
