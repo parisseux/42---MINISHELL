@@ -55,45 +55,26 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 	char	*tmp2;
 
 	i = 0;
-	if (!*value)
-		return ;
-	tmp = ft_strdup(*value);
-	if (!tmp)
-		return ;
-	while (shell->var_env[i])
+	tmp = *value;
+	if (found_in_tab(shell->var_env, name, len) > 0)
 	{
-		if (!ft_varcmp(shell->var_env[i], name, len))
-		{
-			tmp2 = add(shell->var_env[i], tmp, len + 1);
-			free(*value);
-			*value = tmp2;
-			return ;
-		}
-		i++;
-	}
-	i = 0;
-	if (shell->shell_env != NULL)
-	{
-		while (shell->shell_env[i])
-		{
-			if (!ft_varcmp(shell->shell_env[i], name, len))
-			{
-				tmp2 = add(shell->shell_env[i], tmp, len + 1);
-				free(*value);
-				*value = tmp2;
-				return ;
-			}
-			i++;
-		}
-	}
-	else
-	{
-		tmp2 = rm_var(tmp, len + 1);
+		i = found_in_tab(shell->var_env, name, len);
+		tmp2 = add(shell->var_env[i], tmp, len + 1);
 		free(*value);
 		*value = tmp2;
-		free(tmp);
 		return ;
 	}
+	if (found_in_tab(shell->shell_env, name, len) > 0)
+	{
+		i = found_in_tab(shell->shell_env, name, len);
+		tmp2 = add(shell->shell_env[i], tmp, len + 1);
+		free(*value);
+		*value = tmp2;
+		return ;
+	}
+	tmp2 = rm_var(tmp, len + 1);
+	free(*value);
+	*value = tmp2;
 }
 
 void	which(char **value, t_shell *shell)
@@ -102,9 +83,7 @@ void	which(char **value, t_shell *shell)
 	char	*dup;
 	int		i;
 
-	i = 0;
-	name = NULL;
-	dup = *value;
+	init(&i, &name, &dup, *value);
 	while (dup[i] != '\0')
 	{
 		if (dup[i] == '$' && dup[i + 1] != ' ')
@@ -114,13 +93,12 @@ void	which(char **value, t_shell *shell)
 			{
 				find_var(shell, name, value, ft_strlen(name));
 				free(name);
-				if (!*value)
+				if (!*value || !ft_strncmp(*value, dup, ft_strlen(*value)))
 					return ;
 			}
 			else
 				dol_spec_cases(value, i + 1, dup, shell);
-			dup = *value;
-			i = 0;
+			init(&i, &name, &dup, *value);
 		}
 		if (dup[i] != '\0')
 			i++;

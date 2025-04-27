@@ -29,7 +29,14 @@ int	isvalid(int type, char *str)
 		return (0);
 	else
 		after = ft_strchr(str, '$');
-	if (after[1] == ' ' || after[1] == '\0')
+	if (after[1] == ' ' || after[1] == '\0' || after[1] == '/')
 		return (0);
 	return (1);
+}
+
+void	init(int *i, char **name, char **dup, char *value)
+{
+	*i = 0;
+	*name = NULL;
+	*dup = value;
 }

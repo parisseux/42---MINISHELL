@@ -210,6 +210,7 @@ void	expand_home(t_shell *shell, t_token *lst_token);
 int		ishome(char *str, int i);
 int		before(t_token *lst_token);
 int		isvalid(int type, char *str);
+void	init(int *i, char **name, char **dup, char *value);
 
 // 
 void	change_fd(int fd_out, int fd_in);
