@@ -91,7 +91,7 @@ char	**find_cmd_args(t_token *lst_token);
 int		is_redir(t_token *lst_token);
 int		is_def(t_token *lst_token);
 int		handle_redir(t_token *lst_token, t_shell *shell);
-void	heredoc_child(int *pipefd, t_token *lst_token);
+void	heredoc_child(int pipefd, t_token *lst_token, t_shell *shell);
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell);
 void	builtin_child_process(t_token *lst_token, t_shell *shell);
 void	builtin_parent_process(t_token *lst_token, t_shell *shell);
@@ -222,7 +222,7 @@ void	init(int *i, char **name, char **dup, char *value);
 void	change_fd(int fd_out, int fd_in);
 char	*look_for_cmd(t_token *temp, t_shell *shell);
 int		non_builtin_child(t_token *lst_token, t_shell *shell);
-int		heredoc_parent(int *pipefd, int *status, int pid);
+int		heredoc_parent(int *pipefd, int *status, int pid, t_shell *shell);
 int		not_cmd(t_token *lst_token);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 #endif

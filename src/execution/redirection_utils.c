@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-int	heredoc_parent(int *pipefd, int *status, int pid)
+int	heredoc_parent(int *pipefd, int *status, int pid, t_shell *shell)
 {
 	struct sigaction	old_int;
 	struct sigaction	old_quit;
@@ -15,15 +15,23 @@ int	heredoc_parent(int *pipefd, int *status, int pid)
 	waitpid(pid, status, 0);
 	sigaction(SIGINT, &old_int, NULL);
 	sigaction(SIGQUIT, &old_quit, NULL);
-	if (WEXITSTATUS(*status) == 130)
+	if (WIFSIGNALED(*status))
 	{
+		shell->exit = 128 + WTERMSIG(*status);
 		close(pipefd[0]);
 		return (-1);
 	}
+	if (WIFEXITED(*status) && WEXITSTATUS(*status) == 130)
+	{
+		shell->exit = 130;
+		close(pipefd[0]);
+		return (-1);
+	}
+	shell->exit = WEXITSTATUS(*status);
 	return (0);
 }
 
-void	heredoc_child(int *pipefd, t_token *lst_token)
+void	heredoc_child(int pipefd, t_token *lst_token, t_shell *shell)
 {
 	char	*stop;
 	char	*line;
@@ -35,21 +43,21 @@ void	heredoc_child(int *pipefd, t_token *lst_token)
 		line = readline("> ");
 		if (!line)
 			break ;
+		if (lst_token->type == WORD && isvalid(0, line) == 1)
+			which(&line, shell);
 		if (ft_strncmp(line, stop, ft_strlen(stop) + 1) == 0)
 		{
 			free(line);
 			break ;
 		}
-		ft_putstr_fd(line, pipefd[1]);
-		ft_putchar_fd('\n', pipefd[1]);
+		ft_putstr_fd(line, pipefd);
+		ft_putchar_fd('\n', pipefd);
 		free(line);
 	}
 	free(stop);
-	close(pipefd[0]);
-	close(pipefd[1]);
-	free_token_list(lst_token);
+	close(pipefd);
 	cleanup_readline();
-	exit(0);
+	_exit(0);
 }
 
 void	change_fd(int fd_out, int fd_in)

@@ -8,23 +8,15 @@ int	look_for_fd_heredoc(t_token *token, int fd, t_shell *shell)
 
 	status = 0;
 	if (pipe(pipefd) == -1)
-	{
-		perror("pipe");
-		shell->exit = 1;
-		return (-1);
-	}
+		return (perror("pipe"), shell->exit = 1, -1);
 	pid = fork();
 	if (pid == 0)
-		heredoc_child(pipefd, token);
-	else
-	{
-		if (heredoc_parent(pipefd, &status, pid) == -1)
-			return (-2);
-	}
+		heredoc_child(pipefd[1], token, shell);
+	if (heredoc_parent(pipefd, &status, pid, shell) == -1)
+		return (-2);
 	if (fd != -1)
 		close(fd);
-	fd = pipefd[0];
-	return (fd);
+	return (pipefd[0]);
 }
 
 int	look_for_fd_append(t_token *token, int fd, t_shell *shell)
