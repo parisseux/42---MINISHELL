@@ -228,4 +228,5 @@ int		non_builtin_child(t_token *lst_token, t_shell *shell);
 int		heredoc_parent(int *pipefd, int *status, int pid);
 int		not_cmd(t_token *lst_token);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
+char	*find_pid();
 #endif

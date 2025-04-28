@@ -9,3 +9,21 @@ void	parent_sigint(int signo)
 	rl_on_new_line();
 	rl_redisplay();
 }
+
+char	*find_pid()
+{
+	int		 fd;
+	char	*name;
+	char	**tab;
+
+	fd = open("/proc/self/stat", O_RDONLY);
+	if (fd <= 0)
+		return (NULL);
+	name = get_next_line(fd);
+	if (!name)
+		return (NULL);
+	tab = ft_split(name, ' ');
+	if (!tab)
+		return (NULL);
+	return (ft_strdup(tab[4]));
+}
