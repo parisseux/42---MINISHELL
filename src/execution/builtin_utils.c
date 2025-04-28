@@ -48,7 +48,7 @@ void	builtin_child_action(t_token *lst_token, t_shell *shell)
 			stop = pwd_command();
 		else if ((temp->type == WORD || temp->type == SQUOTE
 				|| temp->type == DQUOTE)
-			&& !ft_strncmp(lst_token->value, "echo", 5))
+			&& !ft_strncmp(temp->value, "echo", 5))
 			stop = start_echo(lst_token);
 		temp = temp->next;
 	}

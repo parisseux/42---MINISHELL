@@ -33,9 +33,7 @@ int	check_synthax_pipe(t_token *lst_token)
 	temp = lst_token;
 	while (temp->type != END)
 	{
-		if (temp->type == PIPE && (temp->next->type == REDIR_IN
-				|| temp->next->type == REDIR_OUT
-				|| temp->next->type == HEREDOC || temp->next->type == APPEND))
+		if (temp->type == PIPE && (temp->next->type == PIPE))
 		{
 			ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
 			return (1);

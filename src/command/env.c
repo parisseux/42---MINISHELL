@@ -21,16 +21,20 @@ int	print_env(t_shell *shell)
 
 int	env_command(t_shell *shell, t_token *lst)
 {
-	if (lst->next->type == END || lst->next->type == PIPE
-		|| lst->next->type == APPEND || lst->next->type == REDIR_IN
-		|| lst->next->type == REDIR_OUT || lst->next->type == HEREDOC)
-		return (print_env(shell));
-	else
+	while (lst->type != PIPE && lst->type != END)
 	{
-		ft_putstr_fd("env ", 2);
-		ft_putstr_fd(lst->next->value, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		return (127);
+		if (lst->next->type == END || lst->next->type == PIPE)
+			return (print_env(shell));
+		else if (lst->type == APPEND || lst->type == REDIR_IN
+		|| lst->type == REDIR_OUT || lst->type == HEREDOC)
+			lst = lst->next->next;
+		else
+		{
+			ft_putstr_fd("env ", 2);
+			ft_putstr_fd(lst->next->value, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			return (127);
+		}
 	}
 	return (1);
 }
