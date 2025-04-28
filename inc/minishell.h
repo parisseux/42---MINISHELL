@@ -187,6 +187,9 @@ void	prep_var_shell(char ***var);
 int		len_var(char *value);
 int		shell_var(t_token *lst_token, t_shell *shell);
 
+//valid_shell_var
+int 	in_shell_env(t_token *lst);
+
 //detect_var
 t_token	*token_var(char **input);
 int		detect_var(char *input);

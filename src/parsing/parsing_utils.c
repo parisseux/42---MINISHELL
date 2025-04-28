@@ -11,7 +11,9 @@ int	skip_space(char **input)
 		(*input)++;
 		i++;
 	}
-	return (i);
+	if (i > 0)
+		return (1);
+	return (0);
 }
 
 t_token	*parse_pipe(char **input)
