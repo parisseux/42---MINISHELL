@@ -45,8 +45,7 @@ int	is_cmd_before_builtin(t_token *builtin, t_token *lst_token)
 				temp = temp->next;
 		}
 		else if (temp->type == WORD || temp->type == SQUOTE
-			|| temp->type == DQUOTE
-			|| temp->type == DEF || temp->type == BIN)
+			|| temp->type == DQUOTE || temp->type == BIN)
 			return (1);
 		else
 			temp = temp->next;

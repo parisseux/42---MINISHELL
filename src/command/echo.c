@@ -4,8 +4,15 @@ int	start_echo(t_token *lst_token)
 {
 	if (lst_token->next->type == END)
 		write(STDOUT_FILENO, "\n", 1);
-	else
-		echo_command(lst_token->next);
+	while (1)
+	{
+		if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
+			|| lst_token->type == APPEND || lst_token->type == HEREDOC)
+			lst_token = lst_token->next->next;
+		else
+			break ;
+	}
+	echo_command(lst_token->next);
 	return (0);
 }
 
