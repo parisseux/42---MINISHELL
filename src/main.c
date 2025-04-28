@@ -16,7 +16,7 @@ int	start_minishell(t_shell *shell, char *input)
 		return (0);
 	}
 	look_for_dolls(lst_token, shell);
-	print_token_list(lst_token);
+	// print_token_list(lst_token);
 	if (ft_strncmp(lst_token->value, "export", 7))
 		shell->exit = shell_var(lst_token, shell);
 	expand_home(shell, lst_token);
