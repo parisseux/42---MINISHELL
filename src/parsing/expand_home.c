@@ -4,6 +4,8 @@ int	space(t_token *lst_token)
 {
 	int	type;
 
+	if (lst_token->type == END)
+		return (0);
 	type = lst_token->next->type;
 	if (type == END || type == PIPE || type == APPEND || type == REDIR_OUT
 		|| type == HEREDOC || type == BIN || type == REDIR_IN)
@@ -22,7 +24,7 @@ char	*add_home(char *home, char *str)
 
 	i = 0;
 	size = ft_strlen(home) + ft_strlen(str);
-	new = malloc(sizeof(char) * size);
+	new = malloc(sizeof(char) * size + 1);
 	if (!new)
 		return (NULL);
 	while (str[i] != '~')
@@ -48,16 +50,14 @@ void	home_not_set(t_shell *shell)
 	shell->exit = 1;
 }
 
-void	expand_home(t_shell *shell, t_token *lst)
+void	replace_home(t_token *lst, char	*home)
 {
-	int		i;
-	char	*home;
 	char	*tmp;
+	int		i;
 
-	i = 0;
 	while (lst->type != END)
 	{
-		if (lst->next->type == WORD && before(lst) && space(lst->next))
+		if (before(lst) && space(lst->next))
 		{
 			tmp = ft_strdup(lst->next->value);
 			i = 0;
@@ -65,9 +65,6 @@ void	expand_home(t_shell *shell, t_token *lst)
 			{
 				if (lst->next->value[i] == '~' && ishome(lst->next->value, i))
 				{
-					home = get_env_value(shell->var_env, "HOME");
-					if (!home)
-						return (home_not_set(shell));
 					free(lst->next->value);
 					lst->next->value = add_home(home, tmp);
 					tmp = ft_strdup(lst->next->value);
@@ -80,4 +77,15 @@ void	expand_home(t_shell *shell, t_token *lst)
 		}
 		lst = lst->next;
 	}
+}
+
+void	expand_home(t_shell *shell, t_token *lst)
+{
+	char	*home;
+
+	home = get_env_value(shell->var_env, "HOME");
+	if (!home)
+		return (home_not_set(shell));
+	else
+		replace_home(lst, home);
 }

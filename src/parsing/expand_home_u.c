@@ -11,7 +11,8 @@ int	ishome(char *str, int i)
 
 int	before(t_token *lst_token)
 {
-	if (lst_token->next->space == 0 && lst_token->type == SQUOTE)
+	if (lst_token->next->space == 0 && lst_token->type == SQUOTE
+		&& lst_token->next->type == WORD)
 		return (0);
 	return (1);
 }
