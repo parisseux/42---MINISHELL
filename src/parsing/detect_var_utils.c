@@ -25,3 +25,45 @@ int	not_cmd(t_token *lst_token)
 		return (1);
 	return (0);
 }
+
+void	quote_msg(char c)
+{
+	write (STDERR_FILENO, "Unclosed ", 9);
+	if (c == '\'')
+		write (STDERR_FILENO, "single", 6);
+	else
+		write (STDERR_FILENO, "double", 6);
+	write (STDERR_FILENO, " quotes\n", 8);
+}
+
+int	closed_quotes(char *copy, char quote, int i)
+{
+	int	len;
+
+	len = 0;
+	i++;
+	while (copy[i] != '\0')
+	{
+		if (copy[i] == quote)
+			return (len);
+		i++;
+		len++;
+	}
+	return (-1);
+}
+
+int	detect_var(char *input)
+{
+	int	check;
+
+	check = 0;
+	while (*input != ' ' && *input != '\0')
+	{
+		if (*input == '=')
+			check = 1;
+		input++;
+	}
+	if (check)
+		return (1);
+	return (0);
+}

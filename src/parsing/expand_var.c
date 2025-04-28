@@ -86,7 +86,7 @@ void	which(char **value, t_shell *shell)
 	init(&i, &name, &dup, *value);
 	while (dup[i] != '\0')
 	{
-		if (dup[i] == '$' && dup[i + 1] != ' ')
+		if (dup[i] == '$' && dup[i + 1] != ' ' && dup[i + 1] != '\0')
 		{
 			name = dolar_sign(dup, i + 1);
 			if (name)

@@ -177,7 +177,7 @@ void	dol_spec_cases(char **value, int index, char *line, t_shell *shell);
 //expand_var_utils
 char	*add_special_case(char *name, char *line);
 char	*rm_var(char *value, int name_len);
-char	*add(char *new_value, char *value, int name_len);
+char	*add(char *new, char *value, int len);
 int		alphanum_len(char *value);
 int		malloc_size(char *new_value, char *value, int name_len);
 
@@ -187,12 +187,18 @@ void	prep_var_shell(char ***var);
 int		len_var(char *value);
 int		shell_var(t_token *lst_token, t_shell *shell);
 
-// detect_var
+//detect_var
 t_token	*token_var(char **input);
 int		detect_var(char *input);
 int		in_quote(char pipe_or_else, char *input);
 int		closed_quotes(char *copy, char quote, int i);
 char	*rm_quotes(char *input);
+
+//detect_var_utils
+int		not_cmd(t_token *lst_token);
+void	quote_msg(char c);
+int		closed_quotes(char *copy, char quote, int i);
+int		detect_var(char *input);
 
 //bin_path
 void	execve_bin_token(t_token *lst_token, t_shell *shell);
