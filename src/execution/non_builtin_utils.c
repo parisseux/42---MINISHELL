@@ -1,18 +1,20 @@
 #include "../inc/minishell.h"
 
-char	*look_for_cmd(t_token *temp, t_shell *shell)
+char	*look_for_cmd(t_token **temp, t_shell *shell)
 {
 	char	*cmd;
 
 	cmd = NULL;
-	while (temp->type != PIPE && temp->type != END)
+	while ((*temp)->type != PIPE && (*temp)->type != END)
 	{
-		if (temp->type == REDIR_IN || temp->type == REDIR_OUT
-			|| temp->type == HEREDOC || temp->type == APPEND)
-			temp = temp->next->next;
+		if ((*temp)->type == REDIR_IN || (*temp)->type == REDIR_OUT
+			|| (*temp)->type == HEREDOC || (*temp)->type == APPEND)
+			(*temp) = (*temp)->next->next;
+		else if ((*temp)->type == DEF)
+			(*temp) = (*temp)->next;
 		else
 		{
-			cmd = find_cmd_path(temp->value, shell->var_env);
+			cmd = find_cmd_path((*temp)->value, shell->var_env);
 			break ;
 		}
 	}

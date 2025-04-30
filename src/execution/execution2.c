@@ -9,7 +9,7 @@ void	execve_non_builtin(t_token *lst_token,
 
 	cmd = NULL;
 	temp = lst_token;
-	cmd = look_for_cmd(temp, shell);
+	cmd = look_for_cmd(&temp, shell);
 	if (!cmd)
 		cmd_not_found(temp);
 	cmd_args = find_cmd_args(temp);
@@ -25,8 +25,6 @@ void	execve_non_builtin(t_token *lst_token,
 int	non_builtin_child(t_token *lst_token, t_shell *shell)
 {
 	if (handle_redir(lst_token, shell) == 1)
-		return (1);
-	if (is_def(lst_token))
 		return (1);
 	init_exec_child_signals();
 	if (is_bin_path(lst_token))

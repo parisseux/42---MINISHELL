@@ -10,9 +10,9 @@ void	parent_sigint(int signo)
 	rl_redisplay();
 }
 
-char	*find_pid()
+char	*find_pid(void)
 {
-	int		 fd;
+	int		fd;
 	char	*name;
 	char	**tab;
 
