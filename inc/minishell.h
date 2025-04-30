@@ -191,6 +191,9 @@ void	prep_var_shell(char ***var);
 int		len_var(char *value);
 int		shell_var(t_token *lst_token, t_shell *shell);
 
+//valid_shell_var
+int 	in_shell_env(t_token *lst);
+
 //detect_var
 t_token	*token_var(char **input);
 int		detect_var(char *input);
@@ -224,9 +227,10 @@ void	init(int *i, char **name, char **dup, char *value);
 
 // 
 void	change_fd(int fd_out, int fd_in);
-char	*look_for_cmd(t_token *temp, t_shell *shell);
+char	*look_for_cmd(t_token **temp, t_shell *shell);
 int		non_builtin_child(t_token *lst_token, t_shell *shell);
 int		heredoc_parent(int pipefd, int *status, int pid, t_shell *shell);
 int		not_cmd(t_token *lst_token);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
+char	*find_pid();
 #endif

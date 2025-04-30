@@ -96,5 +96,5 @@ int	export_command(t_token *lst_token, t_shell *shell)
 			export_message_error(tmp->value, shell);
 		tmp = tmp->next;
 	}
-	return (0);
+	return (shell->exit);
 }

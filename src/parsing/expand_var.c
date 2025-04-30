@@ -35,7 +35,7 @@ void	dol_spec_cases(char **value, int index,
 	if (line[index] == '?')
 		name = ft_itoa(shell->exit);
 	else if (line[index] == '$')
-		name = ft_itoa(getpid());
+		name = find_pid();
 	else if (line[index] == '0')
 		name = ft_strdup("minishell");
 	if (name)
