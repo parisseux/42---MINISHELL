@@ -43,6 +43,7 @@ typedef struct s_token
 	int				space;
 	t_token_type	type;
 	struct s_token	*next;
+	int				fd_hd;
 }	t_token;
 
 typedef struct s_pipe
@@ -91,12 +92,15 @@ char	**find_cmd_args(t_token *lst_token);
 int		is_redir(t_token *lst_token);
 int		is_def(t_token *lst_token);
 int		handle_redir(t_token *lst_token, t_shell *shell);
-void	heredoc_child(int *pipefd, t_token *lst_token);
+void	heredoc_child(int pipefd, t_token *lst_token, t_shell *shell);
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell);
 void	builtin_child_process(t_token *lst_token, t_shell *shell);
 void	builtin_parent_process(t_token *lst_token, t_shell *shell);
 void	restore_and_close_fd(int saved_stdout, int saved_stdin);
 void	exec_one_cmd(t_token *lst_token, t_shell *shell);
+void	close_heredoc(t_token *lst);
+int prepare_heredocs(t_token *lst, t_shell *shell);
+int build_heredoc(t_token *lst, int *fd, t_shell  *shell);
 
 //command/utils
 int		print_or_file(t_token *lst_token);
@@ -114,7 +118,7 @@ void	clean_exit(int exit_status, t_token *lst_token,
 void	cmd_err(char *msg, char *cmd, int exit, t_shell *shell);
 
 //parsing
-t_token	*create_token(char *value, t_token_type type);
+t_token	*create_token(char *value, t_token_type type, int fd_out);
 void	add_token_to_lst(t_token**lst_token, t_token *new_token, int space);
 t_token	*tokenisation(char *input);
 t_token	*extract_s_quote(char **input);
@@ -222,7 +226,7 @@ void	init(int *i, char **name, char **dup, char *value);
 void	change_fd(int fd_out, int fd_in);
 char	*look_for_cmd(t_token *temp, t_shell *shell);
 int		non_builtin_child(t_token *lst_token, t_shell *shell);
-int		heredoc_parent(int *pipefd, int *status, int pid);
+int		heredoc_parent(int pipefd, int *status, int pid, t_shell *shell);
 int		not_cmd(t_token *lst_token);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 #endif

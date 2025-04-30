@@ -75,7 +75,7 @@ void	exec_one_cmd(t_token *lst_token, t_shell *shell)
 	{
 		saved_stdout = dup(STDOUT_FILENO);
 		saved_stdin = dup(STDIN_FILENO);
-		if (handle_redir(lst_token, shell) == 1)
+		if (handle_redir(lst_token, shell))
 			return ;
 		builtin_cmd(lst_token, shell);
 		restore_and_close_fd(saved_stdout, saved_stdin);
@@ -86,8 +86,15 @@ void	exec_one_cmd(t_token *lst_token, t_shell *shell)
 
 void	execution(t_token *lst_token, t_shell *shell)
 {
+	if (prepare_heredocs(lst_token, shell) == -1)
+	{
+		shell->exit = 1;
+		close_heredoc(lst_token);
+		return ;
+	}
 	if (is_pipe(lst_token))
 		exec_with_pipe(lst_token, shell, is_pipe(lst_token));
 	else
 		exec_one_cmd(lst_token, shell);
+	close_heredoc(lst_token);
 }
