@@ -84,7 +84,7 @@ t_token	*bin_path(char **input)
 	if (!value)
 		return (NULL);
 	ft_strlcpy(value, start, len + 1);
-	new_token = create_token(value, BIN);
+	new_token = create_token(value, BIN, -1);
 	free(value);
 	return (new_token);
 }

@@ -24,7 +24,7 @@ void	execve_non_builtin(t_token *lst_token,
 
 int	non_builtin_child(t_token *lst_token, t_shell *shell)
 {
-	if (handle_redir(lst_token, shell) == 1)
+	if (handle_redir(lst_token, shell))
 		return (1);
 	if (is_def(lst_token))
 		return (1);

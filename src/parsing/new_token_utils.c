@@ -7,11 +7,11 @@ t_token	*extract_in(char **input)
 	(*input)++;
 	if (**input == '<')
 	{
-		new_token = create_token("<<", HEREDOC);
+		new_token = create_token("<<", HEREDOC, -1);
 		(*input)++;
 	}
 	else
-		new_token = create_token("<", REDIR_IN);
+		new_token = create_token("<", REDIR_IN, -1);
 	return (new_token);
 }
 
@@ -22,10 +22,10 @@ t_token	*extract_out(char **input)
 	(*input)++;
 	if (**input == '>')
 	{
-		new_token = create_token(">>", APPEND);
+		new_token = create_token(">>", APPEND, -1);
 		(*input)++;
 	}
 	else
-		new_token = create_token(">", REDIR_OUT);
+		new_token = create_token(">", REDIR_OUT, -1);
 	return (new_token);
 }

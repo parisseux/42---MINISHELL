@@ -63,7 +63,7 @@ t_token	*tokenisation(char *input)
 			return (NULL);
 		add_token_to_lst(&lst_token, new_token, space);
 	}
-	add_token_to_lst(&lst_token, create_token("", END), space);
+	add_token_to_lst(&lst_token, create_token("", END, -1), space);
 	return (lst_token);
 }
 

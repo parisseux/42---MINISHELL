@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-t_token	*create_token(char *value, t_token_type type)
+t_token	*create_token(char *value, t_token_type type, int fd_out)
 {
 	t_token	*new_token;
 
@@ -10,6 +10,7 @@ t_token	*create_token(char *value, t_token_type type)
 	new_token->value = ft_strdup(value);
 	new_token->type = type;
 	new_token->next = NULL;
+	new_token->fd_hd = fd_out;
 	return (new_token);
 }
 
@@ -36,7 +37,7 @@ t_token	*extract_s_quote(char **input)
 		return (NULL);
 	ft_strlcpy(value, start, len + 1);
 	(*input)++;
-	new_token = create_token(value, SQUOTE);
+	new_token = create_token(value, SQUOTE, -1);
 	free(value);
 	return (new_token);
 }
@@ -64,7 +65,7 @@ t_token	*extract_d_quote(char **input)
 		return (NULL);
 	ft_strlcpy(value, start, len + 1);
 	(*input)++;
-	new_token = create_token(value, DQUOTE);
+	new_token = create_token(value, DQUOTE, -1);
 	free(value);
 	return (new_token);
 }
@@ -87,7 +88,7 @@ t_token	*ext_word(char **input)
 	if (!value)
 		return (NULL);
 	ft_strlcpy(value, start, len + 1);
-	new_token = create_token(value, WORD);
+	new_token = create_token(value, WORD, -1);
 	free(value);
 	return (new_token);
 }

@@ -1,12 +1,11 @@
 #include "../inc/minishell.h"
 
-int	heredoc_parent(int *pipefd, int *status, int pid, t_shell *shell)
+int	heredoc_parent(int pipefd, int *status, int pid, t_shell *shell)
 {
 	struct sigaction	old_int;
 	struct sigaction	old_quit;
 	struct sigaction	sa_ignore;
 
-	close(pipefd[1]);
 	sa_ignore.sa_handler = SIG_IGN;
 	sigemptyset(&sa_ignore.sa_mask);
 	sa_ignore.sa_flags = 0;
@@ -18,13 +17,13 @@ int	heredoc_parent(int *pipefd, int *status, int pid, t_shell *shell)
 	if (WIFSIGNALED(*status))
 	{
 		shell->exit = 128 + WTERMSIG(*status);
-		close(pipefd[0]);
+		close(pipefd);
 		return (-1);
 	}
 	if (WIFEXITED(*status) && WEXITSTATUS(*status) == 130)
 	{
 		shell->exit = 130;
-		close(pipefd[0]);
+		close(pipefd);
 		return (-1);
 	}
 	shell->exit = WEXITSTATUS(*status);
@@ -72,4 +71,39 @@ void	change_fd(int fd_out, int fd_in)
 		dup2(fd_in, STDIN_FILENO);
 		close (fd_in);
 	}
+}
+
+void close_heredoc(t_token *lst)
+{
+	t_token *t;
+
+	t = lst;
+	while (t->type != END)
+	{
+		if (t->type == HEREDOC && t->fd_hd != -1)
+			close(t->fd_hd);
+		t = t->next;
+	}
+}
+
+int build_heredoc(t_token *lst, int *fd, t_shell  *shell)
+{
+	int pipefd[2];
+	int pid;
+
+	if (pipe(pipefd) == -1)
+		return(perror("pipe"), -1);
+	pid = fork();
+	if (pid == -1)
+		return(perror("fork"), close(pipefd[0]), close(pipefd[1]), -1);
+	if (pid == 0)
+	{
+		close(pipefd[0]);
+		heredoc_child(pipefd[1], lst, shell);
+	}
+	close(pipefd[1]);
+	heredoc_parent(pipefd[0], &shell->exit, pid, shell);
+	*fd = pipefd[0];
+    return (0);
+
 }

@@ -1,22 +1,24 @@
 #include "../inc/minishell.h"
 
-int	look_for_fd_heredoc(t_token *token, int fd, t_shell *shell)
+int prepare_heredocs(t_token *lst, t_shell *shell)
 {
-	int	pipefd[2];
-	int	pid;
-	int	status;
+	t_token	*temp;
+	int		fd;
 
-	status = 0;
-	if (pipe(pipefd) == -1)
-		return (perror("pipe"), shell->exit = 1, -1);
-	pid = fork();
-	if (pid == 0)
-		heredoc_child(pipefd[1], token, shell);
-	if (heredoc_parent(pipefd, &status, pid, shell) == -1)
-		return (-2);
-	if (fd != -1)
-		close(fd);
-	return (pipefd[0]);
+	temp = lst;
+	fd = -1;
+	while (temp->type != END)
+	{
+		if (temp->type == HEREDOC)
+		{
+			if (build_heredoc(temp->next, &fd, shell) == -1)
+				return (-1);
+			temp->fd_hd = fd;
+		}
+		fd = -1;
+		temp = temp->next;
+	}
+	return (0);
 }
 
 int	look_for_fd_append(t_token *token, int fd, t_shell *shell)
@@ -51,6 +53,12 @@ int	look_for_fd_input(t_token *token, int fd, t_shell *shell)
 {
 	if (fd != -1)
 		close(fd);
+	if (access(token->value, R_OK) == -1)
+	{
+		perror(token->value);
+		shell->exit = 1;
+		return (-1);
+	}
 	fd = open(token->value, O_RDONLY);
 	if (fd == -1)
 	{
@@ -78,14 +86,14 @@ int	handle_redir(t_token *lst_token, t_shell *shell)
 			fd_out = look_for_fd_append(temp->next, fd_out, shell);
 		else if (temp->type == HEREDOC)
 		{
-			fd_in = look_for_fd_heredoc(temp->next, fd_in, shell);
-			if (fd_in == -2)
-				return (1);
-		}
+			if (fd_in != -1)
+				close(fd_in);
+			fd_in = temp->fd_hd;
+		} 	
 		else if (temp->type == REDIR_IN)
 			fd_in = look_for_fd_input(temp->next, fd_in, shell);
 		temp = temp->next;
 	}
 	change_fd(fd_out, fd_in);
-	return (0);
+	return (shell->exit);
 }

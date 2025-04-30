@@ -97,9 +97,9 @@ t_token	*token_var(char **input)
 	if (!new)
 		new_token = NULL;
 	else if (!good_varname(new, '='))
-		new_token = create_token(new, DEF);
+		new_token = create_token(new, DEF, -1);
 	else
-		new_token = create_token(new, WORD);
+		new_token = create_token(new, WORD, -1);
 	free(new);
 	new = NULL;
 	if (!new_token)
