@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:25 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:26:26 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 16:47:05 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	sigint_heredoc(int signum)
 	write(STDOUT_FILENO, "\n", 1);
 	rl_free_line_state();
 	rl_cleanup_after_signal();
-	_exit(130);
+	exit(130);
 }
 
 void	init_heredoc_child_signals(void)
