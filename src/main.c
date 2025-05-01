@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:31 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 17:11:07 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:16:12 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	**setup_minishell(char **env)
 	return (var_env);
 }
 
-int init_minishell(char **env, t_shell *shell, char **input)
+int	init_minishell(char **env, t_shell *shell, char **input)
 {
 	init_parent_signals();
 	if (*env == NULL)
