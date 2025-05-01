@@ -53,9 +53,7 @@ void	echo_command(t_token *lst)
 			|| lst->type == HEREDOC || lst->type == APPEND)
 			lst = lst->next;
 		else if (is_valid_n_flag(lst->value) && stop_skip == 0)
-		{
 			n_flag = 1;
-		}
 		else if (lst->value && *lst->value)
 		{
 			stop_skip = 1;
