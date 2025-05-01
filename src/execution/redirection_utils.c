@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:55 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 18:14:59 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:24:34 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int hc_exit(t_shell *shell, int pipefd, int status)
+int	hc_exit(t_shell *shell, int pipefd, int status)
 {
 	if (WIFSIGNALED(status))
 	{
@@ -77,20 +77,6 @@ void	heredoc_child(int pipefd, t_token *lst_token, t_shell *shell)
 	close(pipefd);
 	cleanup_readline();
 	exit(shell->exit);
-}
-
-void	change_fd(int fd_out, int fd_in)
-{
-	if (fd_out != -1)
-	{
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}
-	if (fd_in != -1)
-	{
-		dup2(fd_in, STDIN_FILENO);
-		close (fd_in);
-	}
 }
 
 void	close_heredoc(t_token *lst)
