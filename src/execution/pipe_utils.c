@@ -2,18 +2,16 @@
 
 void	wait_all_pids(t_pipe *p, t_shell *shell)
 {
-	int	i;
-	int	status;
+	int   i;
+    int   status;
 
-	i = 0;
-	status = 0;
-	while (i < (p->n_pipes + 1))
-	{
-		waitpid(p->pids[i], &status, 0);
-		i++;
-	}
-	free(p->pids);
-	extract_exit_status(status, shell);
+    for (i = 0; i < p->n_pipes + 1; ++i)
+    {
+        if (waitpid(p->pids[i], &status, 0) == -1)
+            perror("waitpid");
+    }
+    free(p->pids);
+	(void)shell;
 }
 
 void	create_all_pipes(int **pipefd, int n_pipes)
