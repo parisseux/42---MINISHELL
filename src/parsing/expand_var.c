@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:25:19 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:25:20 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 
 	i = 0;
 	tmp = *value;
-	if (found_in_tab(shell->var_env, name, len) > 0)
+	if (found_in_tab(shell->venv, name, len) > 0)
 	{
-		i = found_in_tab(shell->var_env, name, len);
-		tmp2 = add(shell->var_env[i], tmp, len + 1);
+		i = found_in_tab(shell->venv, name, len);
+		tmp2 = add(shell->venv[i], tmp, len + 1);
 		free(*value);
 		*value = tmp2;
 		return ;

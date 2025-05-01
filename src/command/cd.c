@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:01 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:03 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	move_to_path(char *path, t_shell *shell)
 	home = NULL;
 	if (!path)
 	{
-		home = env_value(shell, shell->var_env, "HOME");
+		home = env_value(shell, shell->venv, "HOME");
 		if (!home)
 		{
 			write(STDERR_FILENO, "cd: HOME not set\n", 17);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   non_builtin_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:44 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:45 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*look_for_cmd(t_token **temp, t_shell *shell)
 			(*temp) = (*temp)->next;
 		else
 		{
-			cmd = find_cmd_path(shell, (*temp)->value, shell->var_env);
+			cmd = find_cmd_path(shell, (*temp)->value, shell->venv);
 			break ;
 		}
 	}

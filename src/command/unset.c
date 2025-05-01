@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:29 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:30 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	unset_command(t_token *lst, t_shell *shell)
 		{
 			if (invalid_option(lst->value, shell))
 				return (1);
-			remove_var(shell->var_env, lst->value);
+			remove_var(shell->venv, lst->value);
 			if (shell->shell_env)
 				remove_var(shell->shell_env, lst->value);
 		}

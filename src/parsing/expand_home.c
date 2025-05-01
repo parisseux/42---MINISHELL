@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_home.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:25:13 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:25:14 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,24 +62,24 @@ void	home_not_set(t_shell *shell)
 	shell->exit = 1;
 }
 
-void	replace_home(t_shell *sh, t_token *lst)
+void	replace_home(t_shell *sh, t_token *l)
 {
 	char	*t;
 	int		i;
 
-	while (lst->type != END)
+	while (l->type != END)
 	{
-		if (before(lst) && space(lst->next))
+		if (before(l) && space(l->next))
 		{
-			t = ft_strdup(lst->next->value);
+			t = ft_strdup(l->next->value);
 			i = 0;
-			while (lst->next->value[i] != '\0')
+			while (l->next->value[i] != '\0')
 			{
-				if (lst->next->value[i] == '~' && ishome(lst->next->value, i))
+				if (l->next->value[i] == '~' && ishome(l->next->value, i))
 				{
-					free(lst->next->value);
-					lst->next->value = addh(env_value(sh, sh->var_env, "HOME"), t);
-					t = ft_strdup(lst->next->value);
+					free(l->next->value);
+					l->next->value = addh(env_value(sh, sh->venv, "HOME"), t);
+					t = ft_strdup(l->next->value);
 					i = 0;
 				}
 				else
@@ -87,6 +87,6 @@ void	replace_home(t_shell *sh, t_token *lst)
 			}
 			free(t);
 		}
-		lst = lst->next;
+		l = l->next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_var.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:16 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:26:18 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	shell_var(t_token *lst_token, t_shell *shell)
 		{
 			if (good_varname(tmp->value, '='))
 				return (0);
-			if (found_in_tab(shell->var_env, tmp->value, len_var(tmp->value)))
+			if (found_in_tab(shell->venv, tmp->value, len_var(tmp->value)))
 			{
 				if (shell->shell_env == NULL)
 					prep_var_shell(&shell->shell_env);

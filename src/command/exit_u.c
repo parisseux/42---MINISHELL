@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_u.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:15 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:16 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	extract_exit_status(int status, t_shell *shell)
 void	exit_message(t_shell *shell, t_token *exit)
 {
 	write(STDERR_FILENO, "minishell: exit: numeric argument required\n", 43);
-	clean_exit(2, exit, shell->var_env, shell->shell_env);
+	clean_exit(2, exit, shell->venv, shell->shell_env);
 }
 
 int	valid_exit_type(int type)

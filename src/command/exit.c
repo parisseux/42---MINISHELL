@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:18 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:19 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	exit_command(t_token *exit, t_shell *shell)
 	if (isatty(STDIN_FILENO))
 		write(STDERR_FILENO, "exit\n", 5);
 	if (exit->next->type == END || exit->type == PIPE)
-		clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
+		clean_exit(shell->exit, exit, shell->venv, shell->shell_env);
 	else if (valid_exit_type(exit->next->next->type))
 	{
 		if (exit->next->next->space == 1 && arg_ok(exit->next->value))
@@ -120,6 +120,6 @@ int	exit_command(t_token *exit, t_shell *shell)
 		shell->exit = 0;
 	if (shell->exit > 255 || shell->exit < 0)
 		shell->exit &= 255;
-	clean_exit(shell->exit, exit, shell->var_env, shell->shell_env);
+	clean_exit(shell->exit, exit, shell->venv, shell->shell_env);
 	return (1);
 }

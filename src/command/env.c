@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:12 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:13 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int	print_env(t_shell *shell)
 
 	i = 0;
 	len = 0;
-	while (shell->var_env[i])
+	while (shell->venv[i])
 	{
-		len = ft_strlen(shell->var_env[i]);
+		len = ft_strlen(shell->venv[i]);
 		if (len == 0)
 			return (0);
-		write(STDOUT_FILENO, shell->var_env[i], len);
+		write(STDOUT_FILENO, shell->venv[i], len);
 		write(STDOUT_FILENO, "\n", 1);
 		i++;
 	}

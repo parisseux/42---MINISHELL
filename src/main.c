@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:31 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:26:32 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,23 @@ int	start_minishell(t_shell *shell, char *input)
 
 char	**setup_minishell(char **env)
 {
-	char	**var_env;
+	char	**venv;
 	int		i;
 
 	i = 0;
 	while (env[i])
 		i++;
-	var_env = (char **)malloc(sizeof(char *) * (i + 1));
-	if (!var_env)
+	venv = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!venv)
 		return (NULL);
 	i = 0;
 	while (env[i])
 	{
-		var_env[i] = ft_strdup(env[i]);
+		venv[i] = ft_strdup(env[i]);
 		i++;
 	}
-	var_env[i] = 0;
-	return (var_env);
+	venv[i] = 0;
+	return (venv);
 }
 
 int	main(int ac, char **av, char **env)
@@ -73,10 +73,10 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	init_parent_signals();
 	if (*env == NULL)
-		prep_var_shell(&shell.var_env);
+		prep_var_shell(&shell.venv);
 	else
-		shell.var_env = setup_minishell(env);
-	if (!shell.var_env)
+		shell.venv = setup_minishell(env);
+	if (!shell.venv)
 		return (1);
 	shell.shell_env = NULL;
 	shell.exit = 0;
@@ -107,6 +107,6 @@ int	main(int ac, char **av, char **env)
 		free(input);
 	}
 	cleanup_readline();
-	clean_exit(shell.exit, NULL, shell.var_env, shell.shell_env);
+	clean_exit(shell.exit, NULL, shell.venv, shell.shell_env);
 	return (0);
 }

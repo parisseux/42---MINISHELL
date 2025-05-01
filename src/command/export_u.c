@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_u.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:21 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:22 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ void	export_message_error(char *value, t_shell *shell)
 	}
 }
 
-int	found_in_tab(char **var_env, char *value, int len)
+int	found_in_tab(char **venv, char *value, int len)
 {
 	int	i;
 
 	i = 0;
-	while (var_env && var_env[i] != NULL)
+	while (venv && venv[i] != NULL)
 	{
-		if (!ft_varcmp(var_env[i], value, len))
+		if (!ft_varcmp(venv[i], value, len))
 			return (i);
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:24 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:25 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:20:08 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,27 @@ void	print_export(t_shell *shell)
 	int	i;
 
 	i = 0;
-	while (shell->var_env[i])
+	while (shell->venv[i])
 	{
 		write(STDERR_FILENO, "declare -x ", 11);
-		write(STDERR_FILENO, shell->var_env[i], ft_strlen(shell->var_env[i]));
+		write(STDERR_FILENO, shell->venv[i], ft_strlen(shell->venv[i]));
 		write(STDERR_FILENO, "\n", 1);
 		i++;
 	}
 }
 
-void	new_tab(char **var_env, char *value, char **new_env)
+void	new_tab(char **venv, char *value, char **new_env)
 {
 	int	j;
 
 	j = 0;
-	if (tab_len(var_env) == 1 && ft_strlen(var_env[j]) == 0)
+	if (tab_len(venv) == 1 && ft_strlen(venv[j]) == 0)
 		new_env[j] = ft_strdup(value);
 	else
 	{
-		while (var_env[j] != NULL)
+		while (venv[j] != NULL)
 		{
-			new_env[j] = ft_strdup(var_env[j]);
+			new_env[j] = ft_strdup(venv[j]);
 			j++;
 		}
 		new_env[j] = ft_strdup(value);
@@ -45,7 +45,7 @@ void	new_tab(char **var_env, char *value, char **new_env)
 	new_env[j + 1] = NULL;
 }
 
-char	**add_var_to_env(char **var_env, char *value)
+char	**add_var_to_env(char **venv, char *value)
 {
 	int		i;
 	int		j;
@@ -55,19 +55,19 @@ char	**add_var_to_env(char **var_env, char *value)
 	i = 0;
 	while (value[j] != '=')
 		j++;
-	tmp = var_env;
+	tmp = venv;
 	i = found_in_tab(tmp, value, j);
 	if (i >= 0)
 	{
-		free(var_env[i]);
-		var_env[i] = ft_strdup(value);
-		return (var_env);
+		free(venv[i]);
+		venv[i] = ft_strdup(value);
+		return (venv);
 	}
 	else
 	{
 		tmp = ft_calloc(sizeof(char **), tab_len(tmp) + 2);
-		new_tab(var_env, value, tmp);
-		ft_free_char_tab(var_env);
+		new_tab(venv, value, tmp);
+		ft_free_char_tab(venv);
 		return (tmp);
 	}
 	return (NULL);
@@ -109,7 +109,7 @@ int	export_command(t_token *lst_token, t_shell *shell)
 			tmp = tmp->next;
 		if (tmp->type == DEF || (ft_strchr(tmp->value, '=')
 				&& !good_varname(tmp->value, '=')))
-			shell->var_env = add_var_to_env(shell->var_env, tmp->value);
+			shell->venv = add_var_to_env(shell->venv, tmp->value);
 		else if (bad_export(tmp->value))
 			export_message_error(tmp->value, shell);
 		tmp = tmp->next;
