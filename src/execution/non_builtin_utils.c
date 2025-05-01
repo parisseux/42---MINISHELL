@@ -14,7 +14,7 @@ char	*look_for_cmd(t_token **temp, t_shell *shell)
 			(*temp) = (*temp)->next;
 		else
 		{
-			cmd = find_cmd_path((*temp)->value, shell->var_env);
+			cmd = find_cmd_path(shell, (*temp)->value, shell->var_env);
 			break ;
 		}
 	}
@@ -86,14 +86,14 @@ char	**find_cmd_args(t_token *lst_token)
 	return (cmd_args);
 }
 
-char	*find_cmd_path(char *cmd, char **env)
+char	*find_cmd_path(t_shell *shell, char *cmd, char **env)
 {
 	char	*path;
 	char	**paths;
 	int		i;
 	char	*final_path;
 
-	path = get_env_value(env, "PATH");
+	path = env_value(shell, env, "PATH");
 	if (!path)
 		return (NULL);
 	paths = ft_split(path, ':');

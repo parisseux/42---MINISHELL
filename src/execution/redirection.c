@@ -95,5 +95,5 @@ int	handle_redir(t_token *lst_token, t_shell *shell)
 		temp = temp->next;
 	}
 	change_fd(fd_out, fd_in);
-	return (shell->exit);
+	return (0);
 }

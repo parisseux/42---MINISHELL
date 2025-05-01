@@ -85,8 +85,8 @@ void	execution(t_token *lst_token, t_shell *shell);
 int		is_pipe(t_token *lst_token);
 int		is_builtin(t_token *lst_token);
 char	*ft_strjoin_paths(char *dir, char *cmd);
-char	*get_env_value(char **env, char *key);
-char	*find_cmd_path(char *cmd, char **env);
+char	*env_value(t_shell *shell, char **env, char *key);
+char	*find_cmd_path(t_shell *shell, char *cmd, char **env);
 void	execve_non_builtin(t_token *lst_token, t_shell *shell);
 char	**find_cmd_args(t_token *lst_token);
 int		is_redir(t_token *lst_token);
@@ -217,7 +217,7 @@ void	cmd_not_found(t_token *lst_token);
 int		space(t_token *lst_token);
 char	*add_home(char *home, char *str);
 void	home_not_set(t_shell *shell);
-void	expand_home(t_shell *shell, t_token *lst_token);
+void	replace_home(t_shell *shell, t_token *lst);
 
 // expand_home_u
 int		ishome(char *str, int i);
@@ -233,4 +233,5 @@ int		heredoc_parent(int pipefd, int *status, int pid, t_shell *shell);
 int		not_cmd(t_token *lst_token);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 char	*find_pid();
+
 #endif

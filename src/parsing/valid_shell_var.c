@@ -14,7 +14,7 @@ int	in_shell_env(t_token *tmp)
 		return (0);
 	while (tmp->type != END)
 	{
-		if (not_cmd(tmp) && ft_strncmp(tmp->value, "export", 7))
+		if (not_cmd(tmp) || !ft_strncmp(tmp->value, "export", 7))
 			return (0);
 		if (redirtype(tmp->type) == 1)
 			if (tmp->next->type != END)

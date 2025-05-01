@@ -19,7 +19,7 @@ int	start_minishell(t_shell *shell, char *input)
 	// print_token_list(lst_token);
 	if (in_shell_env(lst_token))
 		shell->exit = shell_var(lst_token, shell);
-	expand_home(shell, lst_token);
+	replace_home(shell, lst_token);
 	if (check_syntax_error(lst_token))
 	{
 		shell->exit = 2;
