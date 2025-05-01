@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:31 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:26:32 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:11:07 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,24 +63,30 @@ char	**setup_minishell(char **env)
 	return (var_env);
 }
 
+int init_minishell(char **env, t_shell *shell, char **input)
+{
+	init_parent_signals();
+	if (*env == NULL)
+		prep_var_shell(&shell->var_env);
+	else
+		shell->var_env = setup_minishell(env);
+	if (!shell->var_env)
+		return (1);
+	shell->shell_env = NULL;
+	shell->exit = 0;
+	*input = NULL;
+	return (0);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
-	char	*line;
 	t_shell	shell;
 
 	(void)ac;
 	(void)av;
-	init_parent_signals();
-	if (*env == NULL)
-		prep_var_shell(&shell.var_env);
-	else
-		shell.var_env = setup_minishell(env);
-	if (!shell.var_env)
+	if (init_minishell(env, &shell, &input))
 		return (1);
-	shell.shell_env = NULL;
-	shell.exit = 0;
-	input = NULL;
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -90,19 +96,8 @@ int	main(int ac, char **av, char **env)
 				break ;
 		}
 		else
-		{
-			line = get_next_line(fileno(stdin));
-			if (!line)
-				break ;
-			input = ft_strtrim(line, "\n");
-			free(line);
-			if (!input)
-				break ;
-		}
-		if (!input)
-			break ;
-		if (*input)
-			add_history(input);
+			return (1);
+		add_history(input);
 		start_minishell(&shell, input);
 		free(input);
 	}
