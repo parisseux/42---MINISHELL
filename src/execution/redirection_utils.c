@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:55 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:56 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:17:14 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,8 @@ int	build_heredoc(t_token *lst, int *fd, t_shell *shell)
 		heredoc_child(pipefd[1], lst, shell);
 	}
 	close(pipefd[1]);
-	heredoc_parent(pipefd[0], pid, shell);
+	if (heredoc_parent(pipefd[0], pid, shell) == -1)
+		return (-1);
 	*fd = pipefd[0];
 	return (0);
 }
