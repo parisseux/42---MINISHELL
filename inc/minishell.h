@@ -229,7 +229,7 @@ void	init(int *i, char **name, char **dup, char *value);
 void	change_fd(int fd_out, int fd_in);
 char	*look_for_cmd(t_token **temp, t_shell *shell);
 int		non_builtin_child(t_token *lst_token, t_shell *shell);
-int		heredoc_parent(int pipefd, int *status, int pid, t_shell *shell);
+int		heredoc_parent(int pipefd, int pid, t_shell *shell);
 int		not_cmd(t_token *lst_token);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 char	*find_pid();

@@ -73,7 +73,11 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
+		{
 			input = readline("minishell$ ");
+			if (!input)
+				break ;
+		}
 		else
 		{
 			line = get_next_line(fileno(stdin));
