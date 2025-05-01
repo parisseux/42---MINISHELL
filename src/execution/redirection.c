@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-int prepare_heredocs(t_token *lst, t_shell *shell)
+int	prepare_heredocs(t_token *lst, t_shell *shell)
 {
 	t_token	*temp;
 	int		fd;
@@ -89,7 +89,7 @@ int	handle_redir(t_token *lst_token, t_shell *shell)
 			if (fd_in != -1)
 				close(fd_in);
 			fd_in = temp->fd_hd;
-		} 	
+		}
 		else if (temp->type == REDIR_IN)
 			fd_in = look_for_fd_input(temp->next, fd_in, shell);
 		temp = temp->next;

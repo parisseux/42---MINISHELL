@@ -16,7 +16,6 @@ int	start_minishell(t_shell *shell, char *input)
 		return (0);
 	}
 	look_for_dolls(lst_token, shell);
-	// print_token_list(lst_token);
 	if (in_shell_env(lst_token))
 		shell->exit = shell_var(lst_token, shell);
 	replace_home(shell, lst_token);

@@ -10,7 +10,7 @@ void	exec_with_pipe(t_token *lst_token, t_shell *shell, int n_pipes)
 	fork_and_exec_pipe(&pipe_data, shell);
 	free_cmds_lst(&pipe_data);
 	close_all_pipe(&pipe_data);
-	wait_all_pids(&pipe_data, shell);
+	wait_all_pids(&pipe_data);
 }
 
 void	non_builtin_cmd(t_token *lst_token, t_shell *shell)

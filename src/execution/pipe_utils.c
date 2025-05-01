@@ -1,17 +1,18 @@
 #include "../inc/minishell.h"
 
-void	wait_all_pids(t_pipe *p, t_shell *shell)
+void	wait_all_pids(t_pipe *p)
 {
-	int   i;
-    int   status;
+	int	i;
+	int	status;
 
-    for (i = 0; i < p->n_pipes + 1; ++i)
-    {
-        if (waitpid(p->pids[i], &status, 0) == -1)
-            perror("waitpid");
-    }
-    free(p->pids);
-	(void)shell;
+	i = 0;
+	while (i < p->n_pipes + 1)
+	{
+		if (waitpid(p->pids[i], &status, 0) == -1)
+			perror("waitpid");
+		i++;
+	}
+	free(p->pids);
 }
 
 void	create_all_pipes(int **pipefd, int n_pipes)

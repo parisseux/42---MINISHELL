@@ -56,7 +56,7 @@ typedef struct s_pipe
 
 // pipe
 void	close_all_pipe(t_pipe *p);
-void	wait_all_pids(t_pipe *p, t_shell *shell);
+void	wait_all_pids(t_pipe *p);
 void	create_all_pipes(int **pipefd, int n_pipes);
 void	handle_last_cmd(t_pipe *p, t_shell *shell);
 void	handle_first_cmd(t_pipe *p, t_shell *shell);
@@ -71,11 +71,11 @@ void	create_pipe_and_mini_lst(t_pipe *p, t_token *lst_token);
 int		init_pipe_data(t_pipe *p, int n_pipes);
 
 //signals
-void init_parent_signals(void);
+void	init_parent_signals(void);
 void	init_exec_child_signals(void);
 void	mute_parent_signals(int on);
 void	init_heredoc_child_signals(void);
-void    cleanup_readline(void);
+void	cleanup_readline(void);
 void	parent_sigint(int signo);
 
 int		start_minishell(t_shell *shell, char *input);
@@ -99,8 +99,8 @@ void	builtin_parent_process(t_token *lst_token, t_shell *shell);
 void	restore_and_close_fd(int saved_stdout, int saved_stdin);
 void	exec_one_cmd(t_token *lst_token, t_shell *shell);
 void	close_heredoc(t_token *lst);
-int prepare_heredocs(t_token *lst, t_shell *shell);
-int build_heredoc(t_token *lst, int *fd, t_shell  *shell);
+int		prepare_heredocs(t_token *lst, t_shell *shell);
+int		build_heredoc(t_token *lst, int *fd, t_shell *shell);
 
 //command/utils
 int		print_or_file(t_token *lst_token);
@@ -127,9 +127,9 @@ t_token	*ext_word(char **input);
 t_token	*extract_out(char **input);
 t_token	*extract_in(char **input);
 int		check_syntax_error(t_token *lst_token);
-t_token *parse_pipe(char **input);
+t_token	*parse_pipe(char **input);
 
-/////////////////////////////////////// COMMAND ///////////////////////////////////////
+/////////////// COMMAND /////////////////////////
 
 //echo
 void	echo_command(t_token *lst_token);
@@ -169,7 +169,7 @@ int		env_command(t_shell *shell, t_token *lst_token);
 //pwd
 int		pwd_command(void);
 
-/////////////////////////////////////// PARSING ///////////////////////////////////////
+////////////////// PARSING ///////////////
 
 //expand_var
 void	look_for_dolls(t_token *lst_token, t_shell *shell);
@@ -192,7 +192,7 @@ int		len_var(char *value);
 int		shell_var(t_token *lst_token, t_shell *shell);
 
 //valid_shell_var
-int 	in_shell_env(t_token *lst);
+int		in_shell_env(t_token *lst);
 
 //detect_var
 t_token	*token_var(char **input);
@@ -232,6 +232,6 @@ int		non_builtin_child(t_token *lst_token, t_shell *shell);
 int		heredoc_parent(int pipefd, int pid, t_shell *shell);
 int		not_cmd(t_token *lst_token);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
-char	*find_pid();
+char	*find_pid(void);
 
 #endif

@@ -29,7 +29,6 @@ int	heredoc_parent(int pipefd, int pid, t_shell *shell)
 		return (-1);
 	}
 	shell->exit = WEXITSTATUS(status);
-	printf("exit status: %d\n", shell->exit);
 	return (0);
 }
 
@@ -38,7 +37,6 @@ void	heredoc_child(int pipefd, t_token *lst_token, t_shell *shell)
 	char	*stop;
 	char	*line;
 
-	//setpgid(0, 0);
 	init_heredoc_child_signals();
 	stop = ft_strdup(lst_token->value);
 	while (1)
@@ -77,9 +75,9 @@ void	change_fd(int fd_out, int fd_in)
 	}
 }
 
-void close_heredoc(t_token *lst)
+void	close_heredoc(t_token *lst)
 {
-	t_token *t;
+	t_token	*t;
 
 	t = lst;
 	while (t->type != END)
@@ -90,16 +88,16 @@ void close_heredoc(t_token *lst)
 	}
 }
 
-int build_heredoc(t_token *lst, int *fd, t_shell  *shell)
+int	build_heredoc(t_token *lst, int *fd, t_shell *shell)
 {
-	int pipefd[2];
-	int pid;
+	int	pipefd[2];
+	int	pid;
 
 	if (pipe(pipefd) == -1)
-		return(perror("pipe"), -1);
+		return (perror("pipe"), -1);
 	pid = fork();
 	if (pid == -1)
-		return(perror("fork"), close(pipefd[0]), close(pipefd[1]), -1);
+		return (perror("fork"), close(pipefd[0]), close(pipefd[1]), -1);
 	if (pid == 0)
 	{
 		close(pipefd[0]);
@@ -108,6 +106,5 @@ int build_heredoc(t_token *lst, int *fd, t_shell  *shell)
 	close(pipefd[1]);
 	heredoc_parent(pipefd[0], pid, shell);
 	*fd = pipefd[0];
-    return (0);
-
+	return (0);
 }
