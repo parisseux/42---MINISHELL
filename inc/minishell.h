@@ -6,7 +6,7 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:27:28 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 17:32:24 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:39:16 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	mute_parent_signals(int on);
 void	init_heredoc_child_signals(void);
 void	cleanup_readline(void);
 void	parent_sigint(int signo);
+void	ignore_heredoc_signals(void);
 
 int		start_minishell(t_shell *shell, char *input);
 

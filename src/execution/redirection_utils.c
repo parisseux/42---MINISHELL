@@ -6,11 +6,29 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:55 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 18:17:14 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:14:59 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int hc_exit(t_shell *shell, int pipefd, int status)
+{
+	if (WIFSIGNALED(status))
+	{
+		shell->exit = 128 + WTERMSIG(status);
+		close(pipefd);
+		return (-1);
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		shell->exit = 128 + WTERMSIG(status);
+		close(pipefd);
+		return (-1);
+	}
+	shell->exit = WEXITSTATUS(status);
+	return (0);
+}
 
 int	heredoc_parent(int pipefd, int pid, t_shell *shell)
 {
@@ -27,20 +45,8 @@ int	heredoc_parent(int pipefd, int pid, t_shell *shell)
 	waitpid(pid, &status, 0);
 	sigaction(SIGINT, &old_int, NULL);
 	sigaction(SIGQUIT, &old_quit, NULL);
-	if (WIFSIGNALED(status))
-	{
-		shell->exit = 128 + WTERMSIG(status);
-		close(pipefd);
+	if (hc_exit(shell, pipefd, status) == -1)
 		return (-1);
-	}
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
-	{
-		shell->exit = 128 + WTERMSIG(status);
-		close(pipefd);
-		printf("exit status: %d\n", shell->exit);
-		return (-1);
-	}
-	shell->exit = WEXITSTATUS(status);
 	return (0);
 }
 

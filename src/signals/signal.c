@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:25 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:47:05 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 18:15:06 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void	sigint_heredoc(int signum)
 {
 	(void)signum;
 	write(STDOUT_FILENO, "\n", 1);
-	rl_free_line_state();
-	rl_cleanup_after_signal();
 	exit(130);
 }
 
@@ -55,8 +53,9 @@ void	init_heredoc_child_signals(void)
 	struct sigaction	sa;
 
 	sa.sa_handler = sigint_heredoc;
+	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }
