@@ -13,11 +13,44 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra -Iinclude -I$(HEADERS) -g3
 LDFLAGS = -lreadline
 
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c) \
-			$(wildcard $(EXEC_DIR)/*.c) \
-			$(wildcard $(PARSING_DIR)/*.c) \
-			$(wildcard $(COMMAND_DIR)/*.c) \
-			$(wildcard $(SIG_DIR)/*.c)
+SRC_FILES = ./src/command/pwd.c \
+			./src/command/unset.c \
+			./src/command/exit.c \
+			./src/command/exit_u.c \
+			./src/command/cd.c \
+			./src/command/echo.c \
+			./src/command/env.c \
+			./src/command/export.c \
+			./src/command/export_u.c \
+			./src/execution/execution2.c \
+			./src/execution/pipe_utils.c \
+			./src/execution/redirection_utils.c \
+			./src/execution/pipe.c \
+			./src/execution/pipe_utils2.c \
+			./src/execution/builtin_utils.c \
+			./src/execution/execution.c \
+			./src/execution/exec_utils.c \
+			./src/execution/non_builtin_utils.c \
+			./src/execution/redirection.c \
+			./src/parsing/expand_var_utils.c \
+			./src/parsing/syntax_error.c \
+			./src/parsing/bin_path.c \
+			./src/parsing/detect_var.c \
+			./src/parsing/new_token.c\
+			./src/parsing/new_token_utils.c \
+			./src/parsing/parsing.c \
+			./src/parsing/expand_var.c \
+			./src/parsing/parsing_utils.c \
+			./src/parsing/expand_home.c \
+			./src/parsing/valid_shell_var.c \
+			./src/parsing/detect_var_utils.c \
+			./src/parsing/expand_home_u.c \
+			./src/parsing/shell_var.c \
+			./src/signals/signal.c \
+			./src/signals/signals2.c \
+			./src/utils.c \
+			./src/main.c \
+			./src/utils2.c \
 
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
