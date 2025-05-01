@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:27:28 by pchatagn          #+#    #+#             */
 /*   Updated: 2025/05/01 17:39:16 by pchatagn         ###   ########.fr       */
@@ -29,7 +29,7 @@ extern volatile sig_atomic_t	g_last_signal;
 
 typedef struct s_shell
 {
-	char	**var_env;
+	char	**venv;
 	char	**shell_env;
 	int		exit;
 }	t_shell;
@@ -159,12 +159,12 @@ int		valid_exit_type(int type);
 
 //export
 void	print_export(t_shell *shell);
-char	**add_var_to_env(char **var_env, char *value);
+char	**add_var_to_env(char **venv, char *value);
 int		good_varname(char *name, char unitl);
 int		export_command(t_token *lst_token, t_shell *shell);
 
 //export_utils
-int		found_in_tab(char **var_env, char *value, int len);
+int		found_in_tab(char **venv, char *value, int len);
 int		bad_export(char	*value);
 int		invalid_export_type(int type);
 int		tab_len(char **tab);

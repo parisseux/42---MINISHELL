@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_home.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:25:13 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:25:14 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:27:13 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	replace_home(t_shell *sh, t_token *lst)
 				if (lst->next->value[i] == '~' && ishome(lst->next->value, i))
 				{
 					free(lst->next->value);
-					lst->next->value = addh(env_value(sh, sh->var_env, "HOME"), t);
+					lst->next->value = addh(env_value(sh, sh->venv, "HOME"), t);
 					t = ft_strdup(lst->next->value);
 					i = 0;
 				}
