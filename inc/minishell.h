@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:27:28 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:27:29 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:00:30 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ int		alphanum_len(char *value);
 int		malloc_size(char *new_value, char *value, int name_len);
 
 //expand_var_utils2
-static void	handle_valid_token(t_token *lst_token, t_shell *shell);
+void	handle_valid_token(t_token *lst_token, t_shell *shell);
 int		spe_case(char *value, int type, int space);
 
 //shell_var

@@ -33,6 +33,7 @@ SRC_FILES = ./src/command/pwd.c \
 			./src/execution/non_builtin_utils.c \
 			./src/execution/redirection.c \
 			./src/parsing/expand_var_utils.c \
+			./src/parsing/expand_var_utils2.c \
 			./src/parsing/syntax_error.c \
 			./src/parsing/bin_path.c \
 			./src/parsing/detect_var.c \

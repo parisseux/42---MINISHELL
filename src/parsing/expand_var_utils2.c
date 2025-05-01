@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-static void	handle_valid_token(t_token *lst_token, t_shell *shell)
+void	handle_valid_token(t_token *lst_token, t_shell *shell)
 {
 	t_token	*next;
 	int		type;
