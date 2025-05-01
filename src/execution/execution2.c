@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:41 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:42 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:27:13 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	execve_non_builtin(t_token *lst_token,
 	cmd_args = find_cmd_args(temp);
 	if (!cmd_args)
 		exit(EXIT_FAILURE);
-	if (execve(cmd, cmd_args, shell->var_env) == -1)
+	if (execve(cmd, cmd_args, shell->venv) == -1)
 	{
 		perror("execve");
 		exit(EXIT_FAILURE);
