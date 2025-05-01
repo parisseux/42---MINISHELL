@@ -117,27 +117,19 @@ void	which(char **value, t_shell *shell)
 	}
 }
 
-void	look_for_dolls(t_token *lst_token, t_shell *shell)
+void	look_for_dolls(t_token *lst, t_shell *shell)
 {
-	int		type;
-	int		space;
-	t_token	*next;
-
-	type = 0;
-	space = 0;
-	while (lst_token != NULL && lst_token->type != END)
+	while (lst != NULL && lst->type != END)
 	{
-		if (isvalid(lst_token->type, lst_token->value) > 0)
+		if (spe_case(lst->value, lst->next->type, lst->next->space))
 		{
-			next = lst_token->next;
-			type = lst_token->type;
-			space = lst_token->space;
-			which(&lst_token->value, shell);
-			lst_token->next = next;
-			lst_token->type = type;
-			lst_token->space = space;
+			free(lst->value);
+			lst->value = ft_strdup("");
+			lst = lst->next;
 		}
+		else if (isvalid(lst->type, lst->value) > 0)
+			handle_valid_token(lst, shell);
 		else
-			lst_token = lst_token->next;
+			lst = lst->next;
 	}
 }
