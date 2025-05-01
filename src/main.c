@@ -6,7 +6,7 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:31 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 17:34:47 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/05/01 17:35:52 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ int	init_minishell(char **env, t_shell *shell, char **input)
 {
 	init_parent_signals();
 	if (*env == NULL)
-		prep_var_shell(&shell->var_env);
+		prep_var_shell(&shell->venv);
 	else
-		shell->var_env = setup_minishell(env);
-	if (!shell->var_env)
+		shell->venv = setup_minishell(env);
+	if (!shell->venv)
 		return (1);
 	shell->shell_env = NULL;
 	shell->exit = 0;
@@ -85,16 +85,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-<<<<<<< HEAD
-	init_parent_signals();
-	if (*env == NULL)
-		prep_var_shell(&shell.venv);
-	else
-		shell.venv = setup_minishell(env);
-	if (!shell.venv)
-=======
 	if (init_minishell(env, &shell, &input))
->>>>>>> 5216c54ba3fb0e17a3a74fd94726e920d158e3e1
 		return (1);
 	while (1)
 	{
