@@ -15,7 +15,7 @@ int	space(t_token *lst_token)
 	return (0);
 }
 
-char	*addhome(char *home, char *str)
+char	*addh(char *home, char *str)
 {
 	char	*new;
 	int		size;
@@ -66,7 +66,7 @@ void	replace_home(t_shell *sh, t_token *lst)
 				if (lst->next->value[i] == '~' && ishome(lst->next->value, i))
 				{
 					free(lst->next->value);
-					lst->next->value = addhome(env_value(sh, sh->var_env, "HOME"), t);
+					lst->next->value = addh(env_value(sh, sh->var_env, "HOME"), t);
 					t = ft_strdup(lst->next->value);
 					i = 0;
 				}

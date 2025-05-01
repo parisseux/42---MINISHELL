@@ -185,6 +185,10 @@ char	*add(char *new, char *value, int len);
 int		alphanum_len(char *value);
 int		malloc_size(char *new_value, char *value, int name_len);
 
+//expand_var_utils2
+static void	handle_valid_token(t_token *lst_token, t_shell *shell);
+int		spe_case(char *value, int type, int space);
+
 //shell_var
 int		shell_var(t_token *lst_token, t_shell *shell);
 void	prep_var_shell(char ***var);
@@ -229,7 +233,7 @@ void	init(int *i, char **name, char **dup, char *value);
 void	change_fd(int fd_out, int fd_in);
 char	*look_for_cmd(t_token **temp, t_shell *shell);
 int		non_builtin_child(t_token *lst_token, t_shell *shell);
-int		heredoc_parent(int pipefd, int *status, int pid, t_shell *shell);
+int		heredoc_parent(int pipefd, int pid, t_shell *shell);
 int		not_cmd(t_token *lst_token);
 void	exec_builtin_cmd(t_token *lst_token, t_shell *shell);
 char	*find_pid();
