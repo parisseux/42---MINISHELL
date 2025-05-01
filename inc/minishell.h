@@ -197,6 +197,10 @@ char	*add(char *new, char *value, int len);
 int		alphanum_len(char *value);
 int		malloc_size(char *new_value, char *value, int name_len);
 
+//expand_var_utils2
+static void	handle_valid_token(t_token *lst_token, t_shell *shell);
+int		spe_case(char *value, int type, int space);
+
 //shell_var
 int		shell_var(t_token *lst_token, t_shell *shell);
 void	prep_var_shell(char ***var);
