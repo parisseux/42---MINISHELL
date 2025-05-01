@@ -19,7 +19,7 @@ void	msg_error(char *msg, t_token *lst_token)
 	free_token_list(lst_token);
 }
 
-char	*get_env_value(char **env, char *key)
+char	*env_value(t_shell *shell, char **env, char *key)
 {
 	int	i;
 	int	len;
@@ -34,6 +34,8 @@ char	*get_env_value(char **env, char *key)
 		}
 		i++;
 	}
+	if (!ft_strncmp(key, "HOME", 4))
+		return (home_not_set(shell), NULL);
 	return (NULL);
 }
 

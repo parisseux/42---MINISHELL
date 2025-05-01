@@ -15,7 +15,7 @@ int	space(t_token *lst_token)
 	return (0);
 }
 
-char	*add_home(char *home, char *str)
+char	*addhome(char *home, char *str)
 {
 	char	*new;
 	int		size;
@@ -50,42 +50,31 @@ void	home_not_set(t_shell *shell)
 	shell->exit = 1;
 }
 
-void	replace_home(t_token *lst, char	*home)
+void	replace_home(t_shell *sh, t_token *lst)
 {
-	char	*tmp;
+	char	*t;
 	int		i;
 
 	while (lst->type != END)
 	{
 		if (before(lst) && space(lst->next))
 		{
-			tmp = ft_strdup(lst->next->value);
+			t = ft_strdup(lst->next->value);
 			i = 0;
 			while (lst->next->value[i] != '\0')
 			{
 				if (lst->next->value[i] == '~' && ishome(lst->next->value, i))
 				{
 					free(lst->next->value);
-					lst->next->value = add_home(home, tmp);
-					tmp = ft_strdup(lst->next->value);
+					lst->next->value = addhome(env_value(sh, sh->var_env, "HOME"), t);
+					t = ft_strdup(lst->next->value);
 					i = 0;
 				}
 				else
 					i++;
 			}
-			free(tmp);
+			free(t);
 		}
 		lst = lst->next;
 	}
-}
-
-void	expand_home(t_shell *shell, t_token *lst)
-{
-	char	*home;
-
-	home = get_env_value(shell->var_env, "HOME");
-	if (!home)
-		return (home_not_set(shell));
-	else
-		replace_home(lst, home);
 }

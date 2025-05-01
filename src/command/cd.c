@@ -31,7 +31,7 @@ int	move_to_path(char *path, t_shell *shell)
 	home = NULL;
 	if (!path)
 	{
-		home = get_env_value(shell->var_env, "HOME");
+		home = env_value(shell, shell->var_env, "HOME");
 		if (!home)
 		{
 			write(STDERR_FILENO, "cd: HOME not set\n", 17);

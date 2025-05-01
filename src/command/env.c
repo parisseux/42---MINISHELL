@@ -26,7 +26,7 @@ int	env_command(t_shell *shell, t_token *lst)
 		if (lst->next->type == END || lst->next->type == PIPE)
 			return (print_env(shell));
 		else if (lst->type == APPEND || lst->type == REDIR_IN
-		|| lst->type == REDIR_OUT || lst->type == HEREDOC)
+			|| lst->type == REDIR_OUT || lst->type == HEREDOC)
 			lst = lst->next->next;
 		else
 		{

@@ -19,12 +19,18 @@ void	new_tab(char **var_env, char *value, char **new_env)
 	int	j;
 
 	j = 0;
-	while (var_env[j] != NULL)
+	if (tab_len(var_env) == 1 && ft_strlen(var_env[j]) == 0)
+		new_env[j] = ft_strdup(value);
+	else
 	{
-		new_env[j] = ft_strdup(var_env[j]);
-		j++;
+		while (var_env[j] != NULL)
+		{
+			new_env[j] = ft_strdup(var_env[j]);
+			j++;
+		}
+		new_env[j] = ft_strdup(value);
 	}
-	new_env[j] = ft_strdup(value);
+	new_env[j + 1] = NULL;
 }
 
 char	**add_var_to_env(char **var_env, char *value)

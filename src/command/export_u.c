@@ -25,8 +25,6 @@ int	found_in_tab(char **var_env, char *value, int len)
 	int	i;
 
 	i = 0;
-	if (!var_env)
-		return (-1);
 	while (var_env && var_env[i] != NULL)
 	{
 		if (!ft_varcmp(var_env[i], value, len))
