@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:31 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/05 15:01:35 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:22:59 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	main(int ac, char **av, char **env)
 			input = readline("minishell$ ");
 			if (!input)
 			{
-				ft_putstr_fd("exit\n", 2);
+				ft_putstr_fd("\nexit\n", 2);
 				break ;
 			}
 		}
