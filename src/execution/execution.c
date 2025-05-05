@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:38 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:39 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:43:15 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	execution(t_token *lst_token, t_shell *shell)
 {
 	if (prepare_heredocs(lst_token, shell) == -1)
 	{
-		shell->exit = 1;
+		shell->exit = 130;
 		close_heredoc(lst_token);
 		return ;
 	}

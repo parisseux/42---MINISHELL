@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:31 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 17:35:52 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:01:35 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,19 +89,20 @@ int	main(int ac, char **av, char **env)
 		return (1);
 	while (1)
 	{
+		g_last_signal = 0;
 		if (isatty(STDIN_FILENO))
 		{
 			input = readline("minishell$ ");
 			if (!input)
+			{
+				ft_putstr_fd("exit\n", 2);
 				break ;
+			}
 		}
-		else
-			return (1);
 		add_history(input);
 		start_minishell(&shell, input);
 		free(input);
 	}
-	cleanup_readline();
 	clean_exit(shell.exit, NULL, shell.venv, shell.shell_env);
 	return (0);
 }
