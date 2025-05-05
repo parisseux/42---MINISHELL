@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:25:19 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 17:27:13 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:49:50 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	dol_spec_cases(char **value, int index,
 	if (!cpy)
 		return ;
 	if (line[index] == '?')
-		name = ft_itoa(shell->exit);
+		name = get_exit_code(shell);
 	else if (line[index] == '$')
 		name = find_pid();
 	else if (line[index] == '0')

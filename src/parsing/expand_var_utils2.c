@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 17:15:29 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 17:15:30 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:50:06 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,12 @@ int	spe_case(char *value, int type, int space)
 			|| type == DQUOTE) && space == 0)
 		return (1);
 	return (0);
+}
+
+char	*get_exit_code(t_shell *shell)
+{
+	if (g_last_signal != 0)
+		return (ft_itoa(g_last_signal));
+	else
+		return (ft_itoa(shell->exit));
 }
