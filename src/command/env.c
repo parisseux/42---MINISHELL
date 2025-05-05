@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:12 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 17:27:13 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:53:20 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,30 @@ int	print_env(t_shell *shell)
 	return (0);
 }
 
+int	skip_redirs(t_token **tok)
+{
+	while (*tok && ((*tok)->type == REDIR_OUT || (*tok)->type == APPEND
+			|| (*tok)->type == REDIR_IN || (*tok)->type == HEREDOC))
+		*tok = (*tok)->next->next;
+	return (*tok != NULL);
+}
+
+int	env_error(char *arg)
+{
+	ft_putstr_fd("env: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+	return (127);
+}
+
 int	env_command(t_shell *shell, t_token *lst)
 {
-	while (lst->type != PIPE && lst->type != END)
-	{
-		if (lst->next->type == END || lst->next->type == PIPE)
-			return (print_env(shell));
-		else if (lst->type == APPEND || lst->type == REDIR_IN
-			|| lst->type == REDIR_OUT || lst->type == HEREDOC)
-			lst = lst->next->next;
-		else
-		{
-			ft_putstr_fd("env ", 2);
-			ft_putstr_fd(lst->next->value, 2);
-			ft_putstr_fd(": No such file or directory\n", 2);
-			return (127);
-		}
-	}
-	return (1);
+	if (!skip_redirs(&lst) || ft_strncmp(lst->value, "env", 4))
+		return (1);
+	lst = lst->next;
+	if (!lst || lst->type == END || lst->type == PIPE)
+		return (print_env(shell));
+	if (skip_redirs(&lst) && (lst->type == END || lst->type == PIPE))
+		return (print_env(shell));
+	return (env_error(lst->value));
 }
