@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:24:07 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 16:24:08 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:02:10 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 int	start_echo(t_token *lst_token)
 {
 	if (lst_token->next->type == END)
+	{
 		write(STDOUT_FILENO, "\n", 1);
+		return (0);
+	}	
 	while (1)
 	{
 		if (lst_token->type == REDIR_IN || lst_token->type == REDIR_OUT
@@ -37,7 +40,7 @@ int	is_valid_n_flag(char *line)
 		return (0);
 	while (line[i] == 'n')
 		i++;
-	if (line[i] != '\0')
+	if (line[i] != '\0' || i == 1)
 		return (0);
 	return (1);
 }

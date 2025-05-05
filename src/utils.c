@@ -66,6 +66,8 @@ void	clean_exit(int exit_status, t_token *lst_token,
 	if (lst_token)
 		free_token_list(lst_token);
 	cleanup_readline();
+	if (g_last_signal != 0)
+		exit(g_last_signal);
 	exit(exit_status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:37 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/05 15:03:09 by avarrett         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:07:55 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,13 @@ void	cleanup_readline(void)
 	rl_free_line_state();
 	rl_clear_history();
 	rl_deprep_terminal();
+}
+
+void	eof_exit(int fd, char *stop)
+{
+	ft_putstr_fd("here-document delimited by end-of-file\n", 2);
+	free(stop);
+	close(fd);
+	cleanup_readline();
+	exit(0);
 }

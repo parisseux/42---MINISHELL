@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:27:28 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 17:39:16 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:06:07 by pchatagn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void	exec_one_cmd(t_token *lst_token, t_shell *shell);
 void	close_heredoc(t_token *lst);
 int		prepare_heredocs(t_token *lst, t_shell *shell);
 int		build_heredoc(t_token *lst, int *fd, t_shell *shell);
+void	eof_exit(int fd, char *stop);
 
 //command/utils
 int		print_or_file(t_token *lst_token);
@@ -190,6 +191,7 @@ void	find_var(t_shell *shell, char *name, char **value, int len);
 char	*dolar_sign(char *line, int index);
 void	which(char **value, t_shell *shell);
 void	dol_spec_cases(char **value, int index, char *line, t_shell *shell);
+char	*get_exit_code(t_shell *shell);
 
 //expand_var_utils
 char	*add_special_case(char *name, char *line);
