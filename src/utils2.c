@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:37 by pchatagn          #+#    #+#             */
 /*   Updated: 2025/05/05 15:07:55 by pchatagn         ###   ########.fr       */
@@ -20,7 +20,8 @@ void	free_token_list(t_token *lst_token)
 	{
 		tmp = lst_token;
 		lst_token = lst_token->next;
-		free(tmp->value);
+		if (tmp->value)
+			free(tmp->value);
 		free(tmp);
 	}
 }

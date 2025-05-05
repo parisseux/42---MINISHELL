@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:26:34 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/05 14:22:25 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:58:34 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	clean_exit(int exit_status, t_token *lst_token,
 		ft_free_char_tab(shell);
 	if (lst_token)
 		free_token_list(lst_token);
+	cleanup_readline();
 	if (g_last_signal != 0)
 		exit(g_last_signal);
 	exit(exit_status);

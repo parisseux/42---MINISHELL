@@ -6,7 +6,7 @@
 /*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:25:19 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/05 14:49:50 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:37:15 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 
 	i = 0;
 	tmp = *value;
-	if (found_in_tab(shell->venv, name, len) > 0)
+	if (found_in_tab(shell->venv, name, len) >= 0)
 	{
 		i = found_in_tab(shell->venv, name, len);
 		tmp2 = add(shell->venv[i], tmp, len + 1);
@@ -76,7 +76,7 @@ void	find_var(t_shell *shell, char *name, char **value, int len)
 		*value = tmp2;
 		return ;
 	}
-	if (found_in_tab(shell->shell_env, name, len) > 0)
+	if (found_in_tab(shell->shell_env, name, len) >= 0)
 	{
 		i = found_in_tab(shell->shell_env, name, len);
 		tmp2 = add(shell->shell_env[i], tmp, len + 1);
@@ -105,7 +105,7 @@ void	which(char **value, t_shell *shell)
 			{
 				find_var(shell, name, value, ft_strlen(name));
 				free(name);
-				if (!*value || !ft_strncmp(*value, dup, ft_strlen(*value)))
+				if (!*value)
 					return ;
 			}
 			else
