@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchatagn <pchatagn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avarrett <avarrett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 18:15:50 by pchatagn          #+#    #+#             */
-/*   Updated: 2025/05/01 18:15:51 by pchatagn         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:35:31 by avarrett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,19 @@ char	*find_pid(void)
 {
 	int		fd;
 	char	*name;
+	char	*line;
 	char	**tab;
 
 	fd = open("/proc/self/stat", O_RDONLY);
-	if (fd <= 0)
+	if (fd < 0)
 		return (NULL);
-	name = get_next_line(fd);
-	if (!name)
+	line = get_next_line(fd);
+	close(fd);
+	if (!line)
 		return (NULL);
-	tab = ft_split(name, ' ');
+	tab = ft_split(line, ' ');
 	if (!tab)
-		return (NULL);
-	return (ft_strdup(tab[4]));
+		return (free(line), NULL);
+	name = ft_strdup(tab[4]);
+	return (free(line), ft_free_char_tab(tab), name);
 }
